@@ -1,13 +1,15 @@
 <?php
 
+namespace SimplyFilters;
+
 /**
  * Register all actions and filters for the plugin
  *
  * @link       https://gregn.pl
  * @since      1.0.0
  *
- * @package    Simply_Filters
- * @subpackage Simply_Filters/includes
+ * @package    SimplyFilters
+ * @subpackage SimplyFilters/includes
  */
 
 /**
@@ -17,11 +19,11 @@
  * the plugin, and register them with the WordPress API. Call the
  * run function to execute the list of actions and filters.
  *
- * @package    Simply_Filters
- * @subpackage Simply_Filters/includes
+ * @package    SimplyFilters
+ * @subpackage SimplyFilters/includes
  * @author     Grzegorz Niedzielski <admin@gregn.pl>
  */
-class Simply_Filters_Loader {
+class Loader {
 
 	/**
 	 * The array of actions registered with WordPress.

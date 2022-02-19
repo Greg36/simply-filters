@@ -8,8 +8,8 @@
  * @link       https://gregn.pl
  * @since      1.0.0
  *
- * @package    Simply_Filters
- * @subpackage Simply_Filters/public/partials
+ * @package    SimplyFilters
+ * @subpackage SimplyFilters/public/partials
  */
 ?>
 

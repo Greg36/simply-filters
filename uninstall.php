@@ -22,7 +22,7 @@
  * @link       https://gregn.pl
  * @since      1.0.0
  *
- * @package    Simply_Filters
+ * @package    SimplyFilters
  */
 
 // If uninstall not called from WordPress, then exit.

@@ -1,0 +1,21 @@
+{
+    "name": "greg36/simply-filters",
+    "type": "wordpress-plugin",
+    "keywords" : ["wordpress"],
+    "description": "Simply add product filters to WooCommerce.",
+    "license": "GPL-2.0+",
+    "authors": [
+        {
+            "name": "Grzegorz Niedzielski",
+            "email": "admin@gregn.pl"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "SimplyFilters\\": "app/"
+        }
+    },
+    "require": {
+        "php" : ">=7.0"
+    }
+}

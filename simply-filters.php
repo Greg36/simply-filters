@@ -5,7 +5,7 @@
  *
  * @link              https://gregn.pl
  * @since             1.0.0
- * @package           Simply_Filters
+ * @package           SimplyFilters
  *
  * @wordpress-plugin
  * Plugin Name:       Simply Filters for WooCommerce
@@ -25,40 +25,48 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-define( 'SIMPLY_FILTERS_VERSION', '1.0.0' );
+define( 'SF_VERSION', '1.0.0' );
+define( 'SF_URL', plugin_dir_url( __FILE__ ) );
+define( 'SF_PATH', plugin_dir_path( __FILE__ ) );
+define( 'SF_FILE', plugin_basename( __FILE__ ) );
+
+
+/*
+ * Require Composer autoload
+ */
+if ( file_exists( SF_PATH . 'vendor/autoload.php' ) ) {
+	require_once( SF_PATH . 'vendor/autoload.php' );
+}
+
+
+/*
+ * Autoload any functions files
+ */
+array_map( function( $file ) {
+	require_once( SF_PATH . "app/{$file}.php" ); // phpcs:ignore WPThemeReview.CoreFunctionality.FileInclude.FileIncludeFound
+}, [] );
+
 
 /**
  * Run during plugin activation
  */
-function activate_simply_filters() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-simply-filters-activator.php';
-	Simply_Filters_Activator::activate();
+function activate_SimplyFilters() {
+	\SimplyFilters\Activator::activate();
 }
-register_activation_hook( __FILE__, 'activate_simply_filters' );
+register_activation_hook( __FILE__, 'activate_SimplyFilters' );
+
 
 /**
  * Run during plugin deactivation
  */
-function deactivate_simply_filters() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-simply-filters-deactivator.php';
-	Simply_Filters_Deactivator::deactivate();
+function deactivate_SimplyFilters() {
+	\SimplyFilters\Deactivator::deactivate();
 }
-register_deactivation_hook( __FILE__, 'deactivate_simply_filters' );
+register_deactivation_hook( __FILE__, 'deactivate_SimplyFilters' );
+
 
 /**
- * Load the core plugin class
+ * Begin execution of the plugin.
  */
-require plugin_dir_path( __FILE__ ) . 'includes/class-simply-filters.php';
-
-/**
- * Begins execution of the plugin.
- *
- * @since    1.0.0
- */
-function run_simply_filters() {
-
-	$plugin = new Simply_Filters();
-	$plugin->run();
-
-}
-run_simply_filters();
+$plugin = new \SimplyFilters\SimplyFilters();
+$plugin->run();

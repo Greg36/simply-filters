@@ -1,5 +1,7 @@
 <?php
 
+namespace SimplyFilters;
+
 /**
  * Define the internationalization functionality
  *
@@ -9,8 +11,8 @@
  * @link       https://gregn.pl
  * @since      1.0.0
  *
- * @package    Simply_Filters
- * @subpackage Simply_Filters/includes
+ * @package    SimplyFilters
+ * @subpackage SimplyFilters/includes
  */
 
 /**
@@ -20,11 +22,11 @@
  * so that it is ready for translation.
  *
  * @since      1.0.0
- * @package    Simply_Filters
- * @subpackage Simply_Filters/includes
+ * @package    SimplyFilters
+ * @subpackage SimplyFilters/includes
  * @author     Grzegorz Niedzielski <admin@gregn.pl>
  */
-class Simply_Filters_i18n {
+class Internalization {
 
 
 	/**

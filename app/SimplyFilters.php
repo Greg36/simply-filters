@@ -1,5 +1,10 @@
 <?php
 
+namespace SimplyFilters;
+
+use SimplyFilters\Admin\Admin;
+use SimplyFilters\Filters\Filters;
+
 /**
  * The file that defines the core plugin class
  *
@@ -9,8 +14,8 @@
  * @link       https://gregn.pl
  * @since      1.0.0
  *
- * @package    Simply_Filters
- * @subpackage Simply_Filters/includes
+ * @package    SimplyFilters
+ * @subpackage SimplyFilters/includes
  */
 
 /**
@@ -23,11 +28,11 @@
  * version of the plugin.
  *
  * @since      1.0.0
- * @package    Simply_Filters
- * @subpackage Simply_Filters/includes
+ * @package    SimplyFilters
+ * @subpackage SimplyFilters/includes
  * @author     Grzegorz Niedzielski <admin@gregn.pl>
  */
-class Simply_Filters {
+class SimplyFilters {
 
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
@@ -35,7 +40,7 @@ class Simply_Filters {
 	 *
 	 * @since    1.0.0
 	 * @access   protected
-	 * @var      Simply_Filters_Loader    $loader    Maintains and registers all hooks for the plugin.
+	 * @var      Loader    $loader    Maintains and registers all hooks for the plugin.
 	 */
 	protected $loader;
 
@@ -67,69 +72,25 @@ class Simply_Filters {
 	 * @since    1.0.0
 	 */
 	public function __construct() {
-		if ( defined( 'SIMPLY_FILTERS_VERSION' ) ) {
-			$this->version = SIMPLY_FILTERS_VERSION;
+		if ( defined( 'SF_VERSION' ) ) {
+			$this->version = SF_VERSION;
 		} else {
 			$this->version = '1.0.0';
 		}
+
 		$this->plugin_name = 'simply-filters';
 
-		$this->load_dependencies();
+		$this->loader = new Loader();
+
 		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
-
-	}
-
-	/**
-	 * Load the required dependencies for this plugin.
-	 *
-	 * Include the following files that make up the plugin:
-	 *
-	 * - Simply_Filters_Loader. Orchestrates the hooks of the plugin.
-	 * - Simply_Filters_i18n. Defines internationalization functionality.
-	 * - Simply_Filters_Admin. Defines all hooks for the admin area.
-	 * - Simply_Filters_Public. Defines all hooks for the public side of the site.
-	 *
-	 * Create an instance of the loader which will be used to register the hooks
-	 * with WordPress.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 */
-	private function load_dependencies() {
-
-		/**
-		 * The class responsible for orchestrating the actions and filters of the
-		 * core plugin.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-simply-filters-loader.php';
-
-		/**
-		 * The class responsible for defining internationalization functionality
-		 * of the plugin.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-simply-filters-i18n.php';
-
-		/**
-		 * The class responsible for defining all actions that occur in the admin area.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-simply-filters-admin.php';
-
-		/**
-		 * The class responsible for defining all actions that occur in the public-facing
-		 * side of the site.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-simply-filters-public.php';
-
-		$this->loader = new Simply_Filters_Loader();
-
 	}
 
 	/**
 	 * Define the locale for this plugin for internationalization.
 	 *
-	 * Uses the Simply_Filters_i18n class in order to set the domain and to register the hook
+	 * Uses the SimplyFilters_i18n class in order to set the domain and to register the hook
 	 * with WordPress.
 	 *
 	 * @since    1.0.0
@@ -137,10 +98,9 @@ class Simply_Filters {
 	 */
 	private function set_locale() {
 
-		$plugin_i18n = new Simply_Filters_i18n();
+		$plugin_i18n = new Internalization();
 
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
-
 	}
 
 	/**
@@ -152,11 +112,10 @@ class Simply_Filters {
 	 */
 	private function define_admin_hooks() {
 
-		$plugin_admin = new Simply_Filters_Admin( $this->get_plugin_name(), $this->get_version() );
+		$plugin_admin = new Admin( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
-
 	}
 
 	/**
@@ -168,11 +127,10 @@ class Simply_Filters {
 	 */
 	private function define_public_hooks() {
 
-		$plugin_public = new Simply_Filters_Public( $this->get_plugin_name(), $this->get_version() );
+		$plugin_public = new Filters( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
-
 	}
 
 	/**
@@ -198,8 +156,8 @@ class Simply_Filters {
 	/**
 	 * The reference to the class that orchestrates the hooks with the plugin.
 	 *
-	 * @since     1.0.0
-	 * @return    Simply_Filters_Loader    Orchestrates the hooks of the plugin.
+	 * @return    Loader    Orchestrates the hooks of the plugin.
+	 *@since     1.0.0
 	 */
 	public function get_loader() {
 		return $this->loader;

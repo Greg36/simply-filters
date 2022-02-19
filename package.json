@@ -1,0 +1,22 @@
+{
+  "name": "simply-filters",
+  "version": "1.0.0",
+  "description": "Simply add product filters to WooCommerce.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "mix",
+    "watch": "mix watch",
+    "watch-poll": "mix watch -- --watch-options-poll=1000",
+    "hot": "mix watch --hot",
+    "production": "mix --production"
+  },
+  "author": "Grzegorz Niedzielski",
+  "license": "GPL-2.0+",
+  "devDependencies": {
+    "copy-webpack-plugin": "^10.2.4",
+    "laravel-mix": "^6.0.41",
+    "postcss-preset-env": "^7.3.1",
+    "sass": "^1.49.7",
+    "sass-loader": "^12.4.0"
+  }
+}
