@@ -43,7 +43,7 @@ if ( file_exists( SF_PATH . 'vendor/autoload.php' ) ) {
  * Autoload any functions files
  */
 array_map( function( $file ) {
-	require_once( SF_PATH . "app/{$file}.php" ); // phpcs:ignore WPThemeReview.CoreFunctionality.FileInclude.FileIncludeFound
+	require_once( SF_PATH . "app/{$file}.php" );
 }, [] );
 
 
@@ -68,5 +68,7 @@ register_deactivation_hook( __FILE__, 'deactivate_SimplyFilters' );
 /**
  * Begin execution of the plugin.
  */
-$plugin = new \SimplyFilters\SimplyFilters();
-$plugin->run();
+function initiate_SimplyFilters() {
+	\SimplyFilters\SimplyFilters::factory();
+}
+add_action( 'plugins_loaded', 'initiate_SimplyFilters', 11 );

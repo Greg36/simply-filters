@@ -6,19 +6,6 @@ use SimplyFilters\Admin\Admin;
 use SimplyFilters\Filters\Filters;
 
 /**
- * The file that defines the core plugin class
- *
- * A class definition that includes attributes and functions used across both the
- * public-facing side of the site and the admin area.
- *
- * @link       https://gregn.pl
- * @since      1.0.0
- *
- * @package    SimplyFilters
- * @subpackage SimplyFilters/includes
- */
-
-/**
  * The core plugin class.
  *
  * This is used to define internationalization, admin-specific hooks, and
@@ -27,150 +14,128 @@ use SimplyFilters\Filters\Filters;
  * Also maintains the unique identifier of this plugin as well as the current
  * version of the plugin.
  *
- * @since      1.0.0
- * @package    SimplyFilters
- * @subpackage SimplyFilters/includes
- * @author     Grzegorz Niedzielski <admin@gregn.pl>
+ * @since   1.0.0
+ * @package SimplyFilters
  */
 class SimplyFilters {
 
 	/**
-	 * The loader that's responsible for maintaining and registering all hooks that power
-	 * the plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   protected
-	 * @var      Loader    $loader    Maintains and registers all hooks for the plugin.
-	 */
-	protected $loader;
-
-	/**
 	 * The unique identifier of this plugin.
 	 *
-	 * @since    1.0.0
-	 * @access   protected
-	 * @var      string    $plugin_name    The string used to uniquely identify this plugin.
+	 * @since   1.0.0
+	 * @var     string    $plugin_name    The string used to uniquely identify this plugin.
 	 */
 	protected $plugin_name;
 
 	/**
 	 * The current version of the plugin.
 	 *
-	 * @since    1.0.0
-	 * @access   protected
-	 * @var      string    $version    The current version of the plugin.
+	 * @since   1.0.0
+	 * @var     string    $version    The current version of the plugin.
 	 */
 	protected $version;
 
 	/**
-	 * Define the core functionality of the plugin.
+	 * Singleton instance of class
 	 *
-	 * Set the plugin name and the plugin version that can be used throughout the plugin.
-	 * Load the dependencies, define the locale, and set the hooks for the admin area and
-	 * the public-facing side of the site.
+	 * @since   1.0.0
+	 */
+	private static $instance;
+
+
+	/**
+	 * Check plugin compatibility and initialize core functionality.
 	 *
-	 * @since    1.0.0
+	 * @since   1.0.0
 	 */
 	public function __construct() {
-		if ( defined( 'SF_VERSION' ) ) {
-			$this->version = SF_VERSION;
-		} else {
-			$this->version = '1.0.0';
-		}
-
+		$this->version = defined( 'SF_VERSION' ) ? SF_VERSION : '1.0.0';
 		$this->plugin_name = 'simply-filters';
 
-		$this->loader = new Loader();
-
 		$this->set_locale();
-		$this->define_admin_hooks();
-		$this->define_public_hooks();
+
+		// Check compatibility and init the plugin
+		if ( ! function_exists( 'WC' ) ) {
+			add_action( 'admin_notices', [ $this, 'install_woocommerce_admin_notice' ] );
+		} else {
+			$this->init();
+		}
+	}
+
+	/**
+	 * Initialize the admin and public hooks
+	 *
+	 * @since   1.0.0
+	 */
+	private function init() {
+
+        $admin = new Admin;
+        $admin->init();
+
+        $filters = new Filters;
+        $filters->init();
+	}
+
+	/**
+	 * Print an admin notice if woocommerce is deactivated
+	 *
+	 * @since   1.0.0
+	 */
+	public function install_woocommerce_admin_notice() {
+		?>
+		<div class="error">
+			<p><?php esc_html_e( 'Simply Filters for WooCommerce plugin is enabled but it requires WooCommerce in order to work.', 'simply-filters' ); ?></p>
+		</div>
+		<?php
 	}
 
 	/**
 	 * Define the locale for this plugin for internationalization.
 	 *
-	 * Uses the SimplyFilters_i18n class in order to set the domain and to register the hook
-	 * with WordPress.
-	 *
-	 * @since    1.0.0
-	 * @access   private
+	 * @since   1.0.0
 	 */
 	private function set_locale() {
 
-		$plugin_i18n = new Internalization();
-
-		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
-	}
-
-	/**
-	 * Register all of the hooks related to the admin area functionality
-	 * of the plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 */
-	private function define_admin_hooks() {
-
-		$plugin_admin = new Admin( $this->get_plugin_name(), $this->get_version() );
-
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
-	}
-
-	/**
-	 * Register all of the hooks related to the public-facing functionality
-	 * of the plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 */
-	private function define_public_hooks() {
-
-		$plugin_public = new Filters( $this->get_plugin_name(), $this->get_version() );
-
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
-	}
-
-	/**
-	 * Run the loader to execute all of the hooks with WordPress.
-	 *
-	 * @since    1.0.0
-	 */
-	public function run() {
-		$this->loader->run();
+		load_plugin_textdomain(
+			'simply-filters',
+			false,
+			dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/'
+		);
 	}
 
 	/**
 	 * The name of the plugin used to uniquely identify it within the context of
 	 * WordPress and to define internationalization functionality.
 	 *
-	 * @since     1.0.0
-	 * @return    string    The name of the plugin.
+	 * @since   1.0.0
+	 * @return  string    The name of the plugin.
 	 */
 	public function get_plugin_name() {
 		return $this->plugin_name;
 	}
 
 	/**
-	 * The reference to the class that orchestrates the hooks with the plugin.
-	 *
-	 * @return    Loader    Orchestrates the hooks of the plugin.
-	 *@since     1.0.0
-	 */
-	public function get_loader() {
-		return $this->loader;
-	}
-
-	/**
 	 * Retrieve the version number of the plugin.
 	 *
-	 * @since     1.0.0
-	 * @return    string    The version number of the plugin.
+	 * @since   1.0.0
+	 * @return  string    The version number of the plugin.
 	 */
 	public function get_version() {
 		return $this->version;
+	}
+
+	/**
+	 * Gets the singleton instance via lazy initialization
+	 *
+	 * @since   1.0.0
+	 * @return  self
+	 */
+	public static function factory() {
+		if ( static::$instance === null ) {
+			static::$instance = new static();
+		}
+
+		return static::$instance;
 	}
 
 }
