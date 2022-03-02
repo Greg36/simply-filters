@@ -4,6 +4,7 @@ namespace SimplyFilters;
 
 use SimplyFilters\Admin\Admin;
 use SimplyFilters\Filters\Filters;
+use SimplyFilters\Filters\PostType;
 
 /**
  * The core plugin class.
@@ -74,6 +75,9 @@ class SimplyFilters {
 
         $filters = new Filters;
         $filters->init();
+
+		$post_type = new PostType();
+		$post_type->init();
 	}
 
 	/**
