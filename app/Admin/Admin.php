@@ -46,7 +46,7 @@ class Admin {
 	public function init_dashboard() {
 
 		add_submenu_page(
-			'woocommerce',
+			'options-general.php',
 			esc_html__( 'Simply Filters', 'simply-filters' ),
 			esc_html__( 'Simply Filters', 'simply-filters' ),
 			'manage_options',
