@@ -2,6 +2,8 @@
 
 namespace SimplyFilters\Admin;
 
+use Hybrid\Core\ServiceProvider;
+
 /**
  * The admin-specific functionality of the plugin.
  *
@@ -9,11 +11,11 @@ namespace SimplyFilters\Admin;
  * @subpackage SimplyFilters/Admin
  * @author     Grzegorz Niedzielski <admin@gregn.pl>
  */
-class Admin {
+class AdminServiceProvider extends ServiceProvider {
 
 	use \SimplyFilters\Assets;
 
-	public function init() {
+	public function boot() {
 		$this->enqueue_styles();
 		$this->enqueue_scripts();
 

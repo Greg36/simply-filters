@@ -2,9 +2,7 @@
 
 namespace SimplyFilters;
 
-use SimplyFilters\Admin\Admin;
-use SimplyFilters\Filters\Filters;
-use SimplyFilters\Filters\PostType;
+use Hybrid\Core\Application;
 
 /**
  * The core plugin class.
@@ -21,63 +19,80 @@ use SimplyFilters\Filters\PostType;
 class SimplyFilters {
 
 	/**
-	 * The unique identifier of this plugin.
-	 *
-	 * @since   1.0.0
-	 * @var     string    $plugin_name    The string used to uniquely identify this plugin.
-	 */
-	protected $plugin_name;
-
-	/**
-	 * The current version of the plugin.
-	 *
-	 * @since   1.0.0
-	 * @var     string    $version    The current version of the plugin.
-	 */
-	protected $version;
-
-	/**
 	 * Singleton instance of class
 	 *
 	 * @since   1.0.0
 	 */
 	private static $instance;
 
+	/**
+	 * Application container
+	 *
+	 * @since  1.0.0
+	 * @access protected
+	 * @var    Application
+	 */
+	protected $app;
 
 	/**
-	 * Check plugin compatibility and initialize core functionality.
+	 * Create a new application.
 	 *
 	 * @since   1.0.0
 	 */
 	public function __construct() {
-		$this->version = defined( 'SF_VERSION' ) ? SF_VERSION : '1.0.0';
-		$this->plugin_name = 'simply-filters';
+		$this->app = \Hybrid\booted() ? \Hybrid\app() : new \Hybrid\Core\Application();
+
+		$this->app->instance( 'version', defined( 'SF_VERSION' ) ? SF_VERSION : '1.0.0' ) ;
+		$this->app->instance( 'plugin_name', 'simply-filters' );
+        $this->app->alias( 'plugin_name', 'locale' );
+
+        // Boot application after plugins have been loaded to check if WooCommerce is active
+		add_action( 'plugins_loaded', [ $this, 'boot' ], 11 );
+	}
+
+	/**
+	 * Check compatibility and boot the application
+	 *
+	 * @since   1.0.0
+	 */
+	public function boot() {
 
 		$this->set_locale();
 
-		// Check compatibility and init the plugin
-		if ( ! function_exists( 'WC' ) ) {
-			add_action( 'admin_notices', [ $this, 'install_woocommerce_admin_notice' ] );
+		if ( $this->is_woocommerce_active() ) {
+			$this->registerServices();
+			$this->app->boot();
 		} else {
-			$this->init();
+			add_action( 'admin_notices', [ $this, 'install_woocommerce_admin_notice' ] );
 		}
 	}
 
 	/**
-	 * Initialize the admin and public hooks
+	 * Register application's service providers
+     *
+     * @since 1.0.0
+	 */
+	private function registerServices() {
+		$this->app->provider( Admin\AdminServiceProvider::class );
+        $this->app->provider( Filters\FiltersServiceProvider::class );
+	}
+
+	/**
+	 * Check if WooCommerce is active or active for multisite network
 	 *
 	 * @since   1.0.0
+	 * @return  bool
 	 */
-	private function init() {
+	private function is_woocommerce_active() {
+		$woocommerce = 'woocommerce/woocommerce.php';
+		$network_plugins = array();
 
-        $admin = new Admin;
-        $admin->init();
+		if ( is_multisite() ) $network_plugins = get_site_option( 'active_sitewide_plugins' );
 
-        $filters = new Filters;
-        $filters->init();
+		$is_active = in_array( $woocommerce, (array) get_option( 'active_plugins', array() ), true );
+		$is_active_for_network = is_multisite() && isset( $network_plugins[ $woocommerce ] );
 
-		$post_type = new PostType();
-		$post_type->init();
+		return $is_active || $is_active_for_network || defined( 'WP_TESTS_DOMAIN' );
 	}
 
 	/**
@@ -88,7 +103,7 @@ class SimplyFilters {
 	public function install_woocommerce_admin_notice() {
 		?>
 		<div class="error">
-			<p><?php esc_html_e( 'Simply Filters for WooCommerce plugin is enabled but it requires WooCommerce in order to work.', 'simply-filters' ); ?></p>
+			<p><?php esc_html_e( 'Simply Filters for WooCommerce plugin is enabled but it requires WooCommerce in order to work.', $this->app->get( 'locale' ) ); ?></p>
 		</div>
 		<?php
 	}
@@ -101,31 +116,10 @@ class SimplyFilters {
 	private function set_locale() {
 
 		load_plugin_textdomain(
-			'simply-filters',
+			$this->app->get( 'locale' ),
 			false,
 			dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/'
 		);
-	}
-
-	/**
-	 * The name of the plugin used to uniquely identify it within the context of
-	 * WordPress and to define internationalization functionality.
-	 *
-	 * @since   1.0.0
-	 * @return  string    The name of the plugin.
-	 */
-	public function get_plugin_name() {
-		return $this->plugin_name;
-	}
-
-	/**
-	 * Retrieve the version number of the plugin.
-	 *
-	 * @since   1.0.0
-	 * @return  string    The version number of the plugin.
-	 */
-	public function get_version() {
-		return $this->version;
 	}
 
 	/**

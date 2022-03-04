@@ -47,6 +47,7 @@ array_map( function( $file ) {
 }, [] );
 
 
+
 /**
  * Run during plugin activation
  */
@@ -68,7 +69,9 @@ register_deactivation_hook( __FILE__, 'deactivate_SimplyFilters' );
 /**
  * Begin execution of the plugin.
  */
-function initiate_SimplyFilters() {
-	\SimplyFilters\SimplyFilters::factory();
-}
-add_action( 'plugins_loaded', 'initiate_SimplyFilters', 11 );
+//function initiate_SimplyFilters() {
+//	\SimplyFilters\SimplyFilters::factory();
+//}
+//add_action( 'plugins_loaded', 'initiate_SimplyFilters', 11 );
+
+\SimplyFilters\SimplyFilters::factory();
