@@ -41,3 +41,21 @@
 		}
 	}
 }
+
+/**
+ * Hide edit options from filters group screen
+ */
+body.post-type-sf_filter_group {
+
+	#misc-publishing-actions {
+		#visibility,
+		.edit-timestamp {
+			display: none;
+		}
+	}
+
+	#minor-publishing-actions {
+		display: none;
+	}
+
+}

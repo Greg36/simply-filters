@@ -73,8 +73,11 @@ class SimplyFilters {
      * @since 1.0.0
 	 */
 	private function registerServices() {
-		$this->app->provider( Admin\AdminServiceProvider::class );
         $this->app->provider( Filters\FiltersServiceProvider::class );
+
+        if( is_admin() ) {
+	        $this->app->provider( Admin\AdminServiceProvider::class );
+        }
 	}
 
 	/**

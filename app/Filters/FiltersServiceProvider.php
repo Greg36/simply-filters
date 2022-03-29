@@ -54,6 +54,8 @@ class FiltersServiceProvider extends ServiceProvider {
 	 */
 	public function register_group_post_type() {
 
+		$locale = $this->app->get( 'locale' );
+
 		register_post_type(
 			$this->app->get( 'group_post_type' ),
 			array(
@@ -64,12 +66,17 @@ class FiltersServiceProvider extends ServiceProvider {
 				'show_in_admin_bar'   => false,
 				'show_ui'             => true,
 				'hierarchical'        => false,
-				'supports'            => array(
-					'author',
-				),
+				'supports'            => array(''),
 				'labels'              => array(
-					'name'          => __( 'Filters', 'simply-filters' ),
-					'singular_name' => __( 'Filter', 'simply-filters' ),
+					'name'               => __( 'Filters', $locale ),
+					'singular_name'      => __( 'Filter', $locale ),
+					'add_new_item'       => __( 'Add New Filter Group', $locale ),
+					'edit_item'          => __( 'Edit Filter Group', $locale ),
+					'new_item'           => __( 'New Filter Group', $locale ),
+					'view_item'          => __( 'View Filter Group', $locale ),
+					'search_items'       => __( 'Search Filter Groups', $locale ),
+					'not_found'          => __( 'No Filter Groups found', $locale ),
+					'not_found_in_trash' => __( 'No Filter Groups found in Trash', $locale ),
 				),
 			)
 		);
@@ -89,7 +96,7 @@ class FiltersServiceProvider extends ServiceProvider {
 				'hierarchical' => false,
 				'supports'     => array(),
 				'labels'       => array(
-					'name' => __( 'Filter Item', 'simply-filters' ),
+					'name' => __( 'Filter Item', $this->app->get( 'locale' ) ),
 				),
 			)
 		);;

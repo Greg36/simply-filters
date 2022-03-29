@@ -13,6 +13,7 @@
 global $pagenow;
 
 $nav = [];
+$locale = Hybrid\app( 'locale' );
 
 // Plugin list page
 $nav[ 'filters' ] = [
@@ -21,7 +22,7 @@ $nav[ 'filters' ] = [
 	     Hybrid\app( 'group_post_type' ),
 	     get_admin_url() . 'edit.php'
      ) ),
-    'label' =>  __( 'Filters', Hybrid\app( 'locale' ) )
+    'label' =>  __( 'Filters', $locale )
 ];
 
 // New filter
@@ -31,7 +32,7 @@ $nav[ 'new' ] = [
 	    Hybrid\app( 'group_post_type' ),
 	    get_admin_url() . 'post-new.php'
     ) ),
-    'label' => __( 'Add new', Hybrid\app( 'locale' ) )
+    'label' => __( 'Add new', $locale )
 ];
 
 // Plugin settings page
@@ -41,7 +42,7 @@ $nav[ 'settings' ] = [
 		Hybrid\app( 'plugin_name' ),
 		get_admin_url() . 'options-general.php'
 	) ),
-	'label' => __( 'Settings', Hybrid\app( 'locale' ) )
+	'label' => __( 'Settings', $locale )
 ];
 
 // Detect active page
@@ -61,7 +62,7 @@ switch ( $pagenow ) {
 ?>
 
 <div class="sf-admin__toolbar">
-    <h2><?php _e( 'Simply Filters for WooCommerce', Hybrid\app( 'locale' ) ); ?></h2>
+    <h2><?php _e( 'Simply Filters for WooCommerce', $locale ); ?></h2>
     <?php
     foreach ( $nav as $name => $link ) {
         printf( '<a class="sf-admin__toolbar-link %s" href="%s">%s</a>',
