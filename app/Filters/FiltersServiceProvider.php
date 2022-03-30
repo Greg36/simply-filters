@@ -22,8 +22,9 @@ class FiltersServiceProvider extends ServiceProvider {
 	}
 
 	public function boot() {
-		$this->enqueue_styles();
-		$this->enqueue_scripts();
+
+		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_styles' ] );
+		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
 
 		add_action( 'init', [ $this, 'register_group_post_type' ] );
 		add_action( 'init', [ $this, 'register_single_post_type' ] );

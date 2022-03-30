@@ -9,7 +9,7 @@
  * @since      1.0.0
  *
  * @package    SimplyFilters
- * @subpackage SimplyFilters/public/partials
+ * @subpackage SimplyFilters/public/views
  */
 ?>
 

@@ -1,0 +1,26 @@
+/*
+ * Filters metabox
+ */
+#sf-filter-group-fields {
+	background: $meta__bg;
+	border: $meta__border;
+	margin-top: -20px;
+
+	.postbox-header {
+		display: none;
+	}
+
+}
+
+.sf-filters {
+
+	font-family: $font__family;
+	color: $font__primary;
+
+	&__header {
+		font-size: 14px;
+		font-weight: 700;
+		display: flex;
+		justify-content: space-around;
+	}
+}
