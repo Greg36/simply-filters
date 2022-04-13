@@ -57,6 +57,16 @@ abstract class Filter {
 	}
 
 	/**
+	 * Get ID of the field
+	 *
+	 * @return string
+	 */
+	public function get_id() {
+		return $this->data['id'];
+	}
+
+
+	/**
 	 * Get filter label
 	 *
 	 * @return string
@@ -170,7 +180,7 @@ abstract class Filter {
 
 			foreach ( $this->settings as $setting ) {
 				$key    = $setting['key'];
-				$prefix = 'sf-setting-' . $this->id . '_';
+				$prefix = \Hybrid\app( 'prefix' ) . $this->id . '_';
 				$setting['control']->render( $prefix . $key, $this->get_data( $key ) );
 			}
 		}

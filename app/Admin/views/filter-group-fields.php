@@ -12,7 +12,7 @@
 
 ?>
 
-<div class="sf-filters">
+<div class="sf-filters" data-filter_group_id="<?php esc_attr_e( \Hybrid\app('prefix') . get_the_ID() ); ?>">
 	<div class="sf-filters__wrap">
 
         <ul class="sf-filters__header">

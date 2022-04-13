@@ -95,10 +95,17 @@ class AdminServiceProvider extends ServiceProvider {
 	public function enqueue_scripts() {
 		wp_enqueue_script( 'simply-filters_admin', $this->getAssetPath( 'js/admin.js' ), [ 'wp-color-picker' ], null, false );
 
-//		// Filter post type related scripts
-//		if ( $this->app->get( 'is-page-post' ) ) {
-//			wp_enqueue_script( 'simply-filters_admin-filters', $this->getAssetPath( 'js/admin-filters.js' ), , null, false );
-//		}
+		$locale = $this->app->get( 'locale' );
+
+		wp_localize_script( 'simply-filters_admin', 'sf_admin', [
+			'prefix' => \Hybrid\app('prefix'),
+			'locale' => [
+				'copy' => __( '(copy)', $locale ),
+				'sure' => __( 'Are you sure?', $locale ),
+				'delete' => __( 'Delete', $locale ),
+				'cancel' => __( 'Cancel', $locale )
+			]
+		]);
 	}
 
 

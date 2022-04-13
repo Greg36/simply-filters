@@ -6,7 +6,7 @@
  */
 ?>
 
-<div class="sf-filter">
+<div class="sf-filter" data-filter_id="<?php esc_attr_e( \Hybrid\app('prefix') . $filter->get_id() ); ?>">
 
 	<div class="sf-filter__row sf-row">
 
