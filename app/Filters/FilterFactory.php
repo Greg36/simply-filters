@@ -13,7 +13,8 @@ class FilterFactory {
 
 		$filter = false;
 		$data   = static::unserialize_content( $post );
-		$class  = "SimplyFilters\\Types\\{$data['type']}";
+		$name   = ucfirst( $data['type'] ) . 'Filter';
+		$class  = "SimplyFilters\\Filters\\Types\\{$name}";
 
 		if ( class_exists( $class ) ) {
 			$filter = new $class;
@@ -39,7 +40,7 @@ class FilterFactory {
 
 		$filter = (array) maybe_unserialize( $post->post_content );
 
-		$filter['ID']         = $post->ID;
+		$filter['id']         = $post->ID;
 		$filter['key']        = $post->post_name;
 		$filter['label']      = $post->post_title;
 		$filter['menu_order'] = $post->menu_order;

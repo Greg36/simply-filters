@@ -93,12 +93,12 @@ class AdminServiceProvider extends ServiceProvider {
 	 * @since    1.0.0
 	 */
 	public function enqueue_scripts() {
-		wp_enqueue_script( 'simply-filters_admin', $this->getAssetPath( 'js/admin.js' ), null, null, false );
+		wp_enqueue_script( 'simply-filters_admin', $this->getAssetPath( 'js/admin.js' ), [ 'wp-color-picker' ], null, false );
 
-		// Filter post type related scripts
-		if ( $this->app->get( 'is-page-post' ) ) {
-			wp_enqueue_script( 'simply-filters_admin-filters', $this->getAssetPath( 'js/admin-filters.js' ), null, null, false );
-		}
+//		// Filter post type related scripts
+//		if ( $this->app->get( 'is-page-post' ) ) {
+//			wp_enqueue_script( 'simply-filters_admin-filters', $this->getAssetPath( 'js/admin-filters.js' ), , null, false );
+//		}
 	}
 
 

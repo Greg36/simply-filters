@@ -25,9 +25,10 @@
 
             <?php if( $filters ) :
 
-	            foreach ( $filters as $filter ) {
+	            foreach ( $filters as $key => $filter ) {
                     \SimplyFilters\TemplateLoader::render( 'filter-field', [
-                            'filter' => $filter
+                        'filter' => $filter,
+                        'order'  => $key + 1
                     ] );
                 }
 
@@ -39,6 +40,10 @@
 
             <?php endif; ?>
 
+        </div>
+
+        <div class="sf-filters__footer">
+            <a href="#" class="sf-button sf-button__main"><img src="<?php echo \SimplyFilters\get_svg( 'plus' ); ?>" alt="Add filter" aria-hidden="true"><?php _e( 'Add new filter', $locale ); ?></a>
         </div>
 
     </div>
