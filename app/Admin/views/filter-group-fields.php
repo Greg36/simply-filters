@@ -43,7 +43,7 @@
         </div>
 
         <div class="sf-filters__footer">
-            <a href="#" class="sf-button sf-button__main"><img src="<?php echo \SimplyFilters\get_svg( 'plus' ); ?>" alt="Add filter" aria-hidden="true"><?php _e( 'Add new filter', $locale ); ?></a>
+            <a href="#" class="sf-button sf-button__main sf-button__new-filter"><img src="<?php echo \SimplyFilters\get_svg( 'plus' ); ?>" alt="Add filter" aria-hidden="true"><?php _e( 'Add new filter', $locale ); ?></a>
         </div>
 
     </div>

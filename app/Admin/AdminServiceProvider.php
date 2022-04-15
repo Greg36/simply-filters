@@ -3,7 +3,9 @@
 namespace SimplyFilters\Admin;
 
 use Hybrid\Core\ServiceProvider;
+use SimplyFilters\Filters\FilterGroup;
 use SimplyFilters\TemplateLoader;
+use function SimplyFilters\get_svg;
 
 /**
  * The admin-specific functionality of the plugin.
@@ -60,21 +62,25 @@ class AdminServiceProvider extends ServiceProvider {
 		}
 
 		// Filters group list
-		if( $screen->id === 'edit-sf_filter_group' ) {
+		if ( $screen->id === 'edit-sf_filter_group' ) {
 			$this->app->instance( 'is-page-sf', true );
 			$this->app->instance( 'is-page-list', true );
 		}
 
 		// Single filter group
-		if( isset( $screen->post_type ) && $screen->post_type === $this->app->get( 'group_post_type' ) ) {
+		if ( isset( $screen->post_type ) && $screen->post_type === $this->app->get( 'group_post_type' ) ) {
 			$this->app->instance( 'is-page-sf', true );
 			$this->app->instance( 'is-page-post', true );
 
 			// Edit post
-			if( $pagenow === 'post.php' ) $this->app->instance( 'is-page-edit', true );
+			if ( $pagenow === 'post.php' ) {
+				$this->app->instance( 'is-page-edit', true );
+			}
 
 			// New post
-			if( $pagenow === 'post-new.php' ) $this->app->instance( 'is-page-new', true );
+			if ( $pagenow === 'post-new.php' ) {
+				$this->app->instance( 'is-page-new', true );
+			}
 		}
 	}
 
@@ -98,14 +104,19 @@ class AdminServiceProvider extends ServiceProvider {
 		$locale = $this->app->get( 'locale' );
 
 		wp_localize_script( 'simply-filters_admin', 'sf_admin', [
-			'prefix' => \Hybrid\app('prefix'),
-			'locale' => [
-				'copy' => __( '(copy)', $locale ),
-				'sure' => __( 'Are you sure?', $locale ),
+			'prefix'     => \Hybrid\app( 'prefix' ),
+			'locale'     => [
+				'copy'   => __( '(copy)', $locale ),
+				'sure'   => __( 'Are you sure?', $locale ),
 				'delete' => __( 'Delete', $locale ),
 				'cancel' => __( 'Cancel', $locale )
-			]
-		]);
+			],
+			'rest_url'   => get_rest_url(),
+			'admin_url'  => get_admin_url(),
+			'ajax_url'   => admin_url( 'admin-ajax.php' ),
+			'ajax_nonce' => wp_create_nonce( 'wp_rest' ),
+			'loader_src' => get_svg( 'loader' )
+		] );
 	}
 
 
@@ -123,13 +134,11 @@ class AdminServiceProvider extends ServiceProvider {
 	 */
 	public function init_filters_group() {
 
-		$filter_id = false;
-
-		if( $this->app->get( 'is-page-edit' ) ) {
-			$filter_id = get_the_ID();
+		if ( ! $this->app->get( 'is-page-edit' ) ) {
+			return;
 		}
 
-		$this->app->instance( 'filter/group', new FilterGroup( $filter_id ) );
+		$this->app->instance( 'filter/group', new FilterGroup( get_the_ID() ) );
 	}
 
 	/**

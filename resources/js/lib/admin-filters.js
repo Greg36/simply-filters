@@ -3,7 +3,7 @@
  *
  * @package   SimplyFilters
  */
-
+// @todo: I could rework it to be a "admin filter" singular - and have row as this.row and so on
 import ColorControl from './admin-color';
 import { uniqid } from "./helpers";
 
@@ -106,7 +106,8 @@ export default class AdminFilters {
 		// Open new row
 		this.toggleOptions( new_row );
 
-		this.updateOrderNumbers()
+		// Update filter numbers
+		this.updateOrderNumbers();
 	}
 
 	/**

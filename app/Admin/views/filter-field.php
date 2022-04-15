@@ -6,12 +6,12 @@
  */
 ?>
 
-<div class="sf-filter" data-filter_id="<?php esc_attr_e( \Hybrid\app('prefix') . $filter->get_id() ); ?>">
+<div class="sf-filter" data-filter_id="<?php esc_attr_e( \Hybrid\app( 'prefix' ) . $filter->get_id() ); ?>">
 
-	<div class="sf-filter__row sf-row">
+    <div class="sf-filter__row sf-row">
 
         <div class="sf-row__order">
-            <?php esc_html_e( $order ); ?>
+			<?php esc_html_e( $order ); ?>
         </div>
 
         <div class="sf-row__enabled">
@@ -22,11 +22,11 @@
         </div>
 
         <div class="sf-row__label">
-            <?php esc_html_e( $filter->get_label() ); ?>
+			<?php esc_html_e( $filter->get_label() ); ?>
         </div>
 
         <div class="sf-row__type">
-            <?php esc_html_e( $filter->get_type() ); ?>
+			<?php esc_html_e( $filter->get_name() ); ?>
         </div>
 
         <ul class="sf-row__actions">
@@ -39,80 +39,10 @@
 
     <div class="sf-filter__options">
         <table class="sf-options">
+
             <tbody>
 
-            <?php
-
-            $filter->render_settings();
-
-            ob_start();
-            ?>
-
-            <tr class="sf-option">
-                <td>
-                    <label for="x1">Filter label</label>
-                    <p>Name of the filter that will be displayed above it.</p>
-                </td>
-                <td>
-                    <input type="text" name="x1" id="x1">
-                </td>
-            </tr>
-            <tr class="sf-option">
-                <td>
-                    <label for="x2">Source</label>
-                    <p>Categories, tags and attributes created for products. If you want to filter by i.e. clothing size you need to create an attribute first - learn more.</p>
-                </td>
-                <td>
-                    <select name="x2" id="x2">
-                        <option value="1">Attribute</option>
-                        <option value="2">Attribute</option>
-                        <option value="3">Attribute</option>
-                    </select>
-                </td>
-            </tr>
-            <tr class="sf-option">
-                <td>
-                    <label for="x3">Search relation</label>
-                    <p>How to display results when selecting more than 1 option.</p>
-                </td>
-                <td>
-                    <ul class="sf-input-list">
-                        <li>
-                            <input type="radio" id="huey" name="drone" value="huey"
-                                   checked>
-                            <label for="huey">AND - Product needs to match all selected options to be shown</label>
-                        </li>
-                        <li>
-                            <input type="radio" id="dewey" name="drone" value="dewey">
-                            <label for="dewey">OR - Product needs to match any of selected options to be shown </label>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-
-            <tr class="sf-option">
-                <td>
-                    <label for="x3">URL label</label>
-                    <p>This label will be used in URL when filter is applied. Use only lowercase letters, numbers and hyphens.</p>
-                </td>
-                <td>
-                    <ul class="sf-input-list">
-                        <li>
-                            <input type="checkbox" id="test1" name="test1" value="test1"
-                                   checked>
-                            <label for="test1">Setting</label>
-                        </li>
-                        <li>
-                            <input type="checkbox" id="test3" name="test3" value="test1">
-                            <label for="test3">Options</label>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-
-            <?php
-            ob_get_clean();
-            ?>
+			<?php $filter->render_settings(); ?>
 
             <tr class="sf-options__footer">
                 <td colspan="2">
@@ -121,6 +51,7 @@
             </tr>
 
             </tbody>
+
         </table>
     </div>
 </div>

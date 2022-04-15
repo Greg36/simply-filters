@@ -3,6 +3,7 @@
 namespace SimplyFilters\Filters;
 
 use Hybrid\Core\ServiceProvider;
+use SimplyFilters\SimplyFilters;
 
 /**
  * The public-facing functionality of the plugin.
@@ -29,6 +30,8 @@ class FiltersServiceProvider extends ServiceProvider {
 
 		add_action( 'init', [ $this, 'register_group_post_type' ] );
 		add_action( 'init', [ $this, 'register_single_post_type' ] );
+
+		add_action( 'wp_ajax_sf/render_new_field', [ $this, 'ajax_render_new_field' ] );
 	}
 
 	/**
@@ -101,7 +104,41 @@ class FiltersServiceProvider extends ServiceProvider {
 					'name' => __( 'Filter Item', $this->app->get( 'locale' ) ),
 				),
 			)
-		);;
+		);
 	}
 
+	public function ajax_render_new_field() {
+
+		// Verify nonce
+		if ( ! wp_verify_nonce( $_POST['nonceAjax'], 'wp_rest' )  ) {
+			die();
+		}
+
+		// Check for type
+		$type = filter_var( $_POST['type'], FILTER_SANITIZE_STRING );
+		$class = "SimplyFilters\\Filters\\Types\\{$type}Filter";
+
+		if( class_exists( $class ) ) {
+
+			/**
+			 * Instantiate new filter with blank data
+			 *
+			 * @var $filter Types\Filter
+			 */
+			$filter = new $class;
+			$filter->initialize([
+				'id' => uniqid(),
+				'label' => __( '(no label)', $this->app->get( 'locale' ) ),
+				'enabled' => true
+			]);
+
+			// Render the filter field row
+			\SimplyFilters\TemplateLoader::render( 'filter-field', [
+				'filter' => $filter,
+				'order'  => 0
+			] );
+		}
+
+		die();
+	}
 }

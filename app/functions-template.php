@@ -29,7 +29,7 @@ function load_inline_svg( $filename ) {
  * @return string URL to theme's SVG file
  */
 function get_svg( $file ) {
-	return SF_URL . '/assets/svg/' . $file . '.svg';
+	return SF_URL . 'assets/svg/' . $file . '.svg';
 }
 
 /**
@@ -40,5 +40,5 @@ function get_svg( $file ) {
  * @return string URL to theme's image file
  */
 function get_image( $file ) {
-	return SF_URL . '/assets/img/' . $file;
+	return SF_URL . 'assets/img/' . $file;
 }

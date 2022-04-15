@@ -20,6 +20,34 @@ abstract class Filter {
 	protected $id;
 
 	/**
+	 * Name of the filter
+	 *
+	 * @var string
+	 */
+	protected $name;
+
+	/**
+	 * Type of the filter
+	 *
+	 * @var string
+	 */
+	protected $type;
+
+	/**
+	 * Is the filter enabled
+	 *
+	 * @var bool
+	 */
+	protected $enabled;
+
+	/**
+	 * Description of the filter
+	 *
+	 * @var string
+	 */
+	protected $description;
+
+	/**
 	 * @var array Supported settings
 	 */
 	protected $supports = [];
@@ -41,19 +69,22 @@ abstract class Filter {
 
 	abstract protected function load_filter_settings();
 
+	abstract protected function filter_preview();
+
 	/**
 	 * Initialize filter with the config data
 	 *
 	 * @param $data array
 	 */
 	public function initialize( $data ) {
-		$this->data   = $data;
-		$this->id     = $data['id'];
-		$this->locale = \Hybrid\app( 'locale' );
+		$this->data    = $data;
+		$this->id      = $data['id'];
+		$this->enabled = isset( $data['enabled'] ) ? (bool) $data['enabled'] : true;
+		$this->locale  = \Hybrid\app( 'locale' );
 
 		$this->set_sources();
 		$this->load_supported_settings();
-		$this->load_filter_settings();
+		$this->load_filter_settings(); // @todo should I do this this way and have empty method in subclass?
 	}
 
 	/**
@@ -81,7 +112,25 @@ abstract class Filter {
 	 * @return string
 	 */
 	public function get_type() {
-		return $this->data['type'];
+		return $this->type;
+	}
+
+	/**
+	 * Get filter description
+	 *
+	 * @return string
+	 */
+	public function get_description() {
+		return $this->description;
+	}
+
+	/**
+	 * Get filter name
+	 *
+	 * @return string
+	 */
+	public function get_name() {
+		return $this->name;
 	}
 
 	/**
@@ -90,7 +139,7 @@ abstract class Filter {
 	 * @return bool
 	 */
 	public function is_enabled() {
-		return (bool) $this->data['enabled'];
+		return $this->enabled;
 	}
 
 	/**
@@ -339,6 +388,23 @@ abstract class Filter {
 				return [];
 		}
 
+	}
+
+	public function render_new_filter_preview() {
+		?>
+        <div class="sf-preview">
+            <div class="sf-preview__heading">
+                <h4><?php esc_html_e( $this->get_name() ); ?></h4>
+                <p><?php esc_html_e( $this->get_description() ); ?></p>
+            </div>
+            <div class="sf-preview__body">
+				<?php $this->filter_preview(); ?>
+            </div>
+            <div class="sf-preview__footer">
+                <a href="#" data-type="<?php esc_attr_e( $this->get_type() ); ?>" class="select-filter sf-button"><?php _e( 'Select filter', $this->locale ); ?></a>
+            </div>
+        </div>
+		<?php
 	}
 
 }

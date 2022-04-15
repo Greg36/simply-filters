@@ -224,3 +224,34 @@ body.post-type-sf_filter_group {
 	}
 
 }
+
+/**
+ * Admin AJAX loader
+ */
+#sf-ajax-loader {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 10000;
+	opacity: 0;
+	transition: opacity 0.3s ease-in-out;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: #f1f1f1;
+	border-radius: 10px;
+
+	img {
+		width: 51px;
+		height: 51px;
+		background: none;
+		position: relative;
+		z-index: 10001;
+	}
+
+	&.fade-in {
+		opacity: 0.9;
+	}
+}

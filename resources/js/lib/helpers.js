@@ -1,4 +1,4 @@
-export { uniqid };
+export { uniqid, addLoader, removeLoader };
 
 function uniqid( prefix, moreEntropy ) {
 	//  discuss at: https://locutus.io/php/uniqid/
@@ -49,4 +49,17 @@ function uniqid( prefix, moreEntropy ) {
 		retId += (Math.random() * 10).toFixed( 8 ).toString()
 	}
 	return retId
+}
+
+function addLoader( node ) {
+	let loader = '<div id="sf-ajax-loader"><img src="' + sf_admin.loader_src + '" aria-hidden="true" alt=""></div>';
+	node.insertAdjacentHTML( 'beforeend', loader );
+	setTimeout( function () {
+		let loaderNode = document.getElementById( 'sf-ajax-loader' );
+		loaderNode.classList.add( 'fade-in' );
+	}, 0 );
+}
+
+function removeLoader() {
+	document.getElementById( 'sf-ajax-loader' ).remove();
 }
