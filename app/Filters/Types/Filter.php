@@ -2,6 +2,7 @@
 
 namespace SimplyFilters\Filters\Types;
 
+use SimplyFilters\Admin\Controls\CheckboxControl;
 use SimplyFilters\Admin\Controls\Control;
 use SimplyFilters\Admin\Controls\RadioControl;
 use SimplyFilters\Admin\Controls\SelectControl;
@@ -226,13 +227,31 @@ abstract class Filter {
 		} );
 
 		if ( ! empty( $this->settings ) ) {
-
 			foreach ( $this->settings as $setting ) {
-				$key    = $setting['key'];
-				$prefix = \Hybrid\app( 'prefix' ) . $this->id . '_';
-				$setting['control']->render( $prefix . $key, $this->get_data( $key ) );
+				$key = $setting['key'];
+				$setting['control']->render(
+					$this->prefix_key( $key ),
+					$this->get_data( $key ),
+                    $this->prefix_id( $key )
+                );
 			}
 		}
+	}
+
+	private function prefix_key( $key ) {
+		return sprintf( '%s[%s][%s]',
+			\Hybrid\app( 'prefix' ),
+			$this->get_id(),
+			$key
+		);
+	}
+
+	private function prefix_id( $key ) {
+		return sprintf( '%s-%s-%s',
+			\Hybrid\app( 'prefix' ),
+			$this->get_id(),
+			$key
+		);
 	}
 
 	/**
@@ -298,7 +317,7 @@ abstract class Filter {
 		$attributes = [];
 
 		foreach ( wc_get_attribute_taxonomies() as $attribute ) {
-			$attributes[ $attribute->attribute_name ] = $attribute->attribute_label;
+			$attributes[ 'pa_' . $attribute->attribute_name ] = $attribute->attribute_label;
 		}
 
 		return $attributes;
@@ -373,11 +392,11 @@ abstract class Filter {
 
 			case 'product_cat' :
 
-				if ( $this->data['attributes'] === 'all' ) {
+				if ( $this->data['product_cat'] === 'all' ) {
 					return $this->get_product_categories();
 				}
 
-				return $this->get_terms_list( 'product_cat', $this->data['attributes'] );
+				return $this->get_terms_list( 'product_cat', $this->data['product_cat'] );
 
 			case 'product_tag' :
 

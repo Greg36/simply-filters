@@ -5,7 +5,7 @@
  */
 // @todo: I could rework it to be a "admin filter" singular - and have row as this.row and so on
 import ColorControl from './admin-color';
-import { uniqid } from "./helpers";
+import { addLoader, removeLoader, uniqid } from "./helpers";
 
 export default class AdminFilters {
 
@@ -22,10 +22,12 @@ export default class AdminFilters {
 			this.setupRowEvents( current )
 		} );
 
-		jQuery( '.sf-filters__list' ).sortable({
+		jQuery( '.sf-filters__list' ).sortable( {
 			handle: '.sf-row__order',
-			stop: () => { this.updateOrderNumbers() }
-		});
+			stop: () => {
+				this.updateOrderNumbers()
+			}
+		} );
 	}
 
 	/**
@@ -38,24 +40,92 @@ export default class AdminFilters {
 			e.preventDefault();
 			this.toggleOptions( row );
 		} );
+
 		row.querySelector( 'a.duplicate-filter' ).addEventListener( 'click', ( e ) => {
 			e.preventDefault();
 			this.duplicateFilter( row );
 		} );
+
 		row.querySelector( 'a.remove-filter' ).addEventListener( 'click', ( e ) => {
 			e.preventDefault();
 			e.stopPropagation();
 			this.removeFilter( row );
 		} );
+
 		row.querySelector( 'a.sf-close' ).addEventListener( 'click', ( e ) => {
 			e.preventDefault();
 			this.toggleOptions( row );
 		} );
-		row.querySelector( '#' + row.dataset.filter_id + '_label' ).addEventListener( 'focusout', ( e ) => {
+
+		row.querySelector( '#' + row.dataset.filter_id + '-label' ).addEventListener( 'focusout', ( e ) => {
 			row.querySelector( '.sf-row__label' ).innerText = e.target.value.trim();
 		} );
 
+		const source_select = row.querySelector( '#' + row.dataset.filter_id + '-sources' );
+		if ( source_select ) {
+			source_select.addEventListener( 'change', ( e ) => {
+				this.changeSource( row, e.target.value );
+			} );
+			this.changeSource( row, source_select.value );
+		}
+
+		// Color
+		if ( row.dataset.filter_type === 'Color' ) {
+			var options = {
+				sources: row.querySelector( '#' + row.dataset.filter_id + '-sources' ),
+				attributes: row.querySelector( '#' + row.dataset.filter_id + '-attributes' ),
+				product_cat: row.querySelector( '#' + row.dataset.filter_id + '-product_cat' ),
+				product_tag: 'product_tag'
+			};
+
+			// If either source directly or one of the options was changed
+			// check selected source and option and pass it to get color
+			Object.keys( options ).forEach( key => {
+
+					// Skip options with no source select
+					if( typeof options[key] === 'string' ) return '';
+
+					options[key].addEventListener( 'change', () => {
+						let source = options.sources.value,
+							selected = options[ source ].value;
+						this.getColorOptions( row, source, selected );
+					} );
+			} );
+
+		}
+
 		// @todo: make it cleaner
+	}
+
+	getColorOptions( row, key, term_id ) {
+
+		addLoader( row.querySelector( '.sf-color' ).closest( '.sf-option' ) );
+
+		fetch( sf_admin.ajax_url, {
+			method: 'POST',
+			body: new URLSearchParams( {
+				action: 'sf/get_color_options',
+				nonceAjax: sf_admin.ajax_nonce,
+				key: key,
+				term: term_id,
+				id: row.dataset.filter_id
+			} ),
+		} ).then( ( response ) => {
+			return response.text();
+		} ).then( ( text ) => {
+			this.loadColorOptions( row, text );
+		} );
+	}
+
+	loadColorOptions( row, text ) {
+		// Replace existing color optiosn with new
+		let frag = document.createRange().createContextualFragment( text );
+		row.querySelector( '.sf-color' ).closest( 'td' ).innerHTML = frag.querySelector( '.sf-color' ).outerHTML;
+
+		// Reinitialize color picker
+		const colorControl = new ColorControl( row.querySelectorAll( '.sf-color__field' ) );
+		colorControl.init();
+		removeLoader();
 	}
 
 	/**
@@ -68,6 +138,22 @@ export default class AdminFilters {
 		const options = row.querySelector( '.sf-filter__options' );
 		jQuery( options ).slideToggle( speed );
 		row.classList.toggle( 'open' );
+	}
+
+	changeSource( row, selected ) {
+		const attributes = row.querySelector( '#' + row.dataset.filter_id + '-attributes' ).closest( '.sf-option' );
+		const categories = row.querySelector( '#' + row.dataset.filter_id + '-product_cat' ).closest( '.sf-option' );
+
+		if ( selected === 'attributes' ) {
+			attributes.style.display = 'table-row';
+			categories.style.display = 'none';
+		} else if ( selected === 'product_cat' ) {
+			attributes.style.display = 'none';
+			categories.style.display = 'table-row';
+		} else {
+			attributes.style.display = 'none';
+			categories.style.display = 'none';
+		}
 	}
 
 	/**
@@ -83,13 +169,13 @@ export default class AdminFilters {
 		// Clone the node and update key
 		let new_row = row.cloneNode( true );
 		new_row.dataset.filter_id = new_key;
-		new_row = this.replaceRowKey( new_row, row.dataset.filter_id, new_key );
+		new_row = this.replaceRowKey( new_row, row.dataset.filter_id, new_key ); // @todo update replace to new name and id fields
 
 		// Update field label
 		const label = new_row.querySelector( '.sf-row__label' ),
 			new_label = label.innerText.trim() + ' ' + sf_admin.locale.copy;
 		label.innerText = new_label;
-		new_row.querySelector( '#' + new_key + '_label' ).value = new_label;
+		new_row.querySelector( '#' + new_key + '-label' ).value = new_label;
 
 		// Insert new row and setup events
 		row.insertAdjacentElement( 'afterend', new_row );
@@ -171,7 +257,7 @@ export default class AdminFilters {
 			e.preventDefault();
 			e.stopPropagation();
 
-			row.querySelector('.sf-remove-tooltip').remove();
+			row.querySelector( '.sf-remove-tooltip' ).remove();
 
 			jQuery( row ).slideToggle( 300 );
 			setTimeout( () => {

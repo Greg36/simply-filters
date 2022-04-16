@@ -10,7 +10,8 @@ class SelectControl extends Control {
 
 	protected function render_setting_field() {
 
-		printf( '<select name="%1$s" id="%1$s" >',
+		printf( '<select id="%s" name="%s">',
+			esc_attr( $this->id ),
 			esc_attr( $this->key )
 		);
 

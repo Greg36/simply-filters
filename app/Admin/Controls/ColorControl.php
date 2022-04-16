@@ -10,6 +10,7 @@ class ColorControl extends Control {
 		parent::__construct( $params );
 	}
 
+    // @todo: should this be private as it should not be called directly?
 	protected function render_setting_field() {
 
 		echo '<div class="sf-color">';
@@ -18,8 +19,9 @@ class ColorControl extends Control {
 
 			foreach ( $this->options as $term_id => $name ) {
 
-				// Each picker needs individual key
-				$key = $this->key . '-' . $term_id;
+				// Each picker needs individual key and ID
+				$key = $this->key . '[' . $term_id . ']';
+				$id  = $this->id  . '-' . $term_id;
 
 				// Get the color value from term's meta
 				$value = get_term_meta( $term_id, 'sf_color', true ); //@todo: this should be something to remove on uninstall
@@ -32,7 +34,8 @@ class ColorControl extends Control {
 
                     <div class="sf-color__picker">
 		                <?php
-		                printf( '<input name="%1$s" id="%1$s" type="text" value="%2$s" class="sf-color__field" data-default-color="#fff"/>',
+		                printf( '<input id="%s" name="%s" type="text" value="%s" class="sf-color__field" data-default-color="#fff"/>',
+                            esc_attr( $id ),
 			                esc_attr( $key ),
 			                esc_attr( $value )
 		                );

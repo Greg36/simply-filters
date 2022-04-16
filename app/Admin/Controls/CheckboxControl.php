@@ -15,8 +15,9 @@ class CheckboxControl extends Control {
 		if ( ! empty( $this->options ) ) {
 			foreach ( $this->options as $value => $label ) {
 
-				printf( '<li><input type="checkbox" id="%1$s" name="%1$s" value="%2$s" %3$s> <label for="%2$s">%4$s</label></li>',
-					esc_attr( $this->key ),
+				printf( '<li><input type="checkbox" id="%1$s" name="%2$s" value="%3$s" %4$s> <label for="%1$s">%5$s</label></li>',
+					esc_attr( $this->id . '_' . $value ),
+					esc_attr( $this->key . '[' . $value . ']' ),
 					$value,
 					$value === $this->value ? 'checked' : '',
 					esc_html( $label )

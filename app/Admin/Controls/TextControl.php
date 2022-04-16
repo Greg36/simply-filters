@@ -9,8 +9,9 @@ class TextControl extends Control {
 	}
 
 	protected function render_setting_field() {
-		printf( '<input type="text" name="%1$s" id="%1$s" value="%2$s">',
+		printf( '<input type="text" name="%s" id="%s" value="%s">',
 			esc_attr( $this->key ),
+			esc_attr( $this->id ),
 			esc_attr( $this->value )
 		);
 	}

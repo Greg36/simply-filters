@@ -21,7 +21,6 @@ class AdminServiceProvider extends ServiceProvider {
 	public function boot() {
 
 		add_action( 'current_screen', [ $this, 'current_screen' ] );
-//		add_action( 'save_post', array( $this, 'save_post' ), 10, 2 );
 
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_styles' ] );
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts' ] );

@@ -3,6 +3,7 @@
 namespace SimplyFilters\Filters;
 
 use Hybrid\Core\ServiceProvider;
+use SimplyFilters\Filters\Types\ColorFilter;
 use SimplyFilters\SimplyFilters;
 
 /**
@@ -20,7 +21,7 @@ class FiltersServiceProvider extends ServiceProvider {
 
 		$this->app->instance( 'group_post_type', 'sf_filter_group' );
 		$this->app->instance( 'item_post_type', 'sf_filter_item' );
-		$this->app->instance( 'prefix', 'sf-setting-' );
+		$this->app->instance( 'prefix', 'sf-setting' );
 	}
 
 	public function boot() {
@@ -32,6 +33,10 @@ class FiltersServiceProvider extends ServiceProvider {
 		add_action( 'init', [ $this, 'register_single_post_type' ] );
 
 		add_action( 'wp_ajax_sf/render_new_field', [ $this, 'ajax_render_new_field' ] );
+
+		add_action( 'wp_ajax_sf/get_color_options', [ $this, 'ajax_get_color_options' ] );
+
+		add_action( 'save_post', array( $this, 'save_post' ), 10, 2 );
 	}
 
 	/**
@@ -141,4 +146,59 @@ class FiltersServiceProvider extends ServiceProvider {
 
 		die();
 	}
+
+	public function ajax_get_color_options() {
+
+		// Verify nonce
+		if ( ! wp_verify_nonce( $_POST['nonceAjax'], 'wp_rest' )  ) {
+			die();
+		}
+
+		$id = filter_var( $_POST['id'], FILTER_SANITIZE_STRING );
+		$key = filter_var( $_POST['key'], FILTER_SANITIZE_STRING );
+		$term_id = filter_var( $_POST['term'], FILTER_SANITIZE_STRING );
+
+		// Bail if there is no key or term ID
+		if( ! $key || ! $term_id || ! $id ) die();
+
+		$filter = new ColorFilter();
+		$filter->initialize([
+			'id' => $id,
+			'sources' => $key,
+			$key => $term_id
+		]);
+
+	    // Render the filter settings
+		$filter->render_settings();
+
+		die();
+	}
+
+	public function save_post( $post_id, $post ) {
+
+		// Bail early if WP is doing autos-ave
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+			return $post_id;
+		}
+
+		// Process only saving of filter group
+		if ( $post->post_type !== $this->app->get( 'group_post_type' ) ) {
+			return $post_id;
+		}
+
+		// Do not save revisions
+		if ( wp_is_post_revision( $post_id ) ) {
+			return $post_id;
+		}
+
+		// Verify nonce
+		if ( ! wp_verify_nonce( $_POST['sf-group-field'], 'sf-group-field' )  ) {
+			return $post_id;
+		}
+
+
+
+		return $post_id;
+	}
+
 }

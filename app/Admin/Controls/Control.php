@@ -48,9 +48,10 @@ abstract class Control {
      *
 	 * @param $key
 	 */
-	public function render( $key, $value ) {
+	public function render( $key, $value, $id ) {
         $this->key = $key;
         $this->value = $value;
+        $this->id = $id;
         $this->render_settings_row();
     }
 

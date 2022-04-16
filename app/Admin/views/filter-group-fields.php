@@ -12,7 +12,7 @@
 
 ?>
 
-<div class="sf-filters" data-filter_group_id="<?php esc_attr_e( \Hybrid\app('prefix') . get_the_ID() ); ?>">
+<div class="sf-filters" data-filter_group_id="<?php esc_attr_e( \Hybrid\app('prefix') . '-' . get_the_ID() ); ?>">
 	<div class="sf-filters__wrap">
 
         <ul class="sf-filters__header">
@@ -45,6 +45,8 @@
         <div class="sf-filters__footer">
             <a href="#" class="sf-button sf-button__main sf-button__new-filter"><img src="<?php echo \SimplyFilters\get_svg( 'plus' ); ?>" alt="Add filter" aria-hidden="true"><?php _e( 'Add new filter', $locale ); ?></a>
         </div>
+
+        <?php wp_nonce_field( 'sf-group-field' ); ?>
 
     </div>
 </div>

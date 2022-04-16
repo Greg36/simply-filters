@@ -12,7 +12,8 @@ class ToggleControl extends Control {
 
 		echo '<label class="sf-toggle">';
 
-		printf( '<input type="checkbox" name="%1$s" id="%1$s" value="%2$s">',
+		printf( '<input type="checkbox" id="%s" name="%s" value="%s">',
+			esc_attr( $this->id ),
 			esc_attr( $this->key ),
 			esc_attr( $this->value )
 		);
