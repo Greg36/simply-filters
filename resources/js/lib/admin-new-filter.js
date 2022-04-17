@@ -1,30 +1,28 @@
-import AdminFilters from "./admin-filters";
 import { addLoader, removeLoader } from "./helpers";
+import { updateOrderNumbers } from "./admin-filters-group";
+import AdminFilter from "./admin-filter";
 
 export default class AdminNewFilter {
 
 	constructor() {
 		this.container = document.querySelector( '.sf-new' );
-		this.newBtn = document.querySelector( '.sf-button__new-filter' );
-		this.closeBtn = document.querySelector( '.sf-new__close' );
 		this.wrap = document.querySelector( '.sf-new__wrap' );
 	}
 
-
+	/**
+	 * Setup events for new filter popup
+	 */
 	init() {
-		this.newBtn.addEventListener( 'click', ( e ) => {
-			e.preventDefault();
-			this.togglePopup();
-		} );
-
-		this.closeBtn.addEventListener( 'click', ( e ) => {
-			e.preventDefault();
-			this.togglePopup();
+		// Open and close popup buttons
+		document.querySelectorAll( '.sf-button__new-filter, .sf-new__close' ).forEach( button => {
+			button.addEventListener( 'click', ( e ) => {
+				e.preventDefault();
+				this.togglePopup();
+			} );
 		} );
 
 		// Handle new filter creation
-		const newFilterBtn = document.querySelectorAll( '.select-filter' );
-		newFilterBtn.forEach( ( btn ) => {
+		document.querySelectorAll( '.select-filter' ).forEach( ( btn ) => {
 			btn.addEventListener( 'click', ( e ) => {
 				e.preventDefault();
 				addLoader( this.wrap );
@@ -33,6 +31,9 @@ export default class AdminNewFilter {
 		} );
 	}
 
+	/**
+	 * Toggle visibility of the popup
+	 */
 	togglePopup() {
 		if ( this.container.classList.contains( 'open' ) ) {
 			this.container.classList.remove( 'open' );
@@ -47,28 +48,9 @@ export default class AdminNewFilter {
 		}
 	}
 
-	addNewFilter( html ) {
-
-		// Insert new filter
-		let last_filter = document.querySelector( '.sf-filters__list > div:last-of-type' );
-		last_filter.insertAdjacentHTML( 'afterend', html );
-
-		// Setup events for new filter
-		const admin_filter = new AdminFilters();
-		let new_row = document.querySelector( '.sf-filters__list > div:last-of-type' );
-		admin_filter.setupRowEvents( new_row );
-
-		// Open new filter
-		admin_filter.toggleOptions( new_row );
-
-		// Update filter numbers
-		admin_filter.updateOrderNumbers();
-
-		// Close the new filter popup
-		this.togglePopup();
-		removeLoader();
-	}
-
+	/**
+	 * Make AJAX request to get new filter
+	 */
 	getNewFilter( type ) {
 		fetch( sf_admin.ajax_url, {
 			method: 'POST',
@@ -82,5 +64,28 @@ export default class AdminNewFilter {
 		} ).then( ( text ) => {
 			this.addNewFilter( text );
 		} );
+	}
+
+	/**
+	 * Insert new filter and set it up
+	 */
+	addNewFilter( text ) {
+
+		// Insert new filter
+		const last_filter = document.querySelector( '.sf-filters__list > div:last-of-type' );
+		last_filter.insertAdjacentHTML( 'afterend', text );
+
+		// Setup new filter
+		const filter = new AdminFilter( document.querySelector( '.sf-filters__list > div:last-of-type' ) );
+
+		// Open new filter
+		filter.toggleOptions();
+
+		// Update filter numbers
+		updateOrderNumbers();
+
+		// Close the new filter popup
+		this.togglePopup();
+		removeLoader();
 	}
 }

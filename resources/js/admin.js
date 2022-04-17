@@ -4,14 +4,12 @@
  * @package   SimplyFilters
  */
 
-import AdminFilters from './lib/admin-filters.js';
-import AdminNewFilter from "./lib/admin-new-filter";
-
+import { initFiltersGroup } from "./lib/admin-filters-group";
 
 document.addEventListener( 'DOMContentLoaded', () => {
-	let adminFilters = new AdminFilters();
-	let adminNewFilter = new AdminNewFilter();
 
-	adminFilters.init();
-	adminNewFilter.init();
+	if( sf_admin.current_screen.is_page_post ) {
+		initFiltersGroup();
+	}
+
 });

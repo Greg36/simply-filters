@@ -384,15 +384,17 @@ abstract class Filter {
 		switch ( $this->data['sources'] ) {
 			case 'attributes' :
 
+                // Set default attribute if none is selected
 				if ( ! $this->data['attributes'] ) {
-					return [];
+                    $attributes = wc_get_attribute_taxonomies();
+					$this->data['attributes'] = 'pa_' . array_shift( $attributes )->attribute_name;
 				}
 
 				return $this->get_terms_list( $this->data['attributes'] );
 
 			case 'product_cat' :
 
-				if ( $this->data['product_cat'] === 'all' ) {
+				if ( $this->data['product_cat'] === 'all' || ! $this->data['product_cat'] ) {
 					return $this->get_product_categories();
 				}
 

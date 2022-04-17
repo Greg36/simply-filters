@@ -58,12 +58,14 @@ class AdminServiceProvider extends ServiceProvider {
 		if ( $screen->id === 'settings_page_simply-filters' ) {
 			$this->app->instance( 'is-page-sf', true );
 			$this->app->instance( 'is-page-settings', true );
+			return;
 		}
 
 		// Filters group list
 		if ( $screen->id === 'edit-sf_filter_group' ) {
 			$this->app->instance( 'is-page-sf', true );
 			$this->app->instance( 'is-page-list', true );
+			return;
 		}
 
 		// Single filter group
@@ -81,6 +83,22 @@ class AdminServiceProvider extends ServiceProvider {
 				$this->app->instance( 'is-page-new', true );
 			}
 		}
+	}
+
+	/**
+	 * Get all screen parameters as array
+	 *
+	 * @return array
+	 */
+	private function get_current_screen_parameters() {
+		return [
+			'is_page_sf'       => $this->app->get( 'is-page-sf' ),
+			'is_page_settings' => $this->app->get( 'is-page-settings' ),
+			'is_page_list'     => $this->app->get( 'is-page-list' ),
+			'is_page_post'     => $this->app->get( 'is-page-post' ),
+			'is_page_edit'     => $this->app->get( 'is-page-edit' ),
+			'is_page_new'      => $this->app->get( 'is-page-new' ),
+		];
 	}
 
 	/**
@@ -103,18 +121,19 @@ class AdminServiceProvider extends ServiceProvider {
 		$locale = $this->app->get( 'locale' );
 
 		wp_localize_script( 'simply-filters_admin', 'sf_admin', [
-			'prefix'     => \Hybrid\app( 'prefix' ),
-			'locale'     => [
+			'prefix'         => \Hybrid\app( 'prefix' ),
+			'locale'         => [
 				'copy'   => __( '(copy)', $locale ),
 				'sure'   => __( 'Are you sure?', $locale ),
 				'delete' => __( 'Delete', $locale ),
 				'cancel' => __( 'Cancel', $locale )
 			],
-			'rest_url'   => get_rest_url(),
-			'admin_url'  => get_admin_url(),
-			'ajax_url'   => admin_url( 'admin-ajax.php' ),
-			'ajax_nonce' => wp_create_nonce( 'wp_rest' ),
-			'loader_src' => get_svg( 'loader' )
+			'rest_url'       => get_rest_url(),
+			'admin_url'      => get_admin_url(),
+			'ajax_url'       => admin_url( 'admin-ajax.php' ),
+			'ajax_nonce'     => wp_create_nonce( 'wp_rest' ),
+			'loader_src'     => get_svg( 'loader' ),
+			'current_screen' => $this->get_current_screen_parameters()
 		] );
 	}
 

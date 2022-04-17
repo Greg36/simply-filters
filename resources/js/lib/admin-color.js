@@ -26,9 +26,8 @@ export default class ColorControl {
 	 */
 	updateColor( event ) {
 		let colorInput = jQuery( event.target ),
-			control = colorInput.parents( '.sf-color__row' ),
 			color = colorInput.hasClass( 'wp-picker-clear' ) ? '' : colorInput.val(),
-			swatches = control.find( '.sf-color__swatch' );
+			swatches = colorInput.parents( '.sf-color__row' ).find( '.sf-color__swatch' );
 
 		swatches.each( (i, swatch) => {
 			this.updateSwatch( jQuery( swatch ), color );

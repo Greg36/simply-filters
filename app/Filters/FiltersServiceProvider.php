@@ -134,7 +134,9 @@ class FiltersServiceProvider extends ServiceProvider {
 			$filter->initialize([
 				'id' => uniqid(),
 				'label' => __( '(no label)', $this->app->get( 'locale' ) ),
-				'enabled' => true
+				'enabled' => true,
+				'sources' => 'attributes',
+				'attributes' => false
 			]);
 
 			// Render the filter field row
@@ -154,18 +156,18 @@ class FiltersServiceProvider extends ServiceProvider {
 			die();
 		}
 
-		$id = filter_var( $_POST['id'], FILTER_SANITIZE_STRING );
-		$key = filter_var( $_POST['key'], FILTER_SANITIZE_STRING );
-		$term_id = filter_var( $_POST['term'], FILTER_SANITIZE_STRING );
+		$id = filter_var( $_POST['filter_id'], FILTER_SANITIZE_STRING );
+		$taxonomy = filter_var( $_POST['taxonomy'], FILTER_SANITIZE_STRING );
+		$term_id = filter_var( $_POST['term_id'], FILTER_SANITIZE_STRING );
 
 		// Bail if there is no key or term ID
-		if( ! $key || ! $term_id || ! $id ) die();
+		if( ! $taxonomy || ! $term_id || ! $id ) die();
 
 		$filter = new ColorFilter();
 		$filter->initialize([
 			'id' => $id,
-			'sources' => $key,
-			$key => $term_id
+			'sources' => $taxonomy,
+			$taxonomy => $term_id
 		]);
 
 	    // Render the filter settings
