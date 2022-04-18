@@ -152,7 +152,7 @@ class AdminServiceProvider extends ServiceProvider {
 	 */
 	public function init_filters_group() {
 
-		if ( ! $this->app->get( 'is-page-edit' ) ) {
+		if ( ! $this->app->get( 'is-page-post' ) ) {
 			return;
 		}
 
