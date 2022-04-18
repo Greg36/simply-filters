@@ -16,15 +16,10 @@ class RatingFilter extends Filter {
 		'url-label'
 	];
 
-
 	public function __construct() {
 		$this->type        = 'Rating';
 		$this->name        = __( 'Rating', $this->locale );
 		$this->description = __( 'Choose product rating', $this->locale );
-	}
-
-	protected function load_filter_settings() {
-
 	}
 
 	protected function filter_preview() {

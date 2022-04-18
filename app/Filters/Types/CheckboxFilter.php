@@ -18,16 +18,10 @@ class CheckboxFilter extends Filter {
 		'query'
 	];
 
-
 	public function __construct() {
 		$this->type        = 'Checkbox';
 		$this->name        = __( 'Checkbox', $this->locale );
 		$this->description = __( 'Choose one or many options', $this->locale );
-	}
-
-
-	protected function load_filter_settings() {
-
 	}
 
 	protected function filter_preview() {

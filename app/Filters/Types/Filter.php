@@ -68,8 +68,6 @@ abstract class Filter {
 	 */
 	protected $locale;
 
-	abstract protected function load_filter_settings();
-
 	abstract protected function filter_preview();
 
 	/**
@@ -84,8 +82,7 @@ abstract class Filter {
 		$this->locale  = \Hybrid\app( 'locale' );
 
 		$this->set_sources();
-		$this->load_supported_settings();
-		$this->load_filter_settings(); // @todo should I do this this way and have empty method in subclass?
+		$this->load_settings();
 	}
 
 	/**
@@ -155,7 +152,16 @@ abstract class Filter {
 	}
 
 	/**
-	 * Load all filters settings
+     * Load filter's settings
+     *
+	 * @return void
+	 */
+    protected function load_settings() {
+        $this->load_supported_settings();
+    }
+
+	/**
+	 * Load filter's supported settings
 	 */
 	protected function load_supported_settings() {
 

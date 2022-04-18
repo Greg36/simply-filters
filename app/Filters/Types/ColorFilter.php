@@ -34,12 +34,11 @@ class ColorFilter extends Filter {
 	}
 
 	/**
-	 * Load setting specific control // @todo  better doc here
+	 * Load filter's settings
 	 */
-	protected function load_filter_settings() {
+	protected function load_settings() {
 
-		// Remove stock status from sources options
-		unset( $this->sources['stock_status'] );
+		$this->load_supported_settings();
 
 		$this->add_setting( 'color', new ColorControl( [
 			'name'        => __( 'Select color', $this->locale ),

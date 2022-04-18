@@ -17,15 +17,10 @@ class SelectFilter extends Filter {
 		'sources'
 	];
 
-
 	public function __construct() {
 		$this->type        = 'Select';
 		$this->name        = __( 'Select', $this->locale );
 		$this->description = __( 'Select only one from list', $this->locale );
-	}
-
-	protected function load_filter_settings() {
-
 	}
 
 	protected function filter_preview() {

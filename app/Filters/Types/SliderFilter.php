@@ -15,18 +15,13 @@ class SliderFilter extends Filter {
 		'url-label'
 	];
 
-
 	public function __construct() {
 		$this->type        = 'Slider';
 		$this->name        = __( 'Slider', $this->locale );
 		$this->description = __( 'Choose price range', $this->locale );
 	}
 
-	protected function load_filter_settings() {
-
-	}
-
-	protected function filter_preview() {
+    protected function filter_preview() {
 		?>
         <div class="sf-slider">
             <div class="sf-slider__wrap">

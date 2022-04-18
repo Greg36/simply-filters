@@ -17,15 +17,10 @@ class RadioFilter extends Filter {
 		'sources'
 	];
 
-
 	public function __construct() {
 		$this->type        = 'Radio';
 		$this->name        = __( 'Radio', $this->locale );
 		$this->description = __( 'Select onyly one option', $this->locale );
-	}
-
-	protected function load_filter_settings() {
-
 	}
 
 	protected function filter_preview() {
