@@ -32,9 +32,8 @@ class FiltersServiceProvider extends ServiceProvider {
 		add_action( 'init', [ $this, 'register_group_post_type' ] );
 		add_action( 'init', [ $this, 'register_single_post_type' ] );
 
-		add_action( 'wp_ajax_sf/render_new_field', [ $this, 'ajax_render_new_field' ] );
-
-		add_action( 'wp_ajax_sf/get_color_options', [ $this, 'ajax_get_color_options' ] );
+		add_action( 'wp_ajax_sf/render_new_field', [ $this, 'ajax_render_new_settings_field' ] );
+		add_action( 'wp_ajax_sf/get_color_options', [ $this, 'ajax_get_color_settings_options' ] );
 
 		add_action( 'save_post', array( $this, 'save_post' ), 10, 2 );
 	}
@@ -76,7 +75,7 @@ class FiltersServiceProvider extends ServiceProvider {
 				'show_in_admin_bar'   => false,
 				'show_ui'             => true,
 				'hierarchical'        => false,
-				'supports'            => array(''),
+				'supports'            => array( '' ),
 				'labels'              => array(
 					'name'               => __( 'Filters', $locale ),
 					'singular_name'      => __( 'Filter', $locale ),
@@ -112,18 +111,23 @@ class FiltersServiceProvider extends ServiceProvider {
 		);
 	}
 
-	public function ajax_render_new_field() {
+	/**
+	 * Render new filter settings field
+	 *
+	 * @since 1.0.0
+	 */
+	public function ajax_render_new_settings_field() {
 
 		// Verify nonce
-		if ( ! wp_verify_nonce( $_POST['nonceAjax'], 'wp_rest' )  ) {
+		if ( ! wp_verify_nonce( $_POST['nonceAjax'], 'wp_rest' ) ) {
 			die();
 		}
 
 		// Check for type
-		$type = filter_var( $_POST['type'], FILTER_SANITIZE_STRING );
+		$type  = filter_var( $_POST['type'], FILTER_SANITIZE_STRING );
 		$class = "SimplyFilters\\Filters\\Types\\{$type}Filter";
 
-		if( class_exists( $class ) ) {
+		if ( class_exists( $class ) ) {
 
 			/**
 			 * Instantiate new filter with blank data
@@ -131,13 +135,13 @@ class FiltersServiceProvider extends ServiceProvider {
 			 * @var $filter Types\Filter
 			 */
 			$filter = new $class;
-			$filter->initialize([
-				'id' => uniqid(),
-				'label' => __( '(no label)', $this->app->get( 'locale' ) ),
-				'enabled' => true,
-				'sources' => 'attributes',
+			$filter->initialize( [
+				'id'         => uniqid(),
+				'label'      => __( '(no label)', $this->app->get( 'locale' ) ),
+				'enabled'    => true,
+				'sources'    => 'attributes',
 				'attributes' => false
-			]);
+			] );
 
 			// Render the filter field row
 			\SimplyFilters\TemplateLoader::render( 'filter-field', [
@@ -149,28 +153,35 @@ class FiltersServiceProvider extends ServiceProvider {
 		die();
 	}
 
-	public function ajax_get_color_options() {
+	/**
+	 * Render new color settings options
+	 *
+	 * @since 1.0.0
+	 */
+	public function ajax_get_color_settings_options() {
 
 		// Verify nonce
-		if ( ! wp_verify_nonce( $_POST['nonceAjax'], 'wp_rest' )  ) {
+		if ( ! wp_verify_nonce( $_POST['nonceAjax'], 'wp_rest' ) ) {
 			die();
 		}
 
-		$id = filter_var( $_POST['filter_id'], FILTER_SANITIZE_STRING );
+		$id       = filter_var( $_POST['filter_id'], FILTER_SANITIZE_STRING );
 		$taxonomy = filter_var( $_POST['taxonomy'], FILTER_SANITIZE_STRING );
-		$term_id = filter_var( $_POST['term_id'], FILTER_SANITIZE_STRING );
+		$term_id  = filter_var( $_POST['term_id'], FILTER_SANITIZE_STRING );
 
 		// Bail if there is no key or term ID
-		if( ! $taxonomy || ! $term_id || ! $id ) die();
+		if ( ! $taxonomy || ! $term_id || ! $id ) {
+			die();
+		}
 
 		$filter = new ColorFilter();
-		$filter->initialize([
-			'id' => $id,
+		$filter->initialize( [
+			'id'      => $id,
 			'sources' => $taxonomy,
 			$taxonomy => $term_id
-		]);
+		] );
 
-	    // Render the filter settings
+		// Render the filter settings
 		$filter->render_settings();
 
 		die();
@@ -194,10 +205,9 @@ class FiltersServiceProvider extends ServiceProvider {
 		}
 
 		// Verify nonce
-		if ( ! wp_verify_nonce( $_POST['sf-group-field'], 'sf-group-field' )  ) {
+		if ( ! wp_verify_nonce( $_POST['sf-group-field'], 'sf-group-field' ) ) {
 			return $post_id;
 		}
-
 
 
 		return $post_id;
