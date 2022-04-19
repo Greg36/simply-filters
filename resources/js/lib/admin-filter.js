@@ -14,6 +14,7 @@ export default class AdminFilter {
 		this.filter = filter;
 		this.type = filter.dataset.filter_type;
 		this.id = filter.dataset.filter_id;
+		this.raw_id = this.id.replace( sf_admin.prefix + '-', '' );
 		this.nodes = {};
 
 		// Initialize color setting options
@@ -35,7 +36,7 @@ export default class AdminFilter {
 	 * Get filter's input field by its label with query cache
 	 */
 	getInput( label ) {
-		if ( ! this.nodes.hasOwnProperty( label ) ) {
+		if ( !this.nodes.hasOwnProperty( label ) ) {
 			this.nodes[label] = this.filter.querySelector( '#' + this.id + '-' + label );
 		}
 		return this.nodes[label];
@@ -65,6 +66,24 @@ export default class AdminFilter {
 			e.preventDefault();
 			e.stopPropagation();
 			this.remove();
+		} );
+
+		// Check if any of the fields has been changed
+		this.filter.querySelectorAll( `[name^="${sf_admin.prefix}"]` ).forEach( input => {
+			input.addEventListener( 'change', () => {
+				this.save();
+			} );
+		} );
+
+		// Update menu_order when filter position have changed
+		this.filter.addEventListener( 'orderChanged', ( e ) => {
+			const menu_order = this.getInput( 'menu_order' );
+
+			// If order value changed, dispatch change event to save file in POST
+			if( parseInt( menu_order.value ) !== parseInt( e.detail )  ) {
+				menu_order.dispatchEvent( new Event('change') );
+			}
+			menu_order.value = e.detail;
 		} );
 
 		// Update label when label's input is changed
@@ -179,15 +198,12 @@ export default class AdminFilter {
 	 * Duplicate filter and update all of its keys with new unique one
 	 */
 	duplicate() {
-		const prefix = sf_admin.prefix,
-			old_id = this.id.replace( prefix + '-', '' );
-
 		// Generate new unique ID
 		const unique_id = uniqid()
 
 		// Clone the node and update key and ID
 		let new_filter = this.filter.cloneNode( true );
-		new_filter = this.replaceFilterID( new_filter, old_id , unique_id );
+		new_filter = this.replaceFilterID( new_filter, this.raw_id, unique_id );
 
 		// Insert new row and update ID
 		this.filter.insertAdjacentElement( 'afterend', new_filter );
@@ -215,7 +231,7 @@ export default class AdminFilter {
 		// Update field label
 		const label = filter.querySelector( '.sf-row__label' );
 		label.innerText = label.innerText.trim() + ' ' + sf_admin.locale.copy;
-		new_filter.getInput('label').value = label.innerText;
+		new_filter.getInput( 'label' ).value = label.innerText;
 
 		// Open the filter
 		new_filter.toggleOptions();
@@ -268,6 +284,7 @@ export default class AdminFilter {
 			e.stopPropagation();
 
 			this.removeTooltips();
+			this.saveRemovedID();
 
 			jQuery( this.filter ).slideToggle( 300 );
 			setTimeout( () => {
@@ -275,6 +292,14 @@ export default class AdminFilter {
 				updateOrderNumbers();
 			}, 300 );
 		} );
+	}
+
+	/**
+	 * Add removed filter ID to hidden input to pass it via POST
+	 */
+	saveRemovedID() {
+		let input = document.getElementById( 'sf-removed-fields' );
+		input.value = input.value + '|' + this.raw_id;
 	}
 
 	/**
@@ -306,5 +331,14 @@ export default class AdminFilter {
 		} );
 	}
 
+	/**
+	 * Mark field to be saved on form submit
+	 */
+	save() {
+		this.filter.dataset.save = true;
+	}
+
+	submit() {
+	}
 }
 

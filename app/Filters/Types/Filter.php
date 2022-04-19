@@ -353,6 +353,7 @@ abstract class Filter {
 		return $categories;
 	}
 
+
 	/**
 	 * Get array of terms in term ID => name pairs
 	 *
@@ -432,6 +433,39 @@ abstract class Filter {
             </div>
         </div>
 		<?php
+	}
+
+	public function render_meta_fields() {
+
+		// Filter type field
+        echo $this->meta_field( 'type', $this->get_type() );
+
+        // Menu order field
+        echo $this->meta_field( 'menu_order', $this->get_data( 'menu_order' ) );
+    }
+
+    private function meta_field( $label, $value = '' ) {
+
+        $prefix = \Hybrid\app( 'prefix' );
+
+        return sprintf( '<input type="hidden" id="%s" name="%s" %s>',
+	        esc_attr( sprintf( '%s-%s-%s', $prefix, $this->get_id(), $label )  ),
+	        esc_attr( sprintf( '%s[%s][%s]', $prefix, $this->get_id(), $label ) ),
+	        $value !== '' ? sprintf( ' value="%s" ', esc_attr( $value ) ) : ''
+        );
+    }
+
+	public function enabled_switch() {
+
+		$prefix = \Hybrid\app( 'prefix' );
+
+        echo '<label class="sf-switch">';
+            printf( '<input type="checkbox" id="%s" name="%s" %s>',
+                esc_attr( sprintf( '%s-%s-enabled', $prefix, $this->get_id() )  ),
+                esc_attr( sprintf( '%s[%s][enabled]', $prefix, $this->get_id() ) ),
+	            checked( $this->is_enabled(), true, false )
+            );
+        echo '<span class="sf-switch__slider"></span></label>';
 	}
 
 }

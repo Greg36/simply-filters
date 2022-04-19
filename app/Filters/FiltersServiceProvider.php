@@ -205,10 +205,32 @@ class FiltersServiceProvider extends ServiceProvider {
 		}
 
 		// Verify nonce
-		if ( ! wp_verify_nonce( $_POST['sf-group-field'], 'sf-group-field' ) ) {
+		$nonce = isset( $_POST['sf-group-field'] ) ? $_POST['sf-group-field'] : false;
+		if ( ! wp_verify_nonce( $nonce, 'sf-group-field' ) ) {
 			return $post_id;
 		}
 
+		$parser = new DataParser( $post_id );
+		$prefix = (string) $this->app->get( 'prefix' );
+
+		// Save filters
+		if ( ! empty( $_POST[ $prefix ] ) ) {
+			foreach ( $_POST[ $prefix ] as $id => $data ) {
+				if( empty( $data ) ) continue;
+				$parser->save_filter( $id, $data );
+			}
+		}
+
+		// Delete filters
+		// @todo: replace string with a call to container?
+		if ( $_POST['sf-removed-fields'] ) {
+			$remove = explode( '|', $_POST['sf-removed-fields'] );
+			$remove = array_map( 'intval', $remove );
+
+			foreach ( $remove as $id ) {
+				$parser->remove_filter( $id );
+			}
+		}
 
 		return $post_id;
 	}

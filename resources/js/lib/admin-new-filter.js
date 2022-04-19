@@ -77,6 +77,7 @@ export default class AdminNewFilter {
 
 		// Setup new filter
 		const filter = new AdminFilter( document.querySelector( '.sf-filters__list > div:last-of-type' ) );
+		filter.save();
 
 		// Open new filter
 		filter.toggleOptions();

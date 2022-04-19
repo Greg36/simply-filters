@@ -46,7 +46,9 @@
             <a href="#" class="sf-button sf-button__main sf-button__new-filter"><img src="<?php echo \SimplyFilters\get_svg( 'plus' ); ?>" alt="Add filter" aria-hidden="true"><?php _e( 'Add new filter', $locale ); ?></a>
         </div>
 
-        <?php wp_nonce_field( 'sf-group-field' ); ?>
+        <input type="hidden" id="sf-removed-fields" name="sf-removed-fields">
+
+        <?php wp_nonce_field( 'sf-group-field', 'sf-group-field' ); ?>
 
     </div>
 </div>

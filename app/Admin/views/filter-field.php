@@ -7,7 +7,6 @@
 ?>
 
 
-
 <div class="sf-filter"
      data-filter_id="<?php esc_attr_e( \Hybrid\app( 'prefix' ) . '-' . $filter->get_id() ); ?>"
      data-filter_type="<?php esc_attr_e( $filter->get_type() ); ?>"
@@ -20,10 +19,7 @@
         </div>
 
         <div class="sf-row__enabled">
-            <label class="sf-switch">
-                <input type="checkbox" <?php checked( $filter->is_enabled() ); ?> >
-                <span class="sf-switch__slider"></span>
-            </label>
+	        <?php $filter->enabled_switch(); ?>
         </div>
 
         <div class="sf-row__label">
@@ -59,4 +55,7 @@
 
         </table>
     </div>
+
+	<?php $filter->render_meta_fields(); ?>
+
 </div>
