@@ -105,7 +105,7 @@ export default class AdminFilter {
 	 * Initialize color picker
 	 */
 	initColorPicker() {
-		const colorControl = new ColorControl( this.filter.querySelectorAll( '.sf-color__field' ) );
+		const colorControl = new ColorControl( this );
 		colorControl.init();
 	}
 

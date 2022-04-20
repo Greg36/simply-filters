@@ -22,6 +22,7 @@ class FiltersServiceProvider extends ServiceProvider {
 		$this->app->instance( 'group_post_type', 'sf_filter_group' );
 		$this->app->instance( 'item_post_type', 'sf_filter_item' );
 		$this->app->instance( 'prefix', 'sf-setting' );
+		$this->app->instance( 'term-color-key', 'sf_color' );
 	}
 
 	public function boot() {

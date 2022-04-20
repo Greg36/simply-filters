@@ -24,7 +24,7 @@ class ColorControl extends Control {
 				$id  = $this->id  . '-' . $term_id;
 
 				// Get the color value from term's meta
-				$value = get_term_meta( $term_id, 'sf_color', true ); //@todo: this should be something to remove on uninstall
+				$value = get_term_meta( $term_id, \Hybrid\app( 'term-color-key' ), true ); //@todo: this should be something to remove on uninstall
 				if ( ! $value ) {
 					$value = '#ffffff';
 				}

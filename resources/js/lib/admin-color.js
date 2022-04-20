@@ -3,10 +3,11 @@ export default class ColorControl {
 	/**
 	 * Initiate color control settings
 	 *
-	 * @param selector
+	 * @param adminFilter
 	 */
-	constructor( selector ) {
-		this.$selector = jQuery( selector );
+	constructor( adminFilter ) {
+		this.filter = adminFilter;
+		this.$selector = jQuery( adminFilter.filter.querySelectorAll( '.sf-color__field' ) );
 	}
 
 	init() {
@@ -14,8 +15,8 @@ export default class ColorControl {
 			defaultColor: false,
 			hide: true,
 			palettes: true,
-			change: this.updateColor.bind( this ),
-			clear: this.updateColor.bind( this )
+			change: this.updateColor.bind( this, this.filter ),
+			clear: this.updateColor.bind( this, this.filter )
 		} );
 	}
 
@@ -23,8 +24,9 @@ export default class ColorControl {
 	 * Update color of all elements related to color picker
 	 *
 	 * @param event
+	 * @param filter
 	 */
-	updateColor( event ) {
+	updateColor( filter, event ) {
 		let colorInput = jQuery( event.target ),
 			color = colorInput.hasClass( 'wp-picker-clear' ) ? '' : colorInput.val(),
 			swatches = colorInput.parents( '.sf-color__row' ).find( '.sf-color__swatch' );
@@ -32,6 +34,8 @@ export default class ColorControl {
 		swatches.each( (i, swatch) => {
 			this.updateSwatch( jQuery( swatch ), color );
 		} );
+
+		filter.save();
 	}
 
 	/**

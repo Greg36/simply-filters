@@ -4,7 +4,6 @@ namespace SimplyFilters\Filters;
 
 class DataParser {
 
-
 	private $group_id;
 
 	public function __construct( $group_id ) {
@@ -17,9 +16,9 @@ class DataParser {
 		$data = wp_unslash( $data );
 
 		// Parse filter enabled checkbox
-		if( ! isset( $data['enabled'] ) ) {
+		if ( ! isset( $data['enabled'] ) ) {
 			$data['enabled'] = false;
-		} else if( $data['enabled'] === 'on' ) {
+		} else if ( $data['enabled'] === 'on' ) {
 			$data['enabled'] = true;
 		}
 
@@ -35,19 +34,30 @@ class DataParser {
 			'post_content' => maybe_serialize( $data )
 		];
 
-
-
 		// Slash data
 		$post = wp_slash( $post );
 
 		// Create new post or update
 		if ( false === get_post_status( $id ) ) {
 			$post['ID'] = false;
-			wp_insert_post( $post );
+			$save       = wp_insert_post( $post );
 		} else {
-			wp_update_post( $post );
+			$save = wp_update_post( $post );
 		}
 
+		// Save color values to term meta
+		if ( $save && $data['type'] === 'Color' ) {
+			$this->save_color( $data );
+		}
+	}
+
+	private function save_color( $data ) {
+		$taxonomy = $data[ $data['sources'] ];
+		if ( taxonomy_exists( $taxonomy ) ) {
+			foreach ( $data['color'] as $id => $color ) {
+				update_term_meta( intval( $id ), \Hybrid\app( 'term-color-key' ), sanitize_hex_color( $color ) );
+			}
+		}
 	}
 
 	public function save_settings( $data ) {
@@ -74,7 +84,4 @@ class DataParser {
 		return null;
 	}
 
-//	private function validate_data( $data ) {
-//		return true;
-//	}
 }
