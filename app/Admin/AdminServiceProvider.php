@@ -58,6 +58,7 @@ class AdminServiceProvider extends ServiceProvider {
 		if ( $screen->id === 'settings_page_simply-filters' ) {
 			$this->app->instance( 'is-page-sf', true );
 			$this->app->instance( 'is-page-settings', true );
+
 			return;
 		}
 
@@ -65,6 +66,7 @@ class AdminServiceProvider extends ServiceProvider {
 		if ( $screen->id === 'edit-sf_filter_group' ) {
 			$this->app->instance( 'is-page-sf', true );
 			$this->app->instance( 'is-page-list', true );
+
 			return;
 		}
 
@@ -123,10 +125,14 @@ class AdminServiceProvider extends ServiceProvider {
 		wp_localize_script( 'simply-filters_admin', 'sf_admin', [
 			'prefix'         => \Hybrid\app( 'prefix' ),
 			'locale'         => [
-				'copy'   => __( '(copy)', $locale ),
-				'sure'   => __( 'Are you sure?', $locale ),
-				'delete' => __( 'Delete', $locale ),
-				'cancel' => __( 'Cancel', $locale )
+				'copy'          => __( '(copy)', $locale ),
+				'sure'          => __( 'Are you sure?', $locale ),
+				'delete'        => __( 'Delete', $locale ),
+				'cancel'        => __( 'Cancel', $locale ),
+				'close_notice'  => __( 'Close notice', $locale ),
+				'unique_field'  => __( 'Value must be unique across all filters in the group', $locale ),
+				'unique_notice' => __( 'values are not unique.', $locale ),
+				'required'      => __( 'This field is required.' )
 			],
 			'rest_url'       => get_rest_url(),
 			'admin_url'      => get_admin_url(),

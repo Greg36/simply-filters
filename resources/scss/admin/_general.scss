@@ -255,3 +255,86 @@ body.post-type-sf_filter_group {
 		opacity: 0.9;
 	}
 }
+
+/**
+ * Admin notices
+ */
+
+.sf-notice {
+	position: relative;
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	color: #fff;
+	margin: 7px 0 15px;
+	padding: 12px;
+
+	&__info {
+		background: #40a0d5;
+		border-left: #1e7eb3 solid 4px;
+	}
+
+	&__success {
+		background: #529546;
+		border-left: #347428 solid 4px;
+	}
+
+	&__error {
+		background: #b73636;
+		border-left: #891616 solid 4px;
+	}
+
+	&__input {
+		background: #ffd2d2;
+		border-left: #cf7c7c solid 4px;
+		padding: 9px 12px;
+
+		.sf-notice__message {
+			margin: 0;
+			color: #602f2f;
+		}
+	}
+
+	&__message {
+		margin: 0;
+	}
+
+	&__close {
+		width: 20px;
+		height: 20px;
+		border-radius: 40px;
+		border: 1px solid #fff;
+		position: relative;
+		background-color: transparent;
+		transition: background-color 0.3s ease-out;
+		box-sizing: border-box;
+
+		&:hover {
+			background-color: #fff;
+
+			&::before, &::after {
+				background-color: #000;
+			}
+		}
+
+		&::before, &::after {
+			content: "";
+			width: 11px;
+			height: 2px;
+			background: #fff;
+			position: absolute;
+			left: 4px;
+			top: 8px;
+			transition: background-color 0.3s ease-out;
+		}
+
+		&::before {
+			transform: rotate(45deg);
+		}
+
+		&::after {
+			transform: rotate(-45deg);
+		}
+
+	}
+}

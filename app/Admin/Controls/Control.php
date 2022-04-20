@@ -10,6 +10,11 @@ abstract class Control {
     protected $key;
 
 	/**
+	 * @var string Setting's label.
+	 */
+	protected $label;
+
+	/**
 	 * @var Setting's value.
 	 */
     protected $value = '';
@@ -48,10 +53,11 @@ abstract class Control {
      *
 	 * @param $key
 	 */
-	public function render( $key, $value, $id ) {
-        $this->key = $key;
-        $this->value = $value;
-        $this->id = $id;
+	public function render( $data ) {
+        $this->key = $data['key'];
+        $this->value = $data['value'];
+        $this->id = $data['id'];
+        $this->label = $data['label'];
         $this->render_settings_row();
     }
 

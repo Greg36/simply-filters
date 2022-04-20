@@ -152,13 +152,13 @@ abstract class Filter {
 	}
 
 	/**
-     * Load filter's settings
-     *
+	 * Load filter's settings
+	 *
 	 * @return void
 	 */
-    protected function load_settings() {
-        $this->load_supported_settings();
-    }
+	protected function load_settings() {
+		$this->load_supported_settings();
+	}
 
 	/**
 	 * Load filter's supported settings
@@ -170,6 +170,7 @@ abstract class Filter {
 			$this->add_setting( 'label', new TextControl( [
 				'name'        => __( 'Filter label', $this->locale ),
 				'description' => __( 'Name of the filter that will be displayed above it', $this->locale ),
+				'required'    => true
 			] ) );
 		}
 
@@ -177,7 +178,8 @@ abstract class Filter {
 		if ( in_array( 'url-label', $this->supports, true ) ) {
 			$this->add_setting( 'url-label', new TextControl( [
 				'name'        => __( 'URL label', $this->locale ),
-				'description' => __( 'This label will be used in URL when filter is applied. Use only lowercase letters, numbers and hyphens', $this->locale ),
+				'description' => __( 'This label will be used in URL when filter is applied. <br>Use only lowercase letters, numbers and hyphens.', $this->locale ),
+				'unique'      => true
 			] ) );
 		}
 
@@ -235,11 +237,13 @@ abstract class Filter {
 		if ( ! empty( $this->settings ) ) {
 			foreach ( $this->settings as $setting ) {
 				$key = $setting['key'];
-				$setting['control']->render(
-					$this->prefix_key( $key ),
-					$this->get_data( $key ),
-                    $this->prefix_id( $key )
-                );
+				$setting['control']->render( [
+						'key'   => $this->prefix_key( $key ),
+						'value' => $this->get_data( $key ),
+						'id'    => $this->prefix_id( $key ),
+						'label' => $key
+					]
+				);
 			}
 		}
 	}
@@ -391,9 +395,9 @@ abstract class Filter {
 		switch ( $this->data['sources'] ) {
 			case 'attributes' :
 
-                // Set default attribute if none is selected
+				// Set default attribute if none is selected
 				if ( ! $this->data['attributes'] ) {
-                    $attributes = wc_get_attribute_taxonomies();
+					$attributes               = wc_get_attribute_taxonomies();
 					$this->data['attributes'] = 'pa_' . array_shift( $attributes )->attribute_name;
 				}
 
@@ -438,34 +442,34 @@ abstract class Filter {
 	public function render_meta_fields() {
 
 		// Filter type field
-        echo $this->meta_field( 'type', $this->get_type() );
+		echo $this->meta_field( 'type', $this->get_type() );
 
-        // Menu order field
-        echo $this->meta_field( 'menu_order', $this->get_data( 'menu_order' ) );
-    }
+		// Menu order field
+		echo $this->meta_field( 'menu_order', $this->get_data( 'menu_order' ) );
+	}
 
-    private function meta_field( $label, $value = '' ) {
+	private function meta_field( $label, $value = '' ) {
 
-        $prefix = \Hybrid\app( 'prefix' );
+		$prefix = \Hybrid\app( 'prefix' );
 
-        return sprintf( '<input type="hidden" id="%s" name="%s" %s>',
-	        esc_attr( sprintf( '%s-%s-%s', $prefix, $this->get_id(), $label )  ),
-	        esc_attr( sprintf( '%s[%s][%s]', $prefix, $this->get_id(), $label ) ),
-	        $value !== '' ? sprintf( ' value="%s" ', esc_attr( $value ) ) : ''
-        );
-    }
+		return sprintf( '<input type="hidden" id="%s" name="%s" %s>',
+			esc_attr( sprintf( '%s-%s-%s', $prefix, $this->get_id(), $label ) ),
+			esc_attr( sprintf( '%s[%s][%s]', $prefix, $this->get_id(), $label ) ),
+			$value !== '' ? sprintf( ' value="%s" ', esc_attr( $value ) ) : ''
+		);
+	}
 
 	public function enabled_switch() {
 
 		$prefix = \Hybrid\app( 'prefix' );
 
-        echo '<label class="sf-switch">';
-            printf( '<input type="checkbox" id="%s" name="%s" %s>',
-                esc_attr( sprintf( '%s-%s-enabled', $prefix, $this->get_id() )  ),
-                esc_attr( sprintf( '%s[%s][enabled]', $prefix, $this->get_id() ) ),
-	            checked( $this->is_enabled(), true, false )
-            );
-        echo '<span class="sf-switch__slider"></span></label>';
+		echo '<label class="sf-switch">';
+		printf( '<input type="checkbox" id="%s" name="%s" %s>',
+			esc_attr( sprintf( '%s-%s-enabled', $prefix, $this->get_id() ) ),
+			esc_attr( sprintf( '%s[%s][enabled]', $prefix, $this->get_id() ) ),
+			checked( $this->is_enabled(), true, false )
+		);
+		echo '<span class="sf-switch__slider"></span></label>';
 	}
 
 }

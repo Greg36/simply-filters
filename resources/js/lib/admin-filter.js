@@ -5,7 +5,7 @@
  */
 
 import ColorControl from './admin-color';
-import { addLoader, removeLoader, uniqid } from "./helpers";
+import { addLoader, addFormNotice, invalidInputNotice, removeLoader, uniqid } from "./helpers";
 import { updateOrderNumbers } from "./admin-filters-group";
 
 export default class AdminFilter {
@@ -74,6 +74,15 @@ export default class AdminFilter {
 				this.save();
 			} );
 		} );
+
+		// Handle required inputs invalid
+		this.filter.querySelectorAll( `[required]` ).forEach( input => {
+			input.addEventListener( 'invalid', ( e ) => {
+				e.preventDefault();
+				invalidInputNotice( sf_admin.locale.required, input );
+			} );
+		} );
+
 
 		// Update menu_order when filter position have changed
 		this.filter.addEventListener( 'orderChanged', ( e ) => {
@@ -336,9 +345,6 @@ export default class AdminFilter {
 	 */
 	save() {
 		this.filter.dataset.save = true;
-	}
-
-	submit() {
 	}
 }
 

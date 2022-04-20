@@ -12,6 +12,12 @@ class RadioControl extends Control {
 		echo '<ul class="sf-input-list">';
 
             if ( ! empty( $this->options ) ) {
+
+				// Set default value
+	            if( $this->value === '' ) {
+					$this->value = key( $this->options );
+	            }
+
                 foreach ( $this->options as $value => $label ) {
 
                     printf( '<li><input type="radio" id="%1$s" name="%2$s" value="%3$s" %4$s> <label for="%1$s">%5$s</label></li>',

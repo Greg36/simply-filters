@@ -6,6 +6,7 @@
 
 import AdminFilter from "./admin-filter";
 import AdminNewFilter from "./admin-new-filter";
+import { invalidInputNotice, addFormNotice } from "./helpers";
 
 export { initFiltersGroup, updateOrderNumbers };
 
@@ -52,11 +53,66 @@ function updateOrderNumbers() {
 /**
  * Prepare data before submitting
  */
-function prepareSubmitData() {
+function prepareSubmitData( e ) {
+
+	// Invalidate submit if required values are not unique
+	const duplicates = findDuplicatedValues();
+	if( duplicates ) {
+		e.preventDefault();
+		addFormNotice( duplicates + ' ' + sf_admin.locale.unique_notice, 'error' );
+		return;
+	}
+
+	removeUnmodifiedFilters();
+}
+
+/**
+ * Check if all values labeled as unique are so between all filters
+ */
+function findDuplicatedValues() {
+	const inputs = document.getElementById( 'post' ).querySelectorAll( '[data-unique]' );
+
+	let uniques = {},
+		found_duplicates = 0;
+
+	// For each unique label create a new array and push the input into it
+	inputs.forEach( ( current ) => {
+		(uniques[current.dataset.unique] || (uniques[current.dataset.unique] = [])).push( current );
+	} );
+
+	// Check if values in group are all unique
+	Object.keys( uniques ).forEach( ( key ) => {
+
+		const values = uniques[key].map(el => el.value);
+		const duplicates = uniques[key].filter(el => values.filter(val => val === el.value).length > 1);
+
+		// If there are duplicates display notice
+		duplicates.forEach( ( input ) => {
+			found_duplicates++;
+			invalidInputNotice( sf_admin.locale.unique_field, input );
+
+			// Open settings
+			if( ! input.closest( '.sf-filter' ).classList.contains( 'open' ) ) {
+				input.closest( '.sf-filter' ).querySelector( 'a.edit-filter' ).click();
+			}
+		} );
+	} );
+
+	return found_duplicates;
+}
+
+function validateRequiredFields() {
+
+}
+
+/**
+ * Remove all input fields of filters that have not been modified
+ */
+function removeUnmodifiedFilters() {
 	document.querySelectorAll( '.sf-filter' ).forEach( ( current ) => {
 
 		// Remove all fields that have not been changed
-		if ( ! current.hasAttribute( 'data-save' ) || current.dataset.save !== 'true' ) {
+		if ( !current.hasAttribute( 'data-save' ) || current.dataset.save !== 'true' ) {
 			current.querySelectorAll( `[name^="${sf_admin.prefix}"]` ).forEach( input => {
 				input.remove();
 			} );

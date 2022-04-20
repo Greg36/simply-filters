@@ -1,4 +1,4 @@
-export { uniqid, addLoader, removeLoader };
+export { uniqid, addLoader, removeLoader, addFormNotice, invalidInputNotice };
 
 function uniqid( prefix, moreEntropy ) {
 	//  discuss at: https://locutus.io/php/uniqid/
@@ -62,4 +62,58 @@ function addLoader( node ) {
 
 function removeLoader() {
 	document.getElementById( 'sf-ajax-loader' ).remove();
+}
+
+function addFormNotice( message, type = 'info' ) {
+	const container = document.getElementById( 'post' );
+
+	// Remove any previous notices
+	removeFormNotices();
+
+	// Create the notice
+	let notice = document.createElement( 'div' );
+	notice.classList.add( 'sf-notice', `sf-notice__${type}` );
+	notice.innerHTML = `<p class="sf-notice__message">${message}</p><a class="sf-notice__close" href="#"><span class="screen-reader-text">${ sf_admin.locale.close_notice }</span></a>`;
+
+	// Insert notice at the top of form
+	notice = container.insertAdjacentElement( 'afterbegin', notice );
+
+	// Add close handler
+	notice.querySelector( 'a' ).addEventListener( 'click', ( e ) => {
+		e.preventDefault();
+		jQuery( notice ).slideUp( 200 );
+		setTimeout( () => {
+			notice.remove();
+		}, 200 );
+	} );
+}
+
+function removeFormNotices() {
+	document.querySelectorAll( '#post > .sf-notice' ).forEach( ( notice ) => {
+		notice.remove();
+	} );
+}
+
+function invalidInputNotice( message, input ) {
+
+	// If there is notice already, remove it
+	if( input.previousElementSibling !== null && input.previousElementSibling.classList.contains( 'sf-notice' ) ) {
+		input.previousElementSibling.remove();
+	}
+
+	// Create the notice
+	let notice = document.createElement( 'div' );
+	notice.classList.add( 'sf-notice', 'sf-notice__input' );
+	notice.innerHTML = `<p class="sf-notice__message">${message}</p>`;
+
+	// Insert notice at the top of form
+	notice = input.insertAdjacentElement( 'beforebegin', notice );
+
+	// Remove on input change
+	input.addEventListener( 'focus', () => {
+		jQuery( notice ).slideUp( 200 );
+		setTimeout( () => {
+			notice.remove();
+		}, 200 );
+	} );
 }
