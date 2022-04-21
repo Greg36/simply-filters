@@ -12,6 +12,9 @@
 
 ?>
 
-<div class="sf-table">
-	<h1>this is a table settings</h1>
+<div class="sf-settings sf-tabs-target" id="sf-settings" data-filter_group_id="<?php esc_attr_e( \Hybrid\app('prefix') . '-' . get_the_ID() ); ?>">
+	<div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto culpa dolores laborum odio vitae! Ad eaque eligendi eos nihil vero. Nam necessitatibus officia quam repudiandae sit velit veniam voluptatem voluptatibus?</div>
+	<div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto culpa dolores laborum odio vitae! Ad eaque eligendi eos nihil vero. Nam necessitatibus officia quam repudiandae sit velit veniam voluptatem voluptatibus?</div>
+	<div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto culpa dolores laborum odio vitae! Ad eaque eligendi eos nihil vero. Nam necessitatibus officia quam repudiandae sit velit veniam voluptatem voluptatibus?</div>
+	<div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto culpa dolores laborum odio vitae! Ad eaque eligendi eos nihil vero. Nam necessitatibus officia quam repudiandae sit velit veniam voluptatem voluptatibus?</div>
 </div>

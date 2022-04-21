@@ -38,7 +38,7 @@ class ColorFilter extends Filter {
 	 */
 	protected function load_settings() {
 
-		$this->load_supported_settings();
+        parent::load_settings();
 
 		$this->add_setting( 'color', new ColorControl( [
 			'name'        => __( 'Select color', $this->locale ),

@@ -1,10 +1,84 @@
-/*
- * Filters metabox
+/**
+ * Metabox tabs
+ */
+.sf-tabs {
+	&__list {
+		margin: 0;
+		padding: 0;
+		display: flex;
+		align-items: flex-end;
+	}
+
+	&__tab {
+		position: relative;
+		margin: 0;
+		border-radius: 5px 5px 0 0;
+		margin-right: 12px;
+		margin-bottom: -1px;
+		z-index: 2;
+	}
+
+	&__link {
+		background-color: $meta__bg-alt;
+		border: 1px solid $meta__bg-alt;
+		display: flex;
+		align-items: center;
+		border-radius: 5px 5px 0 0;
+		padding: 13px 27px 9px;
+		font-size: 16px;
+		font-weight: 600;
+		color: #fff;
+		transition: color 0.3s ease-out, background-color 0.3s ease-out, border 0.3s ease-out;
+		text-decoration: none;
+		height: 45px;
+		box-sizing: border-box;
+
+		svg {
+			margin-right: 12px;
+			path {
+				transition: fill 0.3s ease-out;
+				fill: #fff;
+			}
+		}
+
+		&:hover,
+		&:focus,
+		&.active {
+			background: $meta__bg;
+			border: $meta__border;
+			border-bottom-color: $meta__bg;
+			color: $font__primary;
+
+			svg {
+				path {
+					fill: $font__primary;
+				}
+			}
+		}
+		
+	}
+}
+
+.sf-tabs-target {
+	display: none;
+	&.open {
+		display: block;
+	}
+}
+
+/**
+ * Filters panel
  */
 #sf-filter-group-fields {
-	background: $meta__bg;
-	border: $meta__border;
+	background: transparent;
+	border: none;
 	margin-top: -20px;
+	box-shadow: none;
+
+	> .inside {
+		margin: 0;
+		padding: 0;
+	}
 
 	.postbox-header {
 		display: none;
@@ -15,6 +89,9 @@
 .sf-filters {
 	font-family: $font__family;
 	color: $font__primary;
+	padding: 0 12px 12px;
+	background: $meta__bg;
+	border: $meta__border;
 
 	&__header {
 		font-size: 14px;
@@ -551,6 +628,7 @@
 	}
 }
 
+
 /**
  * Filter previews
  */
@@ -816,4 +894,16 @@
 
 	&__to {}
 
+}
+
+
+/**
+ * Settings panel
+ */
+.sf-settings {
+	font-family: $font__family;
+	color: $font__primary;
+	padding: 0 12px 12px;
+	background: $meta__bg;
+	border: $meta__border;
 }

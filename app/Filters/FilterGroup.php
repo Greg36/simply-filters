@@ -91,13 +91,12 @@ class FilterGroup {
 	}
 
 	/**
-	 * Initialize the filter edit and group settings metaboxes
+	 * Initialize the filter edit and group settings metabox
 	 *
 	 * @since   1.0.0
 	 */
 	public function init_metaboxes() {
 
-		// Edit filters
 		add_meta_box( 'sf-filter-group-fields',
 			__( 'Edit Filters', \Hybrid\app( 'locale' ) ),
 			[ $this, 'filters_metabox' ],
@@ -107,23 +106,25 @@ class FilterGroup {
 		);
 
 		// Group settings
-		add_meta_box( 'sf-filter-group-settings',
-			__( 'Group Settings', \Hybrid\app( 'locale' ) ),
-			[ $this, 'group_metabox' ],
-			'sf_filter_group',
-			'normal',
-			'high'
-		);
+//		add_meta_box( 'sf-filter-group-settings',
+//			__( 'Group Settings', \Hybrid\app( 'locale' ) ),
+//			[ $this, 'group_metabox' ],
+//			'sf_filter_group',
+//			'normal',
+//			'high'
+//		);
 	}
 
 	public function filters_metabox() {
+		TemplateLoader::render( 'filter-tabs' );
 		TemplateLoader::render( 'filter-group-fields', [
 			'filters'  => $this->get_filters()
 		] );
+		TemplateLoader::render( 'filter-group-settings' );
 	}
 
 	public function group_metabox() {
-		TemplateLoader::render( 'filter-group-settings' );
+
 	}
 
 	public function render_new_filter_popup() {

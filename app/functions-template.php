@@ -13,6 +13,8 @@ function load_inline_svg( $filename ) {
 
 	$svg_path = SF_PATH . 'assets/svg/';
 
+	if( substr( $filename, -4 ) !== '.svg' ) $filename .= '.svg';
+
 	if ( file_exists( $svg_path . $filename ) ) {
 
 		return file_get_contents( $svg_path . $filename );
