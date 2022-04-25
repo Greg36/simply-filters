@@ -76,7 +76,7 @@ class FiltersServiceProvider extends ServiceProvider {
 				'show_in_admin_bar'   => false,
 				'show_ui'             => true,
 				'hierarchical'        => false,
-				'supports'            => array( '' ),
+				'supports'            => array( 'title' ),
 				'labels'              => array(
 					'name'               => __( 'Filters', $locale ),
 					'singular_name'      => __( 'Filter', $locale ),

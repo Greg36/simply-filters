@@ -1,4 +1,26 @@
 /**
+ * Group title
+ */
+body.post-type-sf_filter_group {
+
+	#titlediv #title {
+		background-color: #fff;
+		border: 1px solid #C9D4E0;
+		border-radius: 5px;
+		height: 42px;
+		color: #445C78;
+	}
+
+	#poststuff #titlewrap {
+		margin-bottom: 19px;
+	}
+
+	#titlediv #title-prompt-text {
+		line-height: 22px;
+	}
+}
+
+/**
  * Metabox tabs
  */
 .sf-tabs {
