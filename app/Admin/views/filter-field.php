@@ -43,7 +43,7 @@
 
             <tbody>
 
-			<?php $filter->render_settings(); ?>
+			<?php $filter->render_setting_fields(); ?>
 
             <tr class="sf-options__footer">
                 <td colspan="2">

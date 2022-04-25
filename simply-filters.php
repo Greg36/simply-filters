@@ -45,7 +45,8 @@ if ( file_exists( SF_PATH . 'vendor/autoload.php' ) ) {
 array_map( function( $file ) {
 	require_once( SF_PATH . "app/{$file}.php" );
 }, [
-	'functions-template'
+	'functions-template',
+	'functions-taxonomy'
 ] );
 
 

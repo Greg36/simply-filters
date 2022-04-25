@@ -34,7 +34,6 @@ abstract class Control {
 	 */
     protected $options = [];
 
-
 	protected abstract function render_setting_field();
 
 	/**

@@ -40,11 +40,11 @@ class ColorFilter extends Filter {
 
         parent::load_settings();
 
-		$this->add_setting( 'color', new ColorControl( [
+		$this->settings->add( 'color', 'color', [
 			'name'        => __( 'Select color', $this->locale ),
 			'description' => __( 'For each term assign color from the color pallet', $this->locale ),
 			'options'     => $this->get_current_source_options()
-		] ) );
+		] );
 	}
 
 	protected function filter_preview() {

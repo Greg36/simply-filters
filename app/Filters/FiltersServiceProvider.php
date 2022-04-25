@@ -183,7 +183,7 @@ class FiltersServiceProvider extends ServiceProvider {
 		] );
 
 		// Render the filter settings
-		$filter->render_settings();
+		$filter->render_setting_fields();
 
 		die();
 	}
