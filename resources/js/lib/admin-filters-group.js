@@ -101,10 +101,6 @@ function findDuplicatedValues() {
 	return found_duplicates;
 }
 
-function validateRequiredFields() {
-
-}
-
 /**
  * Remove all input fields of filters that have not been modified
  */
@@ -113,6 +109,11 @@ function removeUnmodifiedFilters() {
 
 		// Remove all fields that have not been changed
 		if ( !current.hasAttribute( 'data-save' ) || current.dataset.save !== 'true' ) {
+
+			// Save checked toggle
+			const enabled = current.querySelector( '[name$="[enabled]"]' );
+			if( enabled.checked ) enabled.parentElement.classList.add( 'checked' );
+
 			current.querySelectorAll( `[name^="${sf_admin.prefix}"]` ).forEach( input => {
 				input.remove();
 			} );
