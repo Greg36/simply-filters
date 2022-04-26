@@ -52,7 +52,7 @@ class ColorControl extends Control {
 							<?php
 							printf( '<label for="%s">%s</label>',
 								esc_attr( $key ),
-								esc_html( $name )
+								wp_kses_post( $name )
 							);
 							?>
                         </div>

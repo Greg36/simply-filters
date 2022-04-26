@@ -5,7 +5,6 @@ namespace SimplyFilters\Admin;
 use Hybrid\Core\ServiceProvider;
 use SimplyFilters\Filters\FilterGroup;
 use SimplyFilters\TemplateLoader;
-use function SimplyFilters\get_svg;
 
 /**
  * The admin-specific functionality of the plugin.
@@ -138,7 +137,7 @@ class AdminServiceProvider extends ServiceProvider {
 			'admin_url'      => get_admin_url(),
 			'ajax_url'       => admin_url( 'admin-ajax.php' ),
 			'ajax_nonce'     => wp_create_nonce( 'wp_rest' ),
-			'loader_src'     => get_svg( 'loader' ),
+			'loader_src'     => \SimplyFilters\get_svg( 'loader' ),
 			'current_screen' => $this->get_current_screen_parameters()
 		] );
 	}

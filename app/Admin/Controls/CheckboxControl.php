@@ -20,7 +20,7 @@ class CheckboxControl extends Control {
 					esc_attr( $this->key . '[' . $value . ']' ),
 					$value,
 					$value === $this->value ? 'checked' : '',
-					esc_html( $label )
+					wp_kses_post( $label )
 				);
 			}
 		}

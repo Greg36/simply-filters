@@ -86,7 +86,7 @@ class Settings {
 				$key = $setting['key'];
 				$setting['control']->render( [
 						'key'   => $this->prefix_key( $key ),
-						'value' => $this->data[ $key ],
+						'value' => isset( $this->data[ $key ] ) ? $this->data[ $key ] : '',
 						'id'    => $this->prefix_id( $key ),
 						'label' => $key
 					]

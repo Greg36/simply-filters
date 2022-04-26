@@ -22,6 +22,7 @@ class FiltersServiceProvider extends ServiceProvider {
 		$this->app->instance( 'group_post_type', 'sf_filter_group' );
 		$this->app->instance( 'item_post_type', 'sf_filter_item' );
 		$this->app->instance( 'prefix', 'sf-setting' );
+		$this->app->instance( 'prefix_group', 'sf-group-setting' );
 		$this->app->instance( 'term-color-key', 'sf_color' );
 	}
 
@@ -36,7 +37,8 @@ class FiltersServiceProvider extends ServiceProvider {
 		add_action( 'wp_ajax_sf/render_new_field', [ $this, 'ajax_render_new_settings_field' ] );
 		add_action( 'wp_ajax_sf/get_color_options', [ $this, 'ajax_get_color_settings_options' ] );
 
-		add_action( 'save_post', array( $this, 'save_post' ), 10, 2 );
+		add_filter( 'wp_insert_post_data', array( $this, 'save_group_settings' ), 90, 2 );
+		add_action( 'save_post', array( $this, 'save_filters' ), 10, 2 );
 	}
 
 	/**
@@ -188,7 +190,15 @@ class FiltersServiceProvider extends ServiceProvider {
 		die();
 	}
 
-	public function save_post( $post_id, $post ) {
+	/**
+	 * Save filters settings when saving the group
+	 *
+	 * @param $post_id
+	 * @param $post
+	 *
+	 * @return mixed
+	 */
+	public function save_filters( $post_id, $post ) {
 
 		// Bail early if WP is doing autos-ave
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
@@ -214,10 +224,10 @@ class FiltersServiceProvider extends ServiceProvider {
 		$parser = new DataParser( $post_id );
 		$prefix = (string) $this->app->get( 'prefix' );
 
-		// Save filters
+		// Save settings
 		if ( ! empty( $_POST[ $prefix ] ) ) {
 			foreach ( $_POST[ $prefix ] as $id => $data ) {
-				if( empty( $data ) ) continue;
+				if( empty( $data ) || $id == $post_id  ) continue;
 				$parser->save_filter( $id, $data );
 			}
 		}
@@ -234,6 +244,27 @@ class FiltersServiceProvider extends ServiceProvider {
 		}
 
 		return $post_id;
+	}
+
+
+	/**
+	 * On filter group save update post_content with settings data
+	 *
+	 * @param $data
+	 * @param $postarr
+	 *
+	 * @return mixed
+	 */
+	public function save_group_settings( $data , $postarr ) {
+		$prefix = (string) $this->app->get( 'prefix' );
+		$settings = isset( $_POST[ $prefix ][ $postarr['ID'] ] ) ? $_POST[ $prefix ][ $postarr['ID'] ] : [];
+
+		if( ! empty( $settings ) ) {
+			$settings = wp_unslash( $settings );
+			$data['post_content'] = wp_slash( maybe_serialize( $settings ) );
+		}
+
+		return $data;
 	}
 
 }

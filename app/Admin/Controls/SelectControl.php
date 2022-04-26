@@ -21,7 +21,7 @@ class SelectControl extends Control {
 				printf( '<option value="%s" %s>%s</option>',
 					$value,
 					$value == $this->value ? 'selected' : '',
-					esc_html( $label )
+					wp_kses_post( $label )
 				);
 			}
 		}

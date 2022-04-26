@@ -925,7 +925,21 @@ body.post-type-sf_filter_group {
 .sf-settings {
 	font-family: $font__family;
 	color: $font__primary;
-	padding: 0 12px 12px;
+	padding: 25px 12px 25px 12px;
 	background: $meta__bg;
 	border: $meta__border;
+
+	&__wrap {
+		.sf-options {
+			border-bottom: none;
+		}
+		//
+		//.sf-option > td:first-of-type {
+		//	padding-left: 35px;
+		//}
+		//
+		tbody > tr:first-of-type > td {
+			border-top: $field__border;
+		}
+	}
 }

@@ -60,10 +60,6 @@ class DataParser {
 		}
 	}
 
-	public function save_settings( $data ) {
-
-	}
-
 	public function remove_filter( $id ) {
 
 		// Check if post is still available
@@ -71,7 +67,6 @@ class DataParser {
 			wp_delete_post( $id, true );
 		}
 	}
-
 
 	private function extract_key( array &$arr, $key ) {
 		if ( array_key_exists( $key, $arr ) ) {

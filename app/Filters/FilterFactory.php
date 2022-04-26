@@ -44,7 +44,6 @@ class FilterFactory {
 		$filter['key']        = $post->post_name;
 		$filter['label']      = $post->post_title;
 		$filter['menu_order'] = $post->menu_order;
-//		$filter['group']      = $post->post_parent;
 
 		return $filter;
 	}

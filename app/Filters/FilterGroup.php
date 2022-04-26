@@ -2,8 +2,7 @@
 
 namespace SimplyFilters\Filters;
 
-use SimplyFilters\Admin\Controls\Control;
-use SimplyFilters\Admin\Controls\TextControl;
+use SimplyFilters\Admin\Settings;
 use SimplyFilters\TemplateLoader;
 
 
@@ -25,9 +24,9 @@ class FilterGroup {
 	private $registry = [];
 
 	/**
-	 * @var array Group settings
+	 * @var
 	 */
-	private $settings = [];
+	private $settings;
 
 	public function __construct( $post_id ) {
 
@@ -101,60 +100,30 @@ class FilterGroup {
 
 	private function register_group_settings() {
 		$locale = \Hybrid\app('locale');
-//		$this->add_setting( 'label', new TextControl( [
-//			'name'        => __( 'Filter label', $locale ),
-//			'description' => __( 'Name of the filter that will be displayed above it', $locale ),
-//			'required'    => true
-//		] ) );
+
+		$settings = new Settings( $this->post_id, (array) maybe_unserialize( get_the_content() ) );
+
+		$settings->add( 'elements', 'checkbox', [
+			'name'        => __( 'Enable elements', $locale ),
+			'description' => __( 'Elements that should be visible in this filter group', $locale ),
+			'options' => [
+				'title' => __( '<strong>Group title</strong> - show group title above filters', $locale ),
+				'clear' => __( '<strong>Clear all button</strong> - reset options button to clear all selected values', $locale ),
+				'empty' => __( '<strong>Empty options</strong> - display options without any products assigned to them', $locale ),
+			]
+		] );
+
+		$settings->add( 'auto_submit', 'radio', [
+			'name'        => __( 'Filtering start', $locale ),
+			'description' => __( 'When should filtering of products start', $locale ),
+			'options' => [
+				'automatic' => __( '<strong>Automatically</strong> - when any of the filters are changed', $locale ),
+				'onsubmit' => __( '<strong>On submit</strong> - when user presses the Filter button', $locale )
+			]
+		] );
+
+		$this->settings = $settings;
 	}
-
-	private function get_group_settings() {
-
-		// I need a settings object
-
-//		// Sort all settings according to their order
-//		usort( $this->settings, function ( $item1, $item2 ) {
-//			return $item1['order'] <=> $item2['order'];
-//		} );
-//
-//		if ( ! empty( $this->settings ) ) {
-//			foreach ( $this->settings as $setting ) {
-//				$key = $setting['key'];
-//				$setting['control']->render( [
-//						'key'   => $this->prefix_key( $key ),
-//						'value' => $this->get_data( $key ),
-//						'id'    => $this->prefix_id( $key ),
-//						'label' => $key
-//					]
-//				);
-//			}
-//		}
-//
-//		$settings = [];
-//
-//		if ( ! empty( $this->filters ) ) {
-//			foreach ( $this->filters as $filter ) {
-//				$filters[] = FilterFactory::build( $filter );
-//			}
-//		}
-//
-//		return $filters;
-	}
-
-	/**
-	 * Save control object
-	 *
-	 * @param $key string
-	 * @param $control Control
-	 */
-	protected function add_setting( $key, Control $control, $order = 10 ) {
-		$this->settings[] = [
-			'key'     => $key,
-			'control' => $control,
-			'order'   => $order
-		];
-	}
-
 
 	/**
 	 * Initialize the filter edit and group settings metabox
@@ -178,7 +147,7 @@ class FilterGroup {
 			'filters'  => $this->get_filters()
 		] );
 		TemplateLoader::render( 'filter-group-settings', [
-			'settings' => $this->get_group_settings()
+			'settings' => $this->settings
 		] );
 	}
 
