@@ -1,6 +1,9 @@
 <?php
 
 /**
+ * @var $filters array
+ * @var $locale string
+ *
  * @todo add info
  *
  * @link       https://gregn.pl
@@ -12,33 +15,29 @@
 
 ?>
 
-<div class="sf-filters sf-tabs-target open" id="sf-filters" data-filter_group_id="<?php esc_attr_e( \Hybrid\app('prefix') . '-' . get_the_ID() ); ?>">
-	<div class="sf-filters__wrap">
+<div class="sf-filters sf-tabs-target open" id="sf-filters" data-filter_group_id="<?php esc_attr_e( \Hybrid\app( 'prefix' ) . '-' . get_the_ID() ); ?>">
+    <div class="sf-filters__wrap">
 
         <ul class="sf-filters__header">
             <li><?php _e( 'Enabled', $locale ); ?></li>
-            <li><?php _e( 'Label',   $locale ); ?></li>
-            <li><?php _e( 'Type',    $locale ); ?></li>
+            <li><?php _e( 'Label', $locale ); ?></li>
+            <li><?php _e( 'Type', $locale ); ?></li>
         </ul>
 
         <div class="sf-filters__list">
 
-            <?php if( $filters ) :
+			<?php
+			foreach ( $filters as $key => $filter ) {
+				\SimplyFilters\TemplateLoader::render( 'filter-field', [
+					'filter' => $filter,
+					'order'  => $key + 1
+				] );
+			}
+			?>
 
-	            foreach ( $filters as $key => $filter ) {
-                    \SimplyFilters\TemplateLoader::render( 'filter-field', [
-                        'filter' => $filter,
-                        'order'  => $key + 1
-                    ] );
-                }
-
-            else : ?>
-
-                <div class="sf-filters__no-items">
-                    <?php _e( 'There are no filters yet.', $locale ); // @todo: better message ?>
-                </div>
-
-            <?php endif; ?>
+            <div class="sf-filters__no-items" style="<?php echo $filters ? 'display:none;' : ''; ?>">
+		        <?php _e( 'No filters. Click <strong>Add new filter</strong> button to add first one.', $locale ); ?>
+            </div>
 
         </div>
 
@@ -48,7 +47,7 @@
 
         <input type="hidden" id="sf-removed-fields" name="sf-removed-fields">
 
-        <?php wp_nonce_field( 'sf-group-field', 'sf-group-field' ); ?>
+		<?php wp_nonce_field( 'sf-group-field', 'sf-group-field' ); ?>
 
     </div>
 </div>

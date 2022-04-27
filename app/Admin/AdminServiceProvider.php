@@ -24,6 +24,11 @@ class AdminServiceProvider extends ServiceProvider {
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_styles' ] );
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
 
+		add_filter( "manage_{$this->app->get( 'group_post_type' )}_posts_columns", [ $this, 'group_table_columns' ] );
+		add_filter( "manage_{$this->app->get( 'group_post_type' )}_posts_custom_column", [ $this, 'group_table_column_shortcode' ], 10, 2 );
+		add_filter( 'post_updated_messages', [ $this, 'post_updated_message' ] );
+		add_filter( 'post_row_actions', [ $this, 'post_row_actions' ], 10, 2 );
+
 		add_action( 'admin_head', [ $this, 'init_filters_group' ] );
 		add_action( 'admin_menu', [ $this, 'init_settings' ] );
 	}
@@ -190,4 +195,77 @@ class AdminServiceProvider extends ServiceProvider {
 		TemplateLoader::render( 'settings-page', [ 'test' => 'xd' ] );
 	}
 
+	/**
+	 * Add shortcode column to filter group post type table
+	 *
+	 * @param $columns
+	 *
+	 * @return array
+	 */
+	public function group_table_columns( $columns ) {
+		return array(
+			'cb'           => '<input type="checkbox" />',
+			'title'        => __( 'Title' ),
+			'sf_shortcode' => __( 'Shortcode', $this->app->get( 'locale' ) ),
+			'date'         => __( 'Date' ),
+		);
+	}
+
+	/**
+	 * Fill shortcode column with read-only input filed to copy shortcode easily
+	 *
+	 * @param $column
+	 * @param $post_id
+	 *
+	 * @return void
+	 */
+	public function group_table_column_shortcode( $column, $post_id ) {
+		if ( 'sf_shortcode' === $column ) {
+			echo sprintf( '<input type="text" readonly="readonly" onclick="this.select();" value="%s"/>',
+				esc_attr( '[' . $this->app->get( 'shortcode_tag' ) . ' id="' . $post_id . '"]' )
+			);
+		}
+	}
+
+	/**
+	 * Change the post updated messages for filter group post type
+	 *
+	 * @param $messages
+	 *
+	 * @return array
+	 */
+	public function post_updated_message( $messages ) {
+
+		$locale = $this->app->get( 'locale' );
+
+		$messages[ (string) $this->app->get( 'group_post_type' ) ] = array(
+			1  => __( 'Filter group updated.', $locale ),
+			2  => __( 'Filter group updated.', $locale ),
+			3  => __( 'Filter group deleted.', $locale ),
+			4  => __( 'Filter group updated.', $locale ),
+			5  => false, // Revisions
+			6  => __( 'Filter group published.', $locale ),
+			7  => __( 'Filter group saved.', $locale ),
+			8  => __( 'Filter group submitted.', $locale ),
+			9  => __( 'Filter group scheduled for.', $locale ),
+			10 => __( 'Filter group draft updated.', $locale ),
+		);
+
+		return $messages;
+	}
+
+	/**
+	 * Remove quick edit option from filter group row actions
+	 *
+	 * @param $actions
+	 * @param $post
+	 *
+	 * @return mixed
+	 */
+	public function post_row_actions( $actions, $post ) {
+		if( ! $this->app->get( 'is-page-list' ) ) return $actions;
+
+		unset( $actions['inline hide-if-no-js'] );
+		return $actions;
+	}
 }

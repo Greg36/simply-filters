@@ -8,7 +8,7 @@ import AdminFilter from "./admin-filter";
 import AdminNewFilter from "./admin-new-filter";
 import { invalidInputNotice, addFormNotice } from "./helpers";
 
-export { initFiltersGroup, updateOrderNumbers };
+export { initFiltersGroup, updateOrderNumbers, checkNoFilterLabel };
 
 function initFiltersGroup() {
 
@@ -48,6 +48,19 @@ function updateOrderNumbers() {
 		current.innerText = index + 1;
 		current.closest( '.sf-filter' ).dispatchEvent( new CustomEvent( 'orderChanged', { detail: index } ) );
 	} );
+}
+
+/**
+ * Check if "there are no filters" label should be displayed
+ */
+function checkNoFilterLabel() {
+	const noFilter = document.querySelector( '.sf-filters__no-items' );
+
+	if( document.querySelectorAll( '.sf-filter' ).length ) {
+		noFilter.style.display = 'none';
+	} else {
+		noFilter.style.display = 'block';
+	}
 }
 
 /**

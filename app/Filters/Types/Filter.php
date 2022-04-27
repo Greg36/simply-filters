@@ -64,7 +64,7 @@ abstract class Filter {
 	 */
 	protected $locale;
 
-    abstract protected function filter_preview();
+	abstract protected function filter_preview();
 
 	/**
 	 * Initialize filter with the config data
@@ -247,7 +247,7 @@ abstract class Filter {
 			$this->settings->add( 'attributes', 'select', [
 				'name'        => __( 'Attribute', $this->locale ),
 				'description' => sprintf(
-					__( 'Select one of the attributes <br> You can edit and add new in <a href="%s">attributes panel</a>', $this->locale ),
+					__( 'Select one of the attributes <br> You can edit and add new in <a href="%s" target="_blank" >attributes panel</a>', $this->locale ),
 					admin_url( 'edit.php?post_type=product&page=product_attributes' )
 				),
 				'options'     => \SimplyFilters\get_attributes()
@@ -259,7 +259,7 @@ abstract class Filter {
 			$this->settings->add( 'product_cat', 'select', [
 				'name'        => __( 'Product category', $this->locale ),
 				'description' => sprintf(
-					__( 'Select all categories or one to show it\'s children <br> You can edit and add new in <a href="%s">categories panel</a>', $this->locale ),
+					__( 'Select all categories or one to show it\'s children <br> You can edit and add new in <a href="%s" target="_blank">categories panel</a>', $this->locale ),
 					admin_url( 'edit-tags.php?taxonomy=product_cat&post_type=product' )
 				),
 				'options'     => \SimplyFilters\get_product_categories()

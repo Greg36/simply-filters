@@ -1,5 +1,5 @@
 import { addLoader, removeLoader } from "./helpers";
-import { updateOrderNumbers } from "./admin-filters-group";
+import { checkNoFilterLabel, updateOrderNumbers } from "./admin-filters-group";
 import AdminFilter from "./admin-filter";
 
 export default class AdminNewFilter {
@@ -88,5 +88,7 @@ export default class AdminNewFilter {
 		// Close the new filter popup
 		this.togglePopup();
 		removeLoader();
+
+		checkNoFilterLabel();
 	}
 }

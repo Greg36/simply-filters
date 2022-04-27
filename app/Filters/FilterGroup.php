@@ -139,6 +139,14 @@ class FilterGroup {
 			'normal',
 			'high'
 		);
+
+		add_meta_box( 'sf-filter-place',
+			__( 'Setup filters', \Hybrid\app( 'locale' ) ), // @todo change this label
+			[ $this, 'place_metabox' ],
+			'sf_filter_group',
+			'side',
+			'low'
+		);
 	}
 
 	public function filters_metabox() {
@@ -149,6 +157,10 @@ class FilterGroup {
 		TemplateLoader::render( 'filter-group-settings', [
 			'settings' => $this->settings
 		] );
+	}
+
+	public function place_metabox() {
+		TemplateLoader::render( 'filter-group-place' );
 	}
 
 	public function render_new_filter_popup() {

@@ -24,6 +24,7 @@ class FiltersServiceProvider extends ServiceProvider {
 		$this->app->instance( 'prefix', 'sf-setting' );
 		$this->app->instance( 'prefix_group', 'sf-group-setting' );
 		$this->app->instance( 'term-color-key', 'sf_color' );
+		$this->app->instance( 'shortcode_tag', 'sf_filters' );
 	}
 
 	public function boot() {
@@ -39,6 +40,7 @@ class FiltersServiceProvider extends ServiceProvider {
 
 		add_filter( 'wp_insert_post_data', array( $this, 'save_group_settings' ), 90, 2 );
 		add_action( 'save_post', array( $this, 'save_filters' ), 10, 2 );
+		add_action( 'delete_post', array( $this, 'remove_group' ), 90, 2 );
 	}
 
 	/**
@@ -227,7 +229,9 @@ class FiltersServiceProvider extends ServiceProvider {
 		// Save settings
 		if ( ! empty( $_POST[ $prefix ] ) ) {
 			foreach ( $_POST[ $prefix ] as $id => $data ) {
-				if( empty( $data ) || $id == $post_id  ) continue;
+				if ( empty( $data ) || $id == $post_id ) {
+					continue;
+				}
 				$parser->save_filter( $id, $data );
 			}
 		}
@@ -255,16 +259,46 @@ class FiltersServiceProvider extends ServiceProvider {
 	 *
 	 * @return mixed
 	 */
-	public function save_group_settings( $data , $postarr ) {
-		$prefix = (string) $this->app->get( 'prefix' );
+	public function save_group_settings( $data, $postarr ) {
+		$prefix   = (string) $this->app->get( 'prefix' );
 		$settings = isset( $_POST[ $prefix ][ $postarr['ID'] ] ) ? $_POST[ $prefix ][ $postarr['ID'] ] : [];
 
-		if( ! empty( $settings ) ) {
-			$settings = wp_unslash( $settings );
+		if ( ! empty( $settings ) ) {
+			$settings             = wp_unslash( $settings );
 			$data['post_content'] = wp_slash( maybe_serialize( $settings ) );
 		}
 
 		return $data;
 	}
 
+	/**
+	 * When deleting filter group, remove all filters from database
+	 *
+	 * @param $group_id
+	 *
+	 * @return bool|void
+	 */
+	public function remove_group( $group_id, $post ) {
+
+		// Process only filter groups
+		if ( $post->post_type === $this->app->get( 'group_post_type' ) ) {
+
+			$filters = get_posts(
+				array(
+					'posts_per_page'   => - 1,
+					'post_type'        => \Hybrid\app( 'item_post_type' ),
+					'suppress_filters' => true,
+					'post_parent'      => $group_id,
+					'post_status'      => array( 'publish', 'trash' ),
+				)
+			);
+
+			// Remove filters
+			foreach ( $filters as $filter ) {
+				wp_delete_post( $filter->ID, true );
+			}
+
+			return true;
+		}
+	}
 }

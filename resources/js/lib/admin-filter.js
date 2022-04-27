@@ -6,7 +6,7 @@
 
 import ColorControl from './admin-color';
 import { addLoader, addFormNotice, invalidInputNotice, removeLoader, uniqid } from "./helpers";
-import { updateOrderNumbers } from "./admin-filters-group";
+import { checkNoFilterLabel, updateOrderNumbers } from "./admin-filters-group";
 
 export default class AdminFilter {
 
@@ -299,6 +299,7 @@ export default class AdminFilter {
 			setTimeout( () => {
 				this.filter.remove();
 				updateOrderNumbers();
+				checkNoFilterLabel();
 			}, 300 );
 		} );
 	}
