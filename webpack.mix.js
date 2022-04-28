@@ -43,6 +43,11 @@ mix.version();
 mix.js( 'resources/js/admin.js', 'js' )
 	.js( 'resources/js/public.js', 'js' );
 
+/**
+ * Compile Gutenberg blocks.
+ */
+mix.js( 'resources/js/blocks/*.js', 'js/blocks' );
+
 /*
  * Compile CSS.
  */

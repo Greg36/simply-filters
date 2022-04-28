@@ -24,7 +24,9 @@ class FiltersServiceProvider extends ServiceProvider {
 		$this->app->instance( 'prefix', 'sf-setting' );
 		$this->app->instance( 'prefix_group', 'sf-group-setting' );
 		$this->app->instance( 'term-color-key', 'sf_color' );
+
 		$this->app->instance( 'shortcode_tag', 'sf_filters' );
+		$this->app->instance( 'widget_id', 'sf_filters' );
 	}
 
 	public function boot() {
@@ -41,6 +43,9 @@ class FiltersServiceProvider extends ServiceProvider {
 		add_filter( 'wp_insert_post_data', array( $this, 'save_group_settings' ), 90, 2 );
 		add_action( 'save_post', array( $this, 'save_filters' ), 10, 2 );
 		add_action( 'delete_post', array( $this, 'remove_group' ), 90, 2 );
+
+		add_action( 'widgets_init', array( $this, 'register_widgets' ) );
+		add_action( 'init', array( $this, 'register_blocks' ) );
 	}
 
 	/**
@@ -59,6 +64,20 @@ class FiltersServiceProvider extends ServiceProvider {
 	 */
 	public function enqueue_scripts() {
 		wp_enqueue_script( 'simply-filters_public', $this->getAssetPath( 'js/public.js' ), null, null, true );
+
+//		$locale = $this->app->get( 'locale' );
+//
+//		wp_localize_script( 'simply-filters_public', 'sf_public', [
+//			'prefix'         => \Hybrid\app( 'prefix' ),
+//			'locale'         => [
+//
+//			],
+//			'rest_url'       => get_rest_url(),
+//			'admin_url'      => get_admin_url(),
+//			'ajax_url'       => admin_url( 'admin-ajax.php' ),
+//			'ajax_nonce'     => wp_create_nonce( 'wp_rest' ),
+//			'loader_src'     => \SimplyFilters\get_svg( 'loader' ),
+//		] );
 	}
 
 	/**
@@ -300,5 +319,23 @@ class FiltersServiceProvider extends ServiceProvider {
 
 			return true;
 		}
+	}
+
+	/**
+	 * Register widgets
+	 *
+	 * @return void
+	 */
+	public function register_widgets() {
+		register_widget( FilterWidget::class );
+	}
+
+	/**
+	 * Register blocks
+	 *
+	 * @return void
+	 */
+	public function register_blocks(  ) {
+		FilterBlock::getInstance();
 	}
 }
