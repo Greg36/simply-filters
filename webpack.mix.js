@@ -7,7 +7,8 @@
 
 // Import required packages.
 const mix = require( 'laravel-mix' ),
-	CopyWebpackPlugin = require( 'copy-webpack-plugin' );
+	CopyWebpackPlugin = require( 'copy-webpack-plugin' ),
+	DependencyExtractionWebpackPlugin = require( '@wordpress/dependency-extraction-webpack-plugin' );
 
 /*
  * Disable the success notification
@@ -46,7 +47,7 @@ mix.js( 'resources/js/admin.js', 'js' )
 /**
  * Compile Gutenberg blocks.
  */
-mix.js( 'resources/js/blocks/*.js', 'js/blocks' );
+mix.js( 'resources/js/blocks/*.js', 'js/blocks' ).react();
 
 /*
  * Compile CSS.
@@ -83,6 +84,7 @@ mix.webpackConfig( {
 					{ from: 'resources/js/vendor',  to: './js/vendor', noErrorOnMissing: true },
 				],
 			}
-		)
+		),
+		new DependencyExtractionWebpackPlugin()
 	]
 } );
