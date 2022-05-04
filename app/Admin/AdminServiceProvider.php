@@ -3,7 +3,7 @@
 namespace SimplyFilters\Admin;
 
 use Hybrid\Core\ServiceProvider;
-use SimplyFilters\Filters\FilterGroup;
+use SimplyFilters\Filters\DataParser;
 use SimplyFilters\TemplateLoader;
 
 /**
@@ -31,6 +31,9 @@ class AdminServiceProvider extends ServiceProvider {
 
 		add_action( 'admin_head', [ $this, 'init_filters_group' ] );
 		add_action( 'admin_menu', [ $this, 'init_settings' ] );
+
+		add_action( 'save_post', array( $this, 'save_filters' ), 10, 2 );
+		add_action( 'delete_post', array( $this, 'remove_group' ), 90, 2 );
 	}
 
 	/**
@@ -166,7 +169,7 @@ class AdminServiceProvider extends ServiceProvider {
 			return;
 		}
 
-		$this->app->instance( 'filter/group', new FilterGroup( get_the_ID() ) );
+		$this->app->instance( 'filter/group/settings', new GroupSettings( get_the_ID() ) );
 	}
 
 	/**
@@ -267,5 +270,93 @@ class AdminServiceProvider extends ServiceProvider {
 
 		unset( $actions['inline hide-if-no-js'] );
 		return $actions;
+	}
+
+	/**
+	 * Save filters settings when saving the group
+	 *
+	 * @param $post_id
+	 * @param $post
+	 *
+	 * @return mixed
+	 */
+	public function save_filters( $post_id, $post ) {
+
+		// Bail early if WP is doing autos-ave
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+			return $post_id;
+		}
+
+		// Process only saving of filter group
+		if ( $post->post_type !== $this->app->get( 'group_post_type' ) ) {
+			return $post_id;
+		}
+
+		// Do not save revisions
+		if ( wp_is_post_revision( $post_id ) ) {
+			return $post_id;
+		}
+
+		// Verify nonce
+		$nonce = isset( $_POST['sf-group-field'] ) ? $_POST['sf-group-field'] : false;
+		if ( ! wp_verify_nonce( $nonce, 'sf-group-field' ) ) {
+			return $post_id;
+		}
+
+		$parser = new DataParser( $post_id );
+		$prefix = (string) $this->app->get( 'prefix' );
+
+		// Save settings
+		if ( ! empty( $_POST[ $prefix ] ) ) {
+			foreach ( $_POST[ $prefix ] as $id => $data ) {
+				if ( empty( $data ) || $id == $post_id ) {
+					continue;
+				}
+				$parser->save_filter( $id, $data );
+			}
+		}
+
+		// Delete filters
+		if ( $_POST['sf-removed-fields'] ) {
+			$remove = explode( '|', $_POST['sf-removed-fields'] );
+			$remove = array_map( 'intval', $remove );
+
+			foreach ( $remove as $id ) {
+				$parser->remove_filter( $id );
+			}
+		}
+
+		return $post_id;
+	}
+
+	/**
+	 * When deleting filter group, remove all filters from database
+	 *
+	 * @param $group_id
+	 *
+	 * @return bool|void
+	 */
+	public function remove_group( $group_id, $post ) {
+
+		// Process only filter groups
+		if ( $post->post_type === $this->app->get( 'group_post_type' ) ) {
+
+			$filters = get_posts(
+				array(
+					'posts_per_page'   => - 1,
+					'post_type'        => \Hybrid\app( 'item_post_type' ),
+					'suppress_filters' => true,
+					'post_parent'      => $group_id,
+					'post_status'      => array( 'publish', 'trash' ),
+				)
+			);
+
+			// Remove filters
+			foreach ( $filters as $filter ) {
+				wp_delete_post( $filter->ID, true );
+			}
+
+			return true;
+		}
 	}
 }

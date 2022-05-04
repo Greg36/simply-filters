@@ -32,7 +32,7 @@ class FilterBlock {
 	}
 
 	public function register_assets() {
-		wp_register_script( 'simply-filters_filter-block', $this->getAssetPath( 'js/blocks/filter-block.js' ), [ 'wp-blocks' ], null, false );
+		wp_register_script( 'simply-filters_filter-block', $this->getAssetPath( 'js/blocks/filter-block.js' ), [ 'wp-blocks', 'wp-i18n' ], null, false );
 
 		$locale = \Hybrid\app( 'locale' );
 

@@ -29,8 +29,9 @@ class FilterWidget extends \WC_Widget {
 				$attributes['before_html'] .= $args['before_title'] . $title . $args['after_title'];
 			}
 
-//			wcpf_component( 'Filters' )->print_product_filters( $instance['id'], true, $attributes );
-			echo '<h2>xddddddd</h2>';
+			/**
+			 * @todo: print filters
+			 */
 		}
 
 	}
@@ -50,7 +51,7 @@ class FilterWidget extends \WC_Widget {
 		}
 
 		$this->settings = array(
-			'id'    => array(
+			'group_id'    => array(
 				'type'    => 'select',
 				'std'     => '',
 				'label'   => __( 'Filter group', $locale ),

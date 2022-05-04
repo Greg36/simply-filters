@@ -4,7 +4,6 @@ namespace SimplyFilters\Filters;
 
 use Hybrid\Core\ServiceProvider;
 use SimplyFilters\Filters\Types\ColorFilter;
-use SimplyFilters\SimplyFilters;
 
 /**
  * The public-facing functionality of the plugin.
@@ -27,6 +26,15 @@ class FiltersServiceProvider extends ServiceProvider {
 
 		$this->app->instance( 'shortcode_tag', 'sf_filters' );
 		$this->app->instance( 'widget_id', 'sf_filters' );
+
+		$this->app->instance( 'filter_registry', [
+			'Checkbox' => Types\CheckboxFilter::class,
+			'Radio'    => Types\RadioFilter::class,
+			'Select'   => Types\SelectFilter::class,
+			'Color'    => Types\ColorFilter::class,
+			'Rating'   => Types\RatingFilter::class,
+			'Slider'   => Types\SliderFilter::class,
+		] );
 	}
 
 	public function boot() {
@@ -37,15 +45,12 @@ class FiltersServiceProvider extends ServiceProvider {
 		add_action( 'init', [ $this, 'register_group_post_type' ] );
 		add_action( 'init', [ $this, 'register_single_post_type' ] );
 
-		add_action( 'wp_ajax_sf/render_new_field', [ $this, 'ajax_render_new_settings_field' ] );
-		add_action( 'wp_ajax_sf/get_color_options', [ $this, 'ajax_get_color_settings_options' ] );
-
-		add_filter( 'wp_insert_post_data', array( $this, 'save_group_settings' ), 90, 2 );
-		add_action( 'save_post', array( $this, 'save_filters' ), 10, 2 );
-		add_action( 'delete_post', array( $this, 'remove_group' ), 90, 2 );
-
 		add_action( 'widgets_init', array( $this, 'register_widgets' ) );
 		add_action( 'init', array( $this, 'register_blocks' ) );
+		add_action( 'init', array( $this, 'register_shortcodes' ) );
+
+		add_action( 'wp_ajax_sf/render_new_field', [ $this, 'ajax_render_new_settings_field' ] ); // @todo: move?
+		add_action( 'wp_ajax_sf/get_color_options', [ $this, 'ajax_get_color_settings_options' ] );// @todo: move?
 	}
 
 	/**
@@ -64,20 +69,6 @@ class FiltersServiceProvider extends ServiceProvider {
 	 */
 	public function enqueue_scripts() {
 		wp_enqueue_script( 'simply-filters_public', $this->getAssetPath( 'js/public.js' ), null, null, true );
-
-//		$locale = $this->app->get( 'locale' );
-//
-//		wp_localize_script( 'simply-filters_public', 'sf_public', [
-//			'prefix'         => \Hybrid\app( 'prefix' ),
-//			'locale'         => [
-//
-//			],
-//			'rest_url'       => get_rest_url(),
-//			'admin_url'      => get_admin_url(),
-//			'ajax_url'       => admin_url( 'admin-ajax.php' ),
-//			'ajax_nonce'     => wp_create_nonce( 'wp_rest' ),
-//			'loader_src'     => \SimplyFilters\get_svg( 'loader' ),
-//		] );
 	}
 
 	/**
@@ -133,6 +124,35 @@ class FiltersServiceProvider extends ServiceProvider {
 				),
 			)
 		);
+	}
+
+	/**
+	 * Register widgets
+	 *
+	 * @return void
+	 */
+	public function register_widgets() {
+		register_widget( FilterWidget::class );
+	}
+
+	/**
+	 * Register blocks
+	 *
+	 * @return void
+	 */
+	public function register_blocks() {
+		FilterBlock::getInstance();
+	}
+
+	/**
+	 * Register shortcodes
+	 *
+	 * @return void
+	 */
+	public function register_shortcodes() {
+		add_shortcode( $this->app->get( 'shortcode_tag' ), function ( $atts ) {
+			return ( new FilterShortcode( $atts['id'] ) )->getShortcode();
+		} );
 	}
 
 	/**
@@ -209,133 +229,5 @@ class FiltersServiceProvider extends ServiceProvider {
 		$filter->render_setting_fields();
 
 		die();
-	}
-
-	/**
-	 * Save filters settings when saving the group
-	 *
-	 * @param $post_id
-	 * @param $post
-	 *
-	 * @return mixed
-	 */
-	public function save_filters( $post_id, $post ) {
-
-		// Bail early if WP is doing autos-ave
-		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
-			return $post_id;
-		}
-
-		// Process only saving of filter group
-		if ( $post->post_type !== $this->app->get( 'group_post_type' ) ) {
-			return $post_id;
-		}
-
-		// Do not save revisions
-		if ( wp_is_post_revision( $post_id ) ) {
-			return $post_id;
-		}
-
-		// Verify nonce
-		$nonce = isset( $_POST['sf-group-field'] ) ? $_POST['sf-group-field'] : false;
-		if ( ! wp_verify_nonce( $nonce, 'sf-group-field' ) ) {
-			return $post_id;
-		}
-
-		$parser = new DataParser( $post_id );
-		$prefix = (string) $this->app->get( 'prefix' );
-
-		// Save settings
-		if ( ! empty( $_POST[ $prefix ] ) ) {
-			foreach ( $_POST[ $prefix ] as $id => $data ) {
-				if ( empty( $data ) || $id == $post_id ) {
-					continue;
-				}
-				$parser->save_filter( $id, $data );
-			}
-		}
-
-		// Delete filters
-		// @todo: replace string with a call to container?
-		if ( $_POST['sf-removed-fields'] ) {
-			$remove = explode( '|', $_POST['sf-removed-fields'] );
-			$remove = array_map( 'intval', $remove );
-
-			foreach ( $remove as $id ) {
-				$parser->remove_filter( $id );
-			}
-		}
-
-		return $post_id;
-	}
-
-
-	/**
-	 * On filter group save update post_content with settings data
-	 *
-	 * @param $data
-	 * @param $postarr
-	 *
-	 * @return mixed
-	 */
-	public function save_group_settings( $data, $postarr ) {
-		$prefix   = (string) $this->app->get( 'prefix' );
-		$settings = isset( $_POST[ $prefix ][ $postarr['ID'] ] ) ? $_POST[ $prefix ][ $postarr['ID'] ] : [];
-
-		if ( ! empty( $settings ) ) {
-			$settings             = wp_unslash( $settings );
-			$data['post_content'] = wp_slash( maybe_serialize( $settings ) );
-		}
-
-		return $data;
-	}
-
-	/**
-	 * When deleting filter group, remove all filters from database
-	 *
-	 * @param $group_id
-	 *
-	 * @return bool|void
-	 */
-	public function remove_group( $group_id, $post ) {
-
-		// Process only filter groups
-		if ( $post->post_type === $this->app->get( 'group_post_type' ) ) {
-
-			$filters = get_posts(
-				array(
-					'posts_per_page'   => - 1,
-					'post_type'        => \Hybrid\app( 'item_post_type' ),
-					'suppress_filters' => true,
-					'post_parent'      => $group_id,
-					'post_status'      => array( 'publish', 'trash' ),
-				)
-			);
-
-			// Remove filters
-			foreach ( $filters as $filter ) {
-				wp_delete_post( $filter->ID, true );
-			}
-
-			return true;
-		}
-	}
-
-	/**
-	 * Register widgets
-	 *
-	 * @return void
-	 */
-	public function register_widgets() {
-		register_widget( FilterWidget::class );
-	}
-
-	/**
-	 * Register blocks
-	 *
-	 * @return void
-	 */
-	public function register_blocks(  ) {
-		FilterBlock::getInstance();
 	}
 }

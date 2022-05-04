@@ -15,7 +15,11 @@ registerBlockType( 'simply-filters/filter-group', {
 	icon: 'format-image',
 	category: 'widgets',
 
-	attributes: {},
+	attributes: {
+		group_id: {
+			type: 'integer'
+		}
+	},
 
 	edit() {
 		return <div>something else</div>
