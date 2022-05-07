@@ -19,7 +19,7 @@ class FilterWidget extends \WC_Widget {
 
 		$title = apply_filters( 'widget_title', isset( $instance['title'] ) ? $instance['title'] : '', $instance, $this->id_base );
 
-		if ( isset( $instance['id'] ) && ! is_null( $instance['id'] ) ) {
+		if ( isset( $instance['group_id'] ) && ! is_null( $instance['group_id'] ) ) {
 			$attributes = array(
 				'before_html' => $args['before_widget'],
 				'after_html'  => $args['after_widget'],
@@ -29,9 +29,8 @@ class FilterWidget extends \WC_Widget {
 				$attributes['before_html'] .= $args['before_title'] . $title . $args['after_title'];
 			}
 
-			/**
-			 * @todo: print filters
-			 */
+			$group = new FilterGroup( $instance['group_id'] );
+			$group->render();
 		}
 
 	}

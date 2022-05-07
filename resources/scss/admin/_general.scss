@@ -220,6 +220,16 @@
 	}
 }
 
+.sf-block {
+	&__placeholder {
+
+		.components-placeholder__fieldset {
+			flex-direction: column;
+			align-items: flex-start;
+		}
+	}
+}
+
 /**
  * Hide edit options from filters group screen
  */
@@ -272,7 +282,6 @@ body.post-type-sf_filter_group {
 /**
  * Admin notices
  */
-
 .sf-notice {
 	position: relative;
 	display: flex;

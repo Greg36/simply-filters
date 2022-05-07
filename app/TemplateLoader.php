@@ -16,18 +16,19 @@ class TemplateLoader {
 	 * Load provided template from admin views folder and pass through variables
 	 *
 	 * @param string $view_path
-	 * @param array $view_args
+	 * @param array $args
 	 */
-	public static function render( $view_path = '', $view_args = array() ) {
+	public static function render( $view_path, $args = array(), $type = 'Admin' ) {
 		if ( substr( $view_path, -4 ) !== '.php' ) {
-			$view_path = static::get_path( "app/Admin/views/{$view_path}.php" );
+			$view_path = static::get_path( "app/{$type}/views/{$view_path}.php" );
 		}
 
 		// Include view
 		if ( file_exists( $view_path ) ) {
+			$args = static::default_values( $args );
+
 			// EXTR_SKIP prevents already present values to accidentally being overwritten
-			$view_args = static::default_values( $view_args );
-			extract( $view_args, EXTR_SKIP );
+			extract( $args, EXTR_SKIP );
 			include $view_path;
 		}
 	}

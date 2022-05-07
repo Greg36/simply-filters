@@ -309,6 +309,7 @@ abstract class Filter {
 
 	}
 
+    // @todo: move this and other ADMIN only funstions to FilterSettings class
 	public function render_new_filter_preview() {
 		?>
         <div class="sf-preview">

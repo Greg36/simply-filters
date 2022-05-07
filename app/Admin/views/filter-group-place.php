@@ -43,7 +43,7 @@
             <p><?php _e( 'Place this shortcode where you need filters to appear:', $locale ) ?></p>
             <?php
             printf( '<input type="text" readonly="readonly" onclick="this.select();" value="%s"/>',
-                esc_attr( '[' . \Hybrid\app( 'shortcode_tag' ) . ' id="' . get_the_ID() . '"]' )
+                esc_attr( '[' . \Hybrid\app( 'shortcode_tag' ) . ' group_id="' . get_the_ID() . '"]' )
             )
             ?>
         </li>

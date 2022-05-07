@@ -225,7 +225,7 @@ class AdminServiceProvider extends ServiceProvider {
 	public function group_table_column_shortcode( $column, $post_id ) {
 		if ( 'sf_shortcode' === $column ) {
 			echo sprintf( '<input type="text" readonly="readonly" onclick="this.select();" value="%s"/>',
-				esc_attr( '[' . $this->app->get( 'shortcode_tag' ) . ' id="' . $post_id . '"]' )
+				esc_attr( '[' . $this->app->get( 'shortcode_tag' ) . ' group_id="' . $post_id . '"]' )
 			);
 		}
 	}

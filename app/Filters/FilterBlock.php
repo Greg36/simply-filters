@@ -32,22 +32,56 @@ class FilterBlock {
 	}
 
 	public function register_assets() {
-		wp_register_script( 'simply-filters_filter-block', $this->getAssetPath( 'js/blocks/filter-block.js' ), [ 'wp-blocks', 'wp-i18n' ], null, false );
+		wp_register_script( 'simply-filters_filter-block', $this->getAssetPath( 'js/blocks/filter-block.js' ), [ 'wp-block-editor',
+			'wp-components',
+			'wp-element',
+			'wp-blocks',
+			'wp-block-editor',
+			'wp-data',
+			'wp-compose',
+			'wp-i18n',
+			'wp-server-side-render' ], null, false );
 
 		$locale = \Hybrid\app( 'locale' );
 
 		wp_localize_script( 'simply-filters_filter-block', 'sf_filter_block', [
 			'locale' => [
-				'block_title'   => __( 'SF Filter Group xd', $locale ),
-				'block_desc'    => __( 'SF DESC', $locale )
+				'block_title'   => __( 'SF Filter Group', $locale ),
+				'block_desc'    => __( 'SF DESC', $locale ) //@todo add desc
 			]
 		] );
 	}
 
 	public function register_block() {
 		register_block_type( $this->block_name, array(
-			'editor_script' => 'simply-filters_filter-block'
+			'editor_script' => 'simply-filters_filter-block',
+			'render_callback' => array( $this, 'render_block' ),
+			'attributes'      => [
+				'group_id' => [
+					'type'    => 'integer',
+					'default' => 0
+				],
+				'isSelectGroup' => [
+					'type' => 'boolean',
+					'default' => true,
+				],
+				'isPreview' => [
+					'type' => 'boolean',
+					'default' => false
+				]
+			]
 		) );
+	}
+
+	public function render_block( $attributes ) {
+		if( ! isset( $attributes['group_id'] ) ) return '';
+
+		$group = new FilterGroup( $attributes['group_id'] );
+
+		ob_start();
+		$group->render();
+
+		return ob_get_clean();
 	}
 
 }

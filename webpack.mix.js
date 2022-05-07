@@ -47,7 +47,7 @@ mix.js( 'resources/js/admin.js', 'js' )
 /**
  * Compile Gutenberg blocks.
  */
-mix.js( 'resources/js/blocks/*.js', 'js/blocks' ).react();
+mix.js( 'resources/js/blocks/filter-block/index.js', 'js/blocks/filter-block.js' ).react();
 
 /*
  * Compile CSS.

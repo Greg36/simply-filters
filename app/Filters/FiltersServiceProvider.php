@@ -88,6 +88,7 @@ class FiltersServiceProvider extends ServiceProvider {
 				'publicaly_queryable' => false,
 				'show_in_menu'        => 'woocommerce',
 				'show_in_admin_bar'   => false,
+				'show_in_rest'        => true,
 				'show_ui'             => true,
 				'hierarchical'        => false,
 				'supports'            => array( 'title' ),
@@ -151,7 +152,7 @@ class FiltersServiceProvider extends ServiceProvider {
 	 */
 	public function register_shortcodes() {
 		add_shortcode( $this->app->get( 'shortcode_tag' ), function ( $atts ) {
-			return ( new FilterShortcode( $atts['id'] ) )->getShortcode();
+			return ( new FilterShortcode( $atts['group_id'] ) )->getShortcode();
 		} );
 	}
 

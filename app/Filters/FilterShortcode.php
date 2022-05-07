@@ -15,6 +15,11 @@ class FilterShortcode {
 	 * @return string
 	 */
 	public function getShortcode() {
-		return '';
+		$group = new FilterGroup( $this->group_id );
+
+		ob_start();
+		$group->render();
+
+		return ob_get_clean();
 	}
 }

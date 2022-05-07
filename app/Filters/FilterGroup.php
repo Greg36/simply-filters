@@ -2,6 +2,8 @@
 
 namespace SimplyFilters\Filters;
 
+use SimplyFilters\TemplateLoader;
+
 class FilterGroup {
 
 	/**
@@ -72,6 +74,10 @@ class FilterGroup {
 	 * @return void
 	 */
 	public function render() {
-
+		TemplateLoader::render( 'filter-group', [
+			'filters' => $this->get_filters()
+		],
+			'Filters'
+		);
 	}
 }
