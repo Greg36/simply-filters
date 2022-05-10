@@ -29,8 +29,12 @@ class FilterWidget extends \WC_Widget {
 				$attributes['before_html'] .= $args['before_title'] . $title . $args['after_title'];
 			}
 
+			echo $attributes['before_html'];
+
 			$group = new FilterGroup( $instance['group_id'] );
 			$group->render();
+
+			echo $attributes['after_html'];
 		}
 
 	}

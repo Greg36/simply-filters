@@ -75,10 +75,9 @@ class FilterBlock {
 
 	public function render_block( $attributes ) {
 		if( ! isset( $attributes['group_id'] ) ) return '';
+		ob_start();
 
 		$group = new FilterGroup( $attributes['group_id'] );
-
-		ob_start();
 		$group->render();
 
 		return ob_get_clean();

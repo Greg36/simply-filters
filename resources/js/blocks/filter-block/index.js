@@ -8,10 +8,6 @@ import { registerBlockType } from '@wordpress/blocks';
  * Internal dependencies
  */
 import Block from './block';
-import ServerSideRender from "@wordpress/server-side-render";
-
-import { Disabled, PanelBody } from '@wordpress/components';
-
 
 registerBlockType( 'simply-filters/filter-group', {
 	title: __( 'SF Filter Group xd', 'simply-filters' ),
