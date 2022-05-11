@@ -32,7 +32,8 @@ class FilterBlock {
 	}
 
 	public function register_assets() {
-		wp_register_script( 'simply-filters_filter-block', $this->getAssetPath( 'js/blocks/filter-block.js' ), [ 'wp-block-editor',
+		wp_register_script( 'simply-filters_filter-block', $this->getAssetPath( 'js/blocks/filter-block.js' ), [
+			'wp-block-editor',
 			'wp-components',
 			'wp-element',
 			'wp-blocks',
@@ -40,16 +41,8 @@ class FilterBlock {
 			'wp-data',
 			'wp-compose',
 			'wp-i18n',
-			'wp-server-side-render' ], null, false );
-
-		$locale = \Hybrid\app( 'locale' );
-
-		wp_localize_script( 'simply-filters_filter-block', 'sf_filter_block', [
-			'locale' => [
-				'block_title'   => __( 'SF Filter Group', $locale ),
-				'block_desc'    => __( 'SF DESC', $locale ) //@todo add desc
-			]
-		] );
+			'wp-server-side-render'
+		], null, false );
 	}
 
 	public function register_block() {

@@ -4,6 +4,7 @@
  * @package   SimplyFilters
  */
 
+import { __ } from '@wordpress/i18n';
 import ColorControl from './admin-color';
 import { addLoader, addFormNotice, invalidInputNotice, removeLoader, uniqid } from "./helpers";
 import { checkNoFilterLabel, updateOrderNumbers } from "./admin-filters-group";
@@ -79,7 +80,7 @@ export default class AdminFilter {
 		this.filter.querySelectorAll( `[required]` ).forEach( input => {
 			input.addEventListener( 'invalid', ( e ) => {
 				e.preventDefault();
-				invalidInputNotice( sf_admin.locale.required, input );
+				invalidInputNotice( __( 'This field is required.', 'simply-filters' ), input );
 			} );
 		} );
 
@@ -239,7 +240,7 @@ export default class AdminFilter {
 
 		// Update field label
 		const label = filter.querySelector( '.sf-row__label' );
-		label.innerText = label.innerText.trim() + ' ' + sf_admin.locale.copy;
+		label.innerText = label.innerText.trim() + ' ' + __( '(copy)', 'simply-filters' );
 		new_filter.getInput( 'label' ).value = label.innerText;
 
 		// Open the filter
@@ -318,7 +319,7 @@ export default class AdminFilter {
 	placeRemoveTooltip() {
 		const tooltip = document.createElement( 'div' );
 		tooltip.classList.add( 'sf-remove-tooltip' );
-		tooltip.innerHTML = `${sf_admin.locale.sure}<a href="#" data-event="remove">${sf_admin.locale.delete}</a><a href="#" data-event="cancel">${sf_admin.locale.cancel}</a>`;
+		tooltip.innerHTML = `${__( 'Are you sure?', 'simply-filters' )}<a href="#" data-event="remove">${__( 'Delete', 'simply-filters' )}</a><a href="#" data-event="cancel">${__( 'Cancel', 'simply-filters' )}</a>`;
 
 		// Append tooltip to remove button
 		this.filter.querySelector( '.remove-filter' ).insertAdjacentElement( 'afterend', tooltip );

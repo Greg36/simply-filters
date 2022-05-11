@@ -1,5 +1,7 @@
 export { uniqid, addLoader, removeLoader, addFormNotice, invalidInputNotice };
 
+import { __ } from '@wordpress/i18n';
+
 function uniqid( prefix, moreEntropy ) {
 	//  discuss at: https://locutus.io/php/uniqid/
 	// original by: Kevin van Zonneveld (https://kvz.io)
@@ -73,7 +75,7 @@ function addFormNotice( message, type = 'info' ) {
 	// Create the notice
 	let notice = document.createElement( 'div' );
 	notice.classList.add( 'sf-notice', `sf-notice__${type}` );
-	notice.innerHTML = `<p class="sf-notice__message">${message}</p><a class="sf-notice__close" href="#"><span class="screen-reader-text">${ sf_admin.locale.close_notice }</span></a>`;
+	notice.innerHTML = `<p class="sf-notice__message">${message}</p><a class="sf-notice__close" href="#"><span class="screen-reader-text">${__( 'Close notice', 'simply-filters' )}</span></a>`;
 
 	// Insert notice at the top of form
 	notice = container.insertAdjacentElement( 'afterbegin', notice );

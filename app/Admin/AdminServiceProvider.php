@@ -125,22 +125,10 @@ class AdminServiceProvider extends ServiceProvider {
 	 * @since    1.0.0
 	 */
 	public function enqueue_scripts() {
-		wp_enqueue_script( 'simply-filters_admin', $this->getAssetPath( 'js/admin.js' ), [ 'wp-color-picker' ], null, false );
-
-		$locale = $this->app->get( 'locale' );
+		wp_enqueue_script( 'simply-filters_admin', $this->getAssetPath( 'js/admin.js' ), [ 'wp-color-picker', 'wp-i18n' ], null, false );
 
 		wp_localize_script( 'simply-filters_admin', 'sf_admin', [
 			'prefix'         => \Hybrid\app( 'prefix' ),
-			'locale'         => [
-				'copy'          => __( '(copy)', $locale ),
-				'sure'          => __( 'Are you sure?', $locale ),
-				'delete'        => __( 'Delete', $locale ),
-				'cancel'        => __( 'Cancel', $locale ),
-				'close_notice'  => __( 'Close notice', $locale ),
-				'unique_field'  => __( 'Value must be unique across all filters in the group', $locale ),
-				'unique_notice' => __( 'values are not unique.', $locale ),
-				'required'      => __( 'This field is required.' )
-			],
 			'rest_url'       => get_rest_url(),
 			'admin_url'      => get_admin_url(),
 			'ajax_url'       => admin_url( 'admin-ajax.php' ),

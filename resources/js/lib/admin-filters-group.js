@@ -4,6 +4,7 @@
  * @package   SimplyFilters
  */
 
+import { __ } from '@wordpress/i18n';
 import AdminFilter from "./admin-filter";
 import AdminNewFilter from "./admin-new-filter";
 import { invalidInputNotice, addFormNotice } from "./helpers";
@@ -72,7 +73,7 @@ function prepareSubmitData( e ) {
 	const duplicates = findDuplicatedValues();
 	if( duplicates ) {
 		e.preventDefault();
-		addFormNotice( duplicates + ' ' + sf_admin.locale.unique_notice, 'error' );
+		addFormNotice( duplicates + ' ' + __( 'values are not unique.', 'simply-filters' ), 'error' );
 		return;
 	}
 
@@ -102,7 +103,7 @@ function findDuplicatedValues() {
 		// If there are duplicates display notice
 		duplicates.forEach( ( input ) => {
 			found_duplicates++;
-			invalidInputNotice( sf_admin.locale.unique_field, input );
+			invalidInputNotice( __( 'Value must be unique across all filters in the group', 'simply-filters' ), input );
 
 			// Open settings
 			if( ! input.closest( '.sf-filter' ).classList.contains( 'open' ) ) {
