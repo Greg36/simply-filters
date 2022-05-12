@@ -2,6 +2,7 @@
 
 namespace SimplyFilters\Filters;
 
+use SimplyFilters\Admin\GroupSettings;
 use SimplyFilters\TemplateLoader;
 
 class FilterGroup {
@@ -68,6 +69,11 @@ class FilterGroup {
 		return $filters;
 	}
 
+	public function get_settings() {
+		$settings = new GroupSettings( $this->post_id );
+		return $settings->get_settings();
+	}
+
 	/**
 	 * Render front-end markup of filter group
 	 *
@@ -75,7 +81,8 @@ class FilterGroup {
 	 */
 	public function render() {
 		TemplateLoader::render( 'filter-group', [
-			'filters' => $this->get_filters()
+			'filters' => $this->get_filters(),
+			'settings' => $this->get_settings()
 		],
 			'Filters'
 		);

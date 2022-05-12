@@ -33,6 +33,7 @@ class AdminServiceProvider extends ServiceProvider {
 		add_action( 'admin_menu', [ $this, 'init_settings' ] );
 
 		add_action( 'save_post', array( $this, 'save_filters' ), 10, 2 );
+		add_filter( 'wp_insert_post_data', array( $this, 'save_group_settings' ), 90, 2 );
 		add_action( 'delete_post', array( $this, 'remove_group' ), 90, 2 );
 	}
 
@@ -157,7 +158,8 @@ class AdminServiceProvider extends ServiceProvider {
 			return;
 		}
 
-		$this->app->instance( 'filter/group/settings', new GroupSettings( get_the_ID() ) );
+		$settings = new GroupSettings( get_the_ID() );
+		$settings->init_admin();
 	}
 
 	/**
@@ -294,7 +296,7 @@ class AdminServiceProvider extends ServiceProvider {
 		$parser = new DataParser( $post_id );
 		$prefix = (string) $this->app->get( 'prefix' );
 
-		// Save settings
+		// Save filter settings
 		if ( ! empty( $_POST[ $prefix ] ) ) {
 			foreach ( $_POST[ $prefix ] as $id => $data ) {
 				if ( empty( $data ) || $id == $post_id ) {
@@ -303,6 +305,9 @@ class AdminServiceProvider extends ServiceProvider {
 				$parser->save_filter( $id, $data );
 			}
 		}
+
+		// Save group settings
+
 
 		// Delete filters
 		if ( $_POST['sf-removed-fields'] ) {
@@ -346,5 +351,31 @@ class AdminServiceProvider extends ServiceProvider {
 
 			return true;
 		}
+	}
+
+	/**
+	 * On filter group save update post_content with settings data
+	 *
+	 * @param $data
+	 * @param $postarr
+	 *
+	 * @return mixed
+	 */
+	public function save_group_settings( $data, $postarr ) {
+
+		// Process only filters group
+		if ( $data['post_type'] !== $this->app->get( 'group_post_type' ) ) {
+			return $data;
+		}
+
+		$prefix   = (string) $this->app->get( 'prefix' );
+		$settings = isset( $_POST[ $prefix ][ $postarr['ID'] ] ) ? $_POST[ $prefix ][ $postarr['ID'] ] : [];
+
+		if ( ! empty( $settings ) ) {
+			$settings             = wp_unslash( $settings );
+			$data['post_content'] = wp_slash( maybe_serialize( $settings ) );
+		}
+
+		return $data;
 	}
 }

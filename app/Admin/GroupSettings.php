@@ -21,15 +21,17 @@ class GroupSettings {
 		$this->filter_group = new FilterGroup( $group_id );
 
 		$this->register_group_settings();
-		$this->init_metaboxes();
+	}
 
+	public function init_admin() {
+		$this->init_metaboxes();
 		add_action( 'in_admin_header', [ $this, 'render_new_filter_popup' ] );
 	}
 
 	private function register_group_settings() {
 		$locale = \Hybrid\app( 'locale' );
 
-		$settings = new Settings( $this->group_id, (array) maybe_unserialize( get_the_content() ) );
+		$settings = new Settings( $this->group_id, (array) maybe_unserialize( get_post_field('post_content', $this->group_id ) ) );
 
 		$settings->add( 'elements', 'checkbox', [
 			'name'        => __( 'Enable elements', $locale ),
@@ -39,7 +41,7 @@ class GroupSettings {
 				'clear' => __( '<strong>Clear all button</strong> - reset options button to clear all selected values', $locale ),
 				'empty' => __( '<strong>Empty options</strong> - display options without any products assigned to them', $locale ),
 			]
-		] );
+		] );//@todo: this should add empty value to 'data' so that there are no conflicts on array vs string in checkboxes vs text
 
 		$settings->add( 'auto_submit', 'radio', [
 			'name'        => __( 'Filtering start', $locale ),
@@ -51,6 +53,10 @@ class GroupSettings {
 		] );
 
 		$this->settings = $settings;
+	}
+
+	public function get_settings() {
+		return $this->settings;
 	}
 
 	/**

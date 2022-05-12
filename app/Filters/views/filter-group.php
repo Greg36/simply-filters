@@ -1,7 +1,13 @@
 <?php
 /**
  * @var $filters array
+ * @var $settings array
  */
+
+echo '<pre>';
+print_r( $settings );
+echo '</pre>';
+die();
 ?>
 
 <div class="sf-filter-group">
@@ -10,7 +16,7 @@
 		foreach ( $filters as $key => $filter ) {
 			\SimplyFilters\TemplateLoader::render( 'filter', [
 				'filter' => $filter,
-				'order'  => $key + 1
+				'settings'  => $settings
 			], 'Filters'
 			);
 		}
