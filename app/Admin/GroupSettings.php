@@ -41,7 +41,7 @@ class GroupSettings {
 				'clear' => __( '<strong>Clear all button</strong> - reset options button to clear all selected values', $locale ),
 				'empty' => __( '<strong>Empty options</strong> - display options without any products assigned to them', $locale ),
 			]
-		] );//@todo: this should add empty value to 'data' so that there are no conflicts on array vs string in checkboxes vs text
+		] );
 
 		$settings->add( 'auto_submit', 'radio', [
 			'name'        => __( 'Filtering start', $locale ),
@@ -49,6 +49,15 @@ class GroupSettings {
 			'options'     => [
 				'automatic' => __( '<strong>Automatically</strong> - when any of the filters are changed', $locale ),
 				'onsubmit'  => __( '<strong>On submit</strong> - when user presses the Filter button', $locale )
+			]
+		] );
+
+		$settings->add( 'test_col', 'color', [
+			'name'        => __( 'color', $locale ),
+			'description' => __( 'colorcolor', $locale ),
+			'options'     => [
+				'bg_color' => 'Background color',
+				'fg_color' => 'Foreground color'
 			]
 		] );
 

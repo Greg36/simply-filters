@@ -10,23 +10,28 @@ class ColorControl extends Control {
 		parent::__construct( $params );
 	}
 
-    // @todo: rework this control to not rely on terms
 	protected function render_setting_field() {
 
 		echo '<div class="sf-color">';
 
 		if ( ! empty( $this->options ) ) {
 
-			foreach ( $this->options as $term_id => $name ) {
+			foreach ( $this->options as $option => $name ) {
 
 				// Each picker needs individual key and ID
-				$key = $this->key . '[' . $term_id . ']';
-				$id  = $this->id  . '-' . $term_id;
+				$key = $this->key . '[' . $option . ']';
+				$id  = $this->id  . '-' . $option;
 
 				// Get the color value from term's meta
-				$value = get_term_meta( $term_id, \Hybrid\app( 'term-color-key' ), true ); //@todo: this should be something to remove on uninstall
+				$value = get_term_meta( $option, \Hybrid\app( 'term-color-key' ), true ); //@todo: this should be something to remove on uninstall
+
+                // If there is no term data use option value directly
 				if ( ! $value ) {
-					$value = '#ffffff';
+                    if( isset( $this->value[ $option ] ) ) {
+	                    $value = $this->value[ $option ];
+                    } else {
+					    $value = '#ffffff';
+                    }
 				}
 
 				?>
@@ -72,6 +77,7 @@ class ColorControl extends Control {
 	}
 
 	public function parse_data( $data ) {
+        $a = 'xd';
 		// TODO: Implement parse_data() method.
         return $data;
 	}

@@ -45,6 +45,7 @@ abstract class Control {
 		$this->name = $args['name'];
 		$this->description = isset( $args['description'] ) ? $args['description'] : '';
 		$this->options = isset( $args['options'] ) ? $args['options'] : [];
+        // @todo: this where default should be handled
 	}
 
 	/**
