@@ -18,6 +18,12 @@ export default class ColorControl {
 			change: this.updateColor.bind( this, this.filter ),
 			clear: this.updateColor.bind( this, this.filter )
 		} );
+
+		this.$selector.each( ( num, ele ) => {
+			const ev = { target: ele };
+			this.updateColor( this.filter , ev );
+		} );
+
 	}
 
 	/**
