@@ -10,7 +10,7 @@ class ColorControl extends Control {
 		parent::__construct( $params );
 	}
 
-    // @todo: should this be private as it should not be called directly?
+    // @todo: rework this control to not rely on terms
 	protected function render_setting_field() {
 
 		echo '<div class="sf-color">';
@@ -69,5 +69,10 @@ class ColorControl extends Control {
 		}
 
 		echo '</div>';
+	}
+
+	public function parse_data( $data ) {
+		// TODO: Implement parse_data() method.
+        return $data;
 	}
 }

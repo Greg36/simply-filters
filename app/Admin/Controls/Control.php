@@ -60,12 +60,9 @@ abstract class Control {
         $this->render_settings_row();
     }
 
-	protected function is_option_checked( $value ) {
-        if( is_array( $this->value ) ) {
-            return in_array( $value, $this->value);
-        }
-        return $value === $this->value;
-    }
+	public function parse_data( $data ){
+        return $data;
+	} // @todo: change to get_data / save_data   or something like get/save_setting ?
 
 	/**
 	 * Output admin setting's table row for the filter

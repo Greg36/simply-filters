@@ -27,4 +27,27 @@ class CheckboxControl extends Control {
 
 		echo '</ul>';
 	}
+
+	private function is_option_checked( $value ) {
+		if( is_array( $this->value ) ) {
+			return in_array( $value, $this->value);
+		}
+		return $value === $this->value;
+	}
+
+	/**
+	 * Parse saved settings data with all available options
+	 *
+	 * @param $data
+	 *
+	 * @return array
+	 */
+	public function parse_data( $data ) {
+		if( $data === false ) $data = [];
+
+		foreach ( $this->options as $key => $option ) {
+			$data[ $key ] = isset( $data[ $key ] );
+		}
+		return $data;
+	}
 }

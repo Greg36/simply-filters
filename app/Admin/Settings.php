@@ -33,6 +33,22 @@ class Settings {
 
 
 	/**
+	 * Return parsed data from all settings
+	 *
+	 * @return array
+	 */
+	public function get_data() {
+
+		$data = [];
+		foreach ( $this->settings as $setting ) {
+			$value = isset( $this->data[ $setting['key'] ] ) ? $this->data[ $setting['key'] ] : false;
+			$data[ $setting['key'] ] = $setting['control']->parse_data( $value );
+		}
+
+		return $data;
+	}
+
+	/**
 	 * Save control object
 	 *
 	 * @param string $key

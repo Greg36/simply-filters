@@ -12,10 +12,11 @@ class ToggleControl extends Control {
 
 		echo '<label class="sf-toggle">';
 
-		printf( '<input type="checkbox" id="%s" name="%s" value="%s">',
+		printf( '<input type="checkbox" id="%s" name="%s" value="%s" %s>',
 			esc_attr( $this->id ),
 			esc_attr( $this->key ),
-			esc_attr( $this->value )
+			esc_attr( $this->label ),
+			$this->value ? 'checked' : ''
 		);
 
 		?>
@@ -28,5 +29,16 @@ class ToggleControl extends Control {
 
 		echo '</label>';
 
+	}
+
+	/**
+     * Return settings data as bool
+     *
+	 * @param $data
+	 *
+	 * @return bool
+	 */
+	public function parse_data( $data ) {
+        return $data ? true : false;
 	}
 }

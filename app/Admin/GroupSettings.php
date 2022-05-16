@@ -55,8 +55,13 @@ class GroupSettings {
 		$this->settings = $settings;
 	}
 
-	public function get_settings() {
-		return $this->settings;
+	/**
+	 * Get array with all the settings data
+	 *
+	 * @return array
+	 */
+	public function get_data() {
+		return $this->settings->get_data();
 	}
 
 	/**

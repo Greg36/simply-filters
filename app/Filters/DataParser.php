@@ -12,6 +12,8 @@ class DataParser {
 
 	public function save_filter( $id, $data ) {
 
+		//  @todo check if toggle control is being saved
+
 		// Remove slashes
 		$data = wp_unslash( $data );
 

@@ -71,7 +71,7 @@ class FilterGroup {
 
 	public function get_settings() {
 		$settings = new GroupSettings( $this->post_id );
-		return $settings->get_settings();
+		return $settings->get_data();
 	}
 
 	/**

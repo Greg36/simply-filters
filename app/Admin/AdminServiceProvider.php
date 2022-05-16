@@ -306,9 +306,6 @@ class AdminServiceProvider extends ServiceProvider {
 			}
 		}
 
-		// Save group settings
-
-
 		// Delete filters
 		if ( $_POST['sf-removed-fields'] ) {
 			$remove = explode( '|', $_POST['sf-removed-fields'] );
