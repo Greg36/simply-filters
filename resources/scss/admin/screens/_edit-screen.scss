@@ -999,14 +999,17 @@ body.post-type-sf_filter_group {
 		.sf-options {
 			border-bottom: none;
 		}
-		//
-		//.sf-option > td:first-of-type {
-		//	padding-left: 35px;
-		//}
-		//
+
 		tbody > tr:first-of-type > td {
 			border-top: $field__border;
 		}
+	}
+
+	.sf-color__swatch {
+		display: none !important;
+	}
+	.sf-color__preview {
+		padding-left: 10px;
 	}
 }
 

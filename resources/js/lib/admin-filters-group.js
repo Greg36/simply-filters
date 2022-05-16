@@ -18,6 +18,13 @@ function initFiltersGroup() {
 		new AdminFilter( current );
 	} );
 
+	// Setup color inputs for group settings
+	jQuery( '.sf-settings .sf-color__field' ).wpColorPicker({
+		defaultColor: false,
+		hide: true,
+		palettes: true,
+	} );
+
 	// Make filter rows sortable
 	makeRowsSortable();
 
