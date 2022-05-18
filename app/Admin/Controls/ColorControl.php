@@ -75,10 +75,4 @@ class ColorControl extends Control {
 
 		echo '</div>';
 	}
-
-	public function parse_data( $data ) {
-        $a = 'xd';
-		// TODO: Implement parse_data() method.
-        return $data;
-	}
 }

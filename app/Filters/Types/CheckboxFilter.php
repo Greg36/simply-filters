@@ -3,6 +3,7 @@
 namespace SimplyFilters\Filters\Types;
 
 use SimplyFilters\Admin\Controls\ToggleControl;
+use SimplyFilters\TemplateLoader;
 
 class CheckboxFilter extends Filter {
 
@@ -23,6 +24,21 @@ class CheckboxFilter extends Filter {
 		$this->name        = __( 'Checkbox', $this->locale );
 		$this->description = __( 'Choose one or many options', $this->locale );
 	}
+
+	public function render() {
+        // @todo: Possible option for selected tags or categories - make the links clickable to go to that category
+
+		$options = $this->get_current_source_options();
+
+        if( $options ) {
+            TemplateLoader::render( 'types/checkbox', [
+		        'options' => $options,
+                'key' => $this->get_data( 'url-label' )
+	        ],
+		        'Filters'
+	        );
+        }
+    }
 
 	protected function filter_preview() {
 		?>

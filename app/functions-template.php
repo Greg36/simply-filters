@@ -44,3 +44,24 @@ function get_svg( $file ) {
 function get_image( $file ) {
 	return SF_URL . 'assets/img/' . $file;
 }
+
+/**
+ * Get stars rating with given highlighted stars
+ *
+ * @param $count
+ *
+ * @return string
+ */
+function get_stars( $count = 1, $max = 5 ) {
+	$stars = '';
+
+	for ( $i = 1; $i <= $count; $i++ ) {
+		$stars .= '<span class="sf-star sf-star--full"></span>';
+	}
+
+	for ( $i = $count + 1; $i <= $max; $i++ ) {
+		$stars .= '<span class="sf-star"></span>';
+	}
+
+	return $stars;
+}

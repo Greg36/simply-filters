@@ -3,6 +3,7 @@
 namespace SimplyFilters\Filters\Types;
 
 use SimplyFilters\Admin\Controls\ToggleControl;
+use SimplyFilters\TemplateLoader;
 
 class RadioFilter extends Filter {
 
@@ -21,6 +22,19 @@ class RadioFilter extends Filter {
 		$this->type        = 'Radio';
 		$this->name        = __( 'Radio', $this->locale );
 		$this->description = __( 'Select onyly one option', $this->locale );
+	}
+
+	public function render() {
+		$options = $this->get_current_source_options();
+
+		if( $options ) {
+			TemplateLoader::render( 'types/radio', [
+				'options' => $options,
+				'key' => $this->get_data( 'url-label' )
+			],
+				'Filters'
+			);
+		}
 	}
 
 	protected function filter_preview() {

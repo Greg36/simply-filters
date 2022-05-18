@@ -3,6 +3,7 @@
 namespace SimplyFilters\Filters\Types;
 
 use SimplyFilters\Admin\Controls\ColorControl;
+use SimplyFilters\TemplateLoader;
 
 class ColorFilter extends Filter {
 
@@ -38,7 +39,7 @@ class ColorFilter extends Filter {
 	 */
 	protected function load_settings() {
 
-        parent::load_settings();
+		parent::load_settings();
 
 		$this->settings->add( 'color', 'color', [
 			'name'        => __( 'Select color', $this->locale ),
@@ -46,6 +47,22 @@ class ColorFilter extends Filter {
 			'options'     => $this->get_current_source_options()
 		] );
 	}
+
+	public function render() {
+		$options = $this->get_current_source_options();
+
+		if ( $options ) {
+			$options = $this->prepare_colors_data( $options );
+
+			TemplateLoader::render( 'types/color', [
+				'options' => $options,
+				'key'     => $this->get_data( 'url-label' )
+			],
+				'Filters'
+			);
+		}
+	}
+
 
 	protected function filter_preview() {
 		?>
@@ -66,5 +83,38 @@ class ColorFilter extends Filter {
             </ul>
         </div>
 		<?php
+	}
+
+	private function prepare_colors_data( $options ) {
+
+		if ( empty( $options ) ) {
+			return [];
+		}
+
+		$colors = [];
+		foreach ( $options as $id => $label ) {
+            $hex = get_term_meta( $id, \Hybrid\app( 'term-color-key' ), true );
+
+			$colors[ $id ] = [
+				'label' => $label,
+                'hex' => $hex,
+				'class'   => $this->check_color_luminance( $hex )
+			];
+		}
+
+		return $colors;
+	}
+
+	/**
+     * If color has insufficient luminance add class
+     *
+	 * @param $hex
+	 *
+	 * @return string
+	 */
+	private function check_color_luminance( $hex ) {
+        $luminance = \SimplyFilters\calculateLuminance( $hex );
+
+        return $luminance < 0.179 ? 'sf-color__swatch--contrast' : '';
 	}
 }

@@ -3,6 +3,7 @@
 namespace SimplyFilters\Filters\Types;
 
 use SimplyFilters\Admin\Controls\ToggleControl;
+use SimplyFilters\TemplateLoader;
 
 class SelectFilter extends Filter {
 
@@ -21,6 +22,19 @@ class SelectFilter extends Filter {
 		$this->type        = 'Select';
 		$this->name        = __( 'Select', $this->locale );
 		$this->description = __( 'Select only one from list', $this->locale );
+	}
+
+	public function render() {
+		$options = $this->get_current_source_options();
+
+		if( $options ) {
+			TemplateLoader::render( 'types/select', [
+				'options' => $options,
+				'key' => $this->get_data( 'url-label' )
+			],
+				'Filters'
+			);
+		}
 	}
 
 	protected function filter_preview() {

@@ -17,9 +17,15 @@ class FilterGroup {
 	 */
 	private $filters = [];
 
+	/**
+	 * @var GroupSettings
+	 */
+	private $settings;
+
 	public function __construct( $post_id ) {
 
 		$this->post_id = $post_id;
+		$this->settings = new GroupSettings( $post_id );
 
 		$this->query_filters_data();
 	}
@@ -81,8 +87,9 @@ class FilterGroup {
 	 */
 	public function render() {
 		TemplateLoader::render( 'filter-group', [
+			'group_id' => $this->post_id,
 			'filters' => $this->get_filters(),
-			'settings' => $this->get_settings()
+			'settings' => $this->get_settings(),
 		],
 			'Filters'
 		);

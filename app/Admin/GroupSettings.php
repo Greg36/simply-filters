@@ -7,8 +7,6 @@ use SimplyFilters\TemplateLoader;
 
 class GroupSettings {
 
-	private $filter_group;
-
 	private $group_id;
 
 	/**
@@ -18,12 +16,12 @@ class GroupSettings {
 
 	public function __construct( $group_id ) {
 		$this->group_id     = $group_id;
-		$this->filter_group = new FilterGroup( $group_id );
-
 		$this->register_group_settings();
 	}
 
 	public function init_admin() {
+		$this->filter_group = new FilterGroup( $this->group_id );
+
 		$this->init_metaboxes();
 		add_action( 'in_admin_header', [ $this, 'render_new_filter_popup' ] );
 	}

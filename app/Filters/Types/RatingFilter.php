@@ -3,6 +3,8 @@
 namespace SimplyFilters\Filters\Types;
 
 use SimplyFilters\Admin\Controls\ToggleControl;
+use SimplyFilters\TemplateLoader;
+use function SimplyFilters\get_stars;
 
 class RatingFilter extends Filter {
 
@@ -22,6 +24,18 @@ class RatingFilter extends Filter {
 		$this->description = __( 'Choose product rating', $this->locale );
 	}
 
+	public function render() {
+		if( wc_review_ratings_enabled() ) {
+			TemplateLoader::render( 'types/rating', [
+				'key' => $this->get_data( 'url-label' )
+			],
+				'Filters'
+			);
+		} else {
+            // @todo: info to admin about reviews not being enabled?
+        }
+	}
+
 	protected function filter_preview() {
 		?>
         <div class="sf-checkbox">
@@ -29,41 +43,25 @@ class RatingFilter extends Filter {
                 <li>
                     <div class="sf-checkbox__check sf-checkbox__check--checked"></div>
                     <div class="sf-rating">
-                        <span class="sf-star sf-star--full"></span>
-                        <span class="sf-star sf-star--full"></span>
-                        <span class="sf-star sf-star--full"></span>
-                        <span class="sf-star sf-star--full"></span>
-                        <span class="sf-star"></span>
+                        <?php echo get_stars( 4 ); ?>
                     </div>
                 </li>
                 <li>
                     <div class="sf-checkbox__check"></div>
                     <div class="sf-rating">
-                        <span class="sf-star sf-star--full"></span>
-                        <span class="sf-star sf-star--full"></span>
-                        <span class="sf-star sf-star--full"></span>
-                        <span class="sf-star sf-star--half"></span>
-                        <span class="sf-star"></span>
+	                    <?php echo get_stars( 3 ); ?>
                     </div>
                 </li>
                 <li>
                     <div class="sf-checkbox__check sf-checkbox__check--checked"></div>
                     <div class="sf-rating">
-                        <span class="sf-star sf-star--full"></span>
-                        <span class="sf-star sf-star--full"></span>
-                        <span class="sf-star sf-star--full"></span>
-                        <span class="sf-star"></span>
-                        <span class="sf-star"></span>
+	                    <?php echo get_stars( 2 ); ?>
                     </div>
                 </li>
                 <li>
                     <div class="sf-checkbox__check sf-checkbox__check--checked"></div>
                     <div class="sf-rating">
-                        <span class="sf-star sf-star--full"></span>
-                        <span class="sf-star sf-star--full"></span>
-                        <span class="sf-star"></span>
-                        <span class="sf-star"></span>
-                        <span class="sf-star"></span>
+	                    <?php echo get_stars( 1 ); ?>
                     </div>
                 </li>
             </ul>
