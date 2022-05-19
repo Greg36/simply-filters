@@ -2,7 +2,6 @@
 
 namespace SimplyFilters\Filters\Types;
 
-use SimplyFilters\Admin\Controls\ToggleControl;
 use SimplyFilters\TemplateLoader;
 
 class RadioFilter extends Filter {
@@ -27,10 +26,11 @@ class RadioFilter extends Filter {
 	public function render() {
 		$options = $this->get_current_source_options();
 
-		if( $options ) {
+		if ( $options ) {
 			TemplateLoader::render( 'types/radio', [
-				'options' => $options,
-				'key' => $this->get_data( 'url-label' )
+				'id'      => $this->get_id(),
+				'key'     => $this->get_data( 'url-label' ),
+				'options' => $options
 			],
 				'Filters'
 			);

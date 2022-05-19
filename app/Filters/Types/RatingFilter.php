@@ -2,7 +2,6 @@
 
 namespace SimplyFilters\Filters\Types;
 
-use SimplyFilters\Admin\Controls\ToggleControl;
 use SimplyFilters\TemplateLoader;
 use function SimplyFilters\get_stars;
 
@@ -25,15 +24,16 @@ class RatingFilter extends Filter {
 	}
 
 	public function render() {
-		if( wc_review_ratings_enabled() ) {
+		if ( wc_review_ratings_enabled() ) {
 			TemplateLoader::render( 'types/rating', [
+				'id'  => $this->get_id(),
 				'key' => $this->get_data( 'url-label' )
 			],
 				'Filters'
 			);
 		} else {
-            // @todo: info to admin about reviews not being enabled?
-        }
+			// @todo: info to admin about reviews not being enabled?
+		}
 	}
 
 	protected function filter_preview() {
@@ -43,25 +43,25 @@ class RatingFilter extends Filter {
                 <li>
                     <div class="sf-checkbox__check sf-checkbox__check--checked"></div>
                     <div class="sf-rating">
-                        <?php echo get_stars( 4 ); ?>
+						<?php echo get_stars( 4 ); ?>
                     </div>
                 </li>
                 <li>
                     <div class="sf-checkbox__check"></div>
                     <div class="sf-rating">
-	                    <?php echo get_stars( 3 ); ?>
+						<?php echo get_stars( 3 ); ?>
                     </div>
                 </li>
                 <li>
                     <div class="sf-checkbox__check sf-checkbox__check--checked"></div>
                     <div class="sf-rating">
-	                    <?php echo get_stars( 2 ); ?>
+						<?php echo get_stars( 2 ); ?>
                     </div>
                 </li>
                 <li>
                     <div class="sf-checkbox__check sf-checkbox__check--checked"></div>
                     <div class="sf-rating">
-	                    <?php echo get_stars( 1 ); ?>
+						<?php echo get_stars( 1 ); ?>
                     </div>
                 </li>
             </ul>

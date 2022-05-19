@@ -25,23 +25,24 @@ class SliderFilter extends Filter {
 
 	public function render() {
 		TemplateLoader::render( 'types/slider', [
-			'price' => $this->get_price_range(),
-			'key'   => $this->get_data( 'url-label' )
+			'id'    => $this->get_id(),
+			'key'   => $this->get_data( 'url-label' ),
+			'price' => $this->get_price_range()
 		],
 			'Filters'
 		);
 	}
 
 	/**
-     * Get the max and min price for queried products.
-     * Search builds upon the main query to preserve all query vars.
-     *
+	 * Get the max and min price for queried products.
+	 * Search builds upon the main query to preserve all query vars.
+	 *
 	 * @return array
 	 */
 	private function get_price_range() {
 		$query = clone \WC_Query::get_main_query();
 
-        // @todo: Possible option for price filter: limit the range to selected fitlers or leave it
+		// @todo: Possible option for price filter: limit the range to selected fitlers or leave it
 
 		$query->set( 'posts_per_page', 1 );
 		$query->set( 'meta_key', '_price' );
@@ -49,15 +50,15 @@ class SliderFilter extends Filter {
 		$query->set( 'no_found_rows', false );
 		$query->set( 'fields', 'ids' );
 
-        // Query the product and get its price
+		// Query the product and get its price
 		$query->set( 'order', 'ASC' );
 		$min = get_post_meta( $query->get_posts()[0], '_price', true );
 
-        // For the max price just reverse the order
+		// For the max price just reverse the order
 		$query->set( 'order', 'DESC' );
 		$max = get_post_meta( $query->get_posts()[0], '_price', true );
 
-        return [
+		return [
 			'min' => $min,
 			'max' => $max
 		];

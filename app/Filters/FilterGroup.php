@@ -86,6 +86,10 @@ class FilterGroup {
 	 * @return void
 	 */
 	public function render() {
+
+		// @todo: better handle page without woocommerce query
+		if( \WC_Query::get_main_query() === null ) return;
+
 		TemplateLoader::render( 'filter-group', [
 			'group_id' => $this->post_id,
 			'filters' => $this->get_filters(),

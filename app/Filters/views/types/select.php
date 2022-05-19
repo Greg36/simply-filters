@@ -1,12 +1,13 @@
 <?php
 /**
- * @var $options array
+ * @var $id int
  * @var $key string
+ * @var $options array
  */
 ?>
 <div class="sf-select">
 
-    <select name="<?php esc_attr_e( $key ); ?>">
+    <select id="<?php esc_attr_e( $id ); ?>" name="<?php esc_attr_e( $key ); ?>">
 
         <?php
         foreach ( $options as $value => $label ) {

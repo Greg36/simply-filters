@@ -55,8 +55,9 @@ class ColorFilter extends Filter {
 			$options = $this->prepare_colors_data( $options );
 
 			TemplateLoader::render( 'types/color', [
-				'options' => $options,
-				'key'     => $this->get_data( 'url-label' )
+				'id'      => $this->get_id(),
+				'key'     => $this->get_data( 'url-label' ),
+				'options' => $options
 			],
 				'Filters'
 			);
@@ -93,12 +94,12 @@ class ColorFilter extends Filter {
 
 		$colors = [];
 		foreach ( $options as $id => $label ) {
-            $hex = get_term_meta( $id, \Hybrid\app( 'term-color-key' ), true );
+			$hex = get_term_meta( $id, \Hybrid\app( 'term-color-key' ), true );
 
 			$colors[ $id ] = [
 				'label' => $label,
-                'hex' => $hex,
-				'class'   => $this->check_color_luminance( $hex )
+				'hex'   => $hex,
+				'class' => $this->check_color_luminance( $hex )
 			];
 		}
 
@@ -106,15 +107,15 @@ class ColorFilter extends Filter {
 	}
 
 	/**
-     * If color has insufficient luminance add class
-     *
+	 * If color has insufficient luminance add class
+	 *
 	 * @param $hex
 	 *
 	 * @return string
 	 */
 	private function check_color_luminance( $hex ) {
-        $luminance = \SimplyFilters\calculateLuminance( $hex );
+		$luminance = \SimplyFilters\calculateLuminance( $hex );
 
-        return $luminance < 0.179 ? 'sf-color__swatch--contrast' : '';
+		return $luminance < 0.179 ? 'sf-color__swatch--contrast' : '';
 	}
 }
