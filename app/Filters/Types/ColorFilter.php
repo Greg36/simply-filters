@@ -51,12 +51,10 @@ class ColorFilter extends Filter {
 		$options = $this->get_current_source_options();
 
 		if ( $options ) {
-			$options = $this->prepare_colors_data( $options );
-
 			TemplateLoader::render( 'types/color', [
 				'id'      => $this->get_id(),
 				'key'     => $this->get_current_source_key(),
-				'options' => $options
+				'options' => $this->prepare_colors_data( $options )
 			],
 				'Filters'
 			);
@@ -92,11 +90,12 @@ class ColorFilter extends Filter {
 		}
 
 		$colors = [];
-		foreach ( $options as $id => $label ) {
-			$hex = get_term_meta( $id, \Hybrid\app( 'term-color-key' ), true );
+		foreach ( $options as $term ) {
+			$hex = get_term_meta( $term['id'], \Hybrid\app( 'term-color-key' ), true );
 
-			$colors[ $id ] = [
-				'label' => $label,
+			$colors[] = [
+				'slug'  => $term['slug'],
+				'label' => $term['name'],
 				'hex'   => $hex,
 				'class' => $this->check_color_luminance( $hex )
 			];

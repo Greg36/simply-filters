@@ -15,7 +15,7 @@ class GroupSettings {
 	private $settings;
 
 	public function __construct( $group_id ) {
-		$this->group_id     = $group_id;
+		$this->group_id = $group_id;
 		$this->register_group_settings();
 	}
 
@@ -29,7 +29,7 @@ class GroupSettings {
 	private function register_group_settings() {
 		$locale = \Hybrid\app( 'locale' );
 
-		$settings = new Settings( $this->group_id, (array) maybe_unserialize( get_post_field('post_content', $this->group_id ) ) );
+		$settings = new Settings( $this->group_id, (array) maybe_unserialize( get_post_field( 'post_content', $this->group_id ) ) );
 
 		$settings->add( 'elements', 'checkbox', [
 			'name'        => __( 'Enable elements', $locale ),
@@ -54,8 +54,16 @@ class GroupSettings {
 			'name'        => __( 'color', $locale ),
 			'description' => __( 'colorcolor', $locale ),
 			'options'     => [
-				'bg_color' => 'Background color',
-				'fg_color' => 'Foreground color'
+				[
+					'name' => 'Background color',
+					'id'   => false,
+					'slug' => 'bg_color',
+				],
+				[
+					'name' => 'Foreground color',
+					'id'   => false,
+					'slug' => 'fg_color',
+				]
 			]
 		] );
 

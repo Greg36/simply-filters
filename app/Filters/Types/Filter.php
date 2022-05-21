@@ -310,8 +310,8 @@ abstract class Filter {
 	}
 
 	/**
-     * Return source key to be used as a URL slug
-     *
+	 * Return source key to be used as a URL slug
+	 *
 	 * @return string
 	 */
 	protected function get_current_source_key() {
@@ -322,18 +322,22 @@ abstract class Filter {
 
 		switch ( $this->data['sources'] ) {
 			case 'attributes' :
-                return preg_replace( '/^pa_/', '', $this->data['attributes'] );
+				return preg_replace( '/^pa_/', '', $this->data['attributes'] );
+
 			case 'product_cat' :
-                return get_option( 'woocommerce_product_category_slug' ) ? get_option( 'woocommerce_product_category_slug' ) : _x( 'product-category', 'slug', $this->locale );
+				return get_option( 'woocommerce_product_category_slug' ) ? get_option( 'woocommerce_product_category_slug' ) : _x( 'product-category', 'slug', $this->locale );
+
 			case 'product_tag' :
 				return get_option( 'woocommerce_product_tag_slug' ) ? get_option( 'woocommerce_product_tag_slug' ) : _x( 'product-tag', 'slug', $this->locale );
-			case 'stock_status' :
-                return _x( 'stock-status', 'slug', $this->locale );
-		}
-        return '';
-    }
 
-    // @todo: move this and other ADMIN only funstions to FilterSettings class
+			case 'stock_status' :
+				return _x( 'stock-status', 'slug', $this->locale );
+		}
+
+		return '';
+	}
+
+	// @todo: move this and other ADMIN only functions to FilterSettings class
 	public function render_new_filter_preview() {
 		?>
         <div class="sf-preview">

@@ -42,7 +42,7 @@ function get_product_categories() {
 }
 
 /**
- * Get array of terms in term ID => name pairs
+ * Get array of terms
  *
  * @return array
  */
@@ -57,8 +57,12 @@ function get_terms_list( $taxonomy, $parent = 0 ) {
 			)
 		) as $term
 	) {
-		$tags[ $term->term_id ] = $term->name;
+		$terms[] = [
+			'name' => $term->name,
+			'slug' => $term->slug,
+			'id' => $term->term_id
+		];
 	}
 
-	return $tags;
+	return $terms;
 }

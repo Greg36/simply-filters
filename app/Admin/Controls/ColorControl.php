@@ -16,19 +16,19 @@ class ColorControl extends Control {
 
 		if ( ! empty( $this->options ) ) {
 
-			foreach ( $this->options as $option => $name ) {
+			foreach ( $this->options as $option ) {
 
 				// Each picker needs individual key and ID
-				$key = $this->key . '[' . $option . ']';
-				$id  = $this->id  . '-' . $option;
+				$key = $this->key . '[' . $option['slug'] . ']';
+				$id  = $this->id  . '-' . $option['slug'];
 
 				// Get the color value from term's meta
-				$value = get_term_meta( $option, \Hybrid\app( 'term-color-key' ), true ); //@todo: this should be something to remove on uninstall
+				$value = get_term_meta( $option['id'], \Hybrid\app( 'term-color-key' ), true ); //@todo: this should be something to remove on uninstall
 
                 // If there is no term data use option value directly
 				if ( ! $value ) {
-                    if( isset( $this->value[ $option ] ) ) {
-	                    $value = $this->value[ $option ];
+                    if( isset( $this->value[ $option['slug'] ] ) ) {
+	                    $value = $this->value[ $option['slug'] ];
                     } else {
 					    $value = '#ffffff';
                     }
@@ -57,7 +57,7 @@ class ColorControl extends Control {
 							<?php
 							printf( '<label for="%s">%s</label>',
 								esc_attr( $key ),
-								wp_kses_post( $name )
+								wp_kses_post( $option['name'] )
 							);
 							?>
                         </div>

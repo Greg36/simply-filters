@@ -45,10 +45,15 @@ class FiltersServiceProvider extends ServiceProvider {
 		add_action( 'init', [ $this, 'register_group_post_type' ] );
 		add_action( 'init', [ $this, 'register_single_post_type' ] );
 
-		add_action( 'widgets_init', array( $this, 'register_widgets' ) );
-		add_action( 'init', array( $this, 'register_blocks' ) );
-		add_action( 'init', array( $this, 'register_shortcodes' ) );
+		// Display filters
+		add_action( 'widgets_init', [ $this, 'register_widgets' ] );
+		add_action( 'init', [ $this, 'register_blocks' ] );
+		add_action( 'init', [ $this, 'register_shortcodes' ] );
 
+		// Filtering
+		add_action( 'woocommerce_product_query', [ $this, 'filter_query' ] );
+
+		// Ajax calls
 		add_action( 'wp_ajax_sf/render_new_field', [ $this, 'ajax_render_new_settings_field' ] ); // @todo: move?
 		add_action( 'wp_ajax_sf/get_color_options', [ $this, 'ajax_get_color_settings_options' ] );// @todo: move?
 	}
@@ -154,6 +159,11 @@ class FiltersServiceProvider extends ServiceProvider {
 		add_shortcode( $this->app->get( 'shortcode_tag' ), function ( $atts ) {
 			return ( new FilterShortcode( $atts['group_id'] ) )->getShortcode();
 		} );
+	}
+
+	public function filter_query( \WP_Query $query ) {
+		$filterer = new FilterQuery( $query );
+		$filterer->init();
 	}
 
 	/**

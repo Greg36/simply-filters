@@ -10,10 +10,10 @@
     <select id="<?php esc_attr_e( $id ); ?>" name="<?php esc_attr_e( $key ); ?>">
 
         <?php
-        foreach ( $options as $value => $label ) {
+        foreach ( $options as $option ) {
             printf( '<option value="%s">%s</option>',
-                esc_attr( $value ),
-                esc_html( $label )
+                esc_attr( $option['slug'] ),
+                esc_html( $option['name'] )
             );
         }
         ?>
