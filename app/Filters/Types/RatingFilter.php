@@ -13,8 +13,7 @@ class RatingFilter extends Filter {
 	 * @var array
 	 */
 	protected $supports = [
-		'label',
-		'url-label'
+		'label'
 	];
 
 	public function __construct() {
@@ -27,7 +26,7 @@ class RatingFilter extends Filter {
 		if ( wc_review_ratings_enabled() ) {
 			TemplateLoader::render( 'types/rating', [
 				'id'  => $this->get_id(),
-				'key' => $this->get_data( 'url-label' )
+				'key' => 'rating'
 			],
 				'Filters'
 			);

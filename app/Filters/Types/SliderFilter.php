@@ -13,9 +13,8 @@ class SliderFilter extends Filter {
 	 * @var array
 	 */
 	protected $supports = [
-		'label',
-		'url-label'
-	];
+		'label'
+    ];
 
 	public function __construct() {
 		$this->type        = 'Slider';
@@ -26,7 +25,7 @@ class SliderFilter extends Filter {
 	public function render() {
 		TemplateLoader::render( 'types/slider', [
 			'id'    => $this->get_id(),
-			'key'   => $this->get_data( 'url-label' ),
+			'key'   => 'price',
 			'price' => $this->get_price_range()
 		],
 			'Filters'

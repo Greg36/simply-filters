@@ -14,7 +14,6 @@ class ColorFilter extends Filter {
 	 */
 	protected $supports = [
 		'label',
-		'url-label',
 		'sources'
 	];
 
@@ -56,7 +55,7 @@ class ColorFilter extends Filter {
 
 			TemplateLoader::render( 'types/color', [
 				'id'      => $this->get_id(),
-				'key'     => $this->get_data( 'url-label' ),
+				'key'     => $this->get_current_source_key(),
 				'options' => $options
 			],
 				'Filters'

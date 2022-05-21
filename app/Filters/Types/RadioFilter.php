@@ -13,7 +13,6 @@ class RadioFilter extends Filter {
 	 */
 	protected $supports = [
 		'label',
-		'url-label',
 		'sources'
 	];
 
@@ -29,7 +28,7 @@ class RadioFilter extends Filter {
 		if ( $options ) {
 			TemplateLoader::render( 'types/radio', [
 				'id'      => $this->get_id(),
-				'key'     => $this->get_data( 'url-label' ),
+				'key'     => $this->get_current_source_key(),
 				'options' => $options
 			],
 				'Filters'

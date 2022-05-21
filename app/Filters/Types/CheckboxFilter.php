@@ -14,7 +14,6 @@ class CheckboxFilter extends Filter {
 	 */
 	protected $supports = [
 		'label',
-		'url-label',
 		'sources',
 		'query'
 	];
@@ -33,7 +32,7 @@ class CheckboxFilter extends Filter {
 		if ( $options ) {
 			TemplateLoader::render( 'types/checkbox', [
 				'id'      => $this->get_id(),
-				'key'     => $this->get_data( 'url-label' ),
+				'key'     => $this->get_current_source_key(),
 				'options' => $options
 			],
 				'Filters'
