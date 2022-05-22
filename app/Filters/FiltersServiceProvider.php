@@ -39,6 +39,7 @@ class FiltersServiceProvider extends ServiceProvider {
 
 	public function boot() {
 
+		// @todo: should this be enqueued only if not admin?
 		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_styles' ] );
 		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
 
@@ -51,7 +52,9 @@ class FiltersServiceProvider extends ServiceProvider {
 		add_action( 'init', [ $this, 'register_shortcodes' ] );
 
 		// Filtering
-		add_action( 'woocommerce_product_query', [ $this, 'filter_query' ] );
+		if ( ! is_admin() ) {
+			add_action( 'woocommerce_product_query', [ $this, 'filter_query' ] );
+		}
 
 		// Ajax calls
 		add_action( 'wp_ajax_sf/render_new_field', [ $this, 'ajax_render_new_settings_field' ] ); // @todo: move?
@@ -162,6 +165,7 @@ class FiltersServiceProvider extends ServiceProvider {
 	}
 
 	public function filter_query( \WP_Query $query ) {
+
 		$filterer = new FilterQuery( $query );
 		$filterer->filter();
 	}
