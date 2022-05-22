@@ -26,7 +26,7 @@ class RatingFilter extends Filter {
 		if ( wc_review_ratings_enabled() ) {
 			TemplateLoader::render( 'types/rating', [
 				'id'  => $this->get_id(),
-				'key' => 'rating'
+				'key' => _x( 'rating', 'slug', $this->locale )
 			],
 				'Filters'
 			);

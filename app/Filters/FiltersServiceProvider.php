@@ -163,7 +163,7 @@ class FiltersServiceProvider extends ServiceProvider {
 
 	public function filter_query( \WP_Query $query ) {
 		$filterer = new FilterQuery( $query );
-		$filterer->init();
+		$filterer->filter();
 	}
 
 	/**

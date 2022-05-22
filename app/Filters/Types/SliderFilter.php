@@ -25,7 +25,7 @@ class SliderFilter extends Filter {
 	public function render() {
 		TemplateLoader::render( 'types/slider', [
 			'id'    => $this->get_id(),
-			'key'   => 'price',
+			'key'   => _x( 'price', 'slug', $this->locale ),
 			'price' => $this->get_price_range()
 		],
 			'Filters'
@@ -52,6 +52,7 @@ class SliderFilter extends Filter {
 		// Query the product and get its price
 		$query->set( 'order', 'ASC' );
 		$min = get_post_meta( $query->get_posts()[0], '_price', true );
+        // @todo: if there are no products
 
 		// For the max price just reverse the order
 		$query->set( 'order', 'DESC' );
