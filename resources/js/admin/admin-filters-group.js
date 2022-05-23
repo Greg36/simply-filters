@@ -7,7 +7,7 @@
 import { __ } from '@wordpress/i18n';
 import AdminFilter from "./admin-filter";
 import AdminNewFilter from "./admin-new-filter";
-import { invalidInputNotice, addFormNotice } from "./helpers";
+import { invalidInputNotice, addFormNotice } from "../lib/helpers";
 
 export { initFiltersGroup, updateOrderNumbers, checkNoFilterLabel };
 

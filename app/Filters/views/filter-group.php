@@ -17,8 +17,11 @@
     }
 
 	if ( $filters ) {
-		foreach ( $filters as $key => $filter ) {
-			\SimplyFilters\TemplateLoader::render( 'filter', [
+		foreach ( $filters as $filter ) {
+
+            if( ! $filter->is_enabled() ) continue;
+
+            \SimplyFilters\TemplateLoader::render( 'filter', [
 				'filter' => $filter,
 				'settings'  => $settings
 			], 'Filters'

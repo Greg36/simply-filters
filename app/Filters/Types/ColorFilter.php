@@ -14,7 +14,8 @@ class ColorFilter extends Filter {
 	 */
 	protected $supports = [
 		'label',
-		'sources'
+		'sources',
+        'query'
 	];
 
 	public function __construct() {
@@ -54,7 +55,8 @@ class ColorFilter extends Filter {
 			TemplateLoader::render( 'types/color', [
 				'id'      => $this->get_id(),
 				'key'     => $this->get_current_source_key(),
-				'options' => $this->prepare_colors_data( $options )
+				'options' => $this->prepare_colors_data( $options ),
+				'query'   => $this->get_data( 'query', 'or' )
 			],
 				'Filters'
 			);

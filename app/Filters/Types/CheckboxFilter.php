@@ -26,14 +26,14 @@ class CheckboxFilter extends Filter {
 
 	public function render() {
 		// @todo: Possible option for selected tags or categories - make the links clickable to go to that category
-
 		$options = $this->get_current_source_options();
 
 		if ( $options ) {
 			TemplateLoader::render( 'types/checkbox', [
 				'id'      => $this->get_id(),
 				'key'     => $this->get_current_source_key(),
-				'options' => $options
+				'options' => $options,
+				'query'   => $this->get_data( 'query', 'or' )
 			],
 				'Filters'
 			);

@@ -4,7 +4,7 @@
  * @package   SimplyFilters
  */
 
-import { initFiltersGroup } from "./lib/admin-filters-group";
+import { initFiltersGroup } from "./admin/admin-filters-group";
 
 document.addEventListener( 'DOMContentLoaded', () => {
 

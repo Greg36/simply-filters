@@ -1,4 +1,4 @@
-import { addLoader, removeLoader } from "./helpers";
+import { addLoader, removeLoader } from "../lib/helpers";
 import { checkNoFilterLabel, updateOrderNumbers } from "./admin-filters-group";
 import AdminFilter from "./admin-filter";
 

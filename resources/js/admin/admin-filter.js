@@ -6,7 +6,7 @@
 
 import { __ } from '@wordpress/i18n';
 import ColorControl from './admin-color';
-import { addLoader, addFormNotice, invalidInputNotice, removeLoader, uniqid } from "./helpers";
+import { addLoader, addFormNotice, invalidInputNotice, removeLoader, uniqid } from "../lib/helpers";
 import { checkNoFilterLabel, updateOrderNumbers } from "./admin-filters-group";
 
 export default class AdminFilter {

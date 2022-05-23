@@ -143,8 +143,8 @@ abstract class Filter {
 	 *
 	 * @return mixed|string
 	 */
-	public function get_data( $key ) {
-		return isset( $this->data[ $key ] ) ? $this->data[ $key ] : '';
+	public function get_data( $key, $default = '' ) {
+		return isset( $this->data[ $key ] ) ? $this->data[ $key ] : $default;
 	}
 
 	/**
@@ -186,8 +186,8 @@ abstract class Filter {
 				'name'        => __( 'Search relation', $this->locale ),
 				'description' => __( 'How to display results when selecting more than 1 option', $this->locale ),
 				'options'     => [
-					'and' => __( 'AND - Product needs to match all selected options to be shown', $this->locale ),
-					'or'  => __( 'OR - Product needs to match any of selected options to be shown ', $this->locale )
+					'or'  => __( 'OR - Product needs to match any of selected options to be shown ', $this->locale ),
+					'and' => __( 'AND - Product needs to match all selected options to be shown', $this->locale )
 				]
 			] );
 		}

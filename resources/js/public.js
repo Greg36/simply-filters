@@ -4,13 +4,11 @@
  * @package   SimplyFilters
  */
 
-/**
- * IIFE to kick-start things and encapsulate our code.
- *
- * @since  1.0.0
- * @access public
- * @return void
- */
-(function() {
 
-})();
+import FilterActions from "./lib/filter-actions";
+
+document.addEventListener( 'DOMContentLoaded', () => {
+
+	const filterActions = new FilterActions();
+
+});
