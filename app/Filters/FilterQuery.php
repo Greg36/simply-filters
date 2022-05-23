@@ -296,7 +296,7 @@ class FilterQuery {
 
 		$terms = [];
 		for ( $i = 1; $i <= 5; $i ++ ) {
-			if ( in_array( $i, $params[0]['data'], true ) && isset( $visibility_terms[ 'rated-' . $i ] ) ) {
+			if ( in_array( $i, $params[0]['data'] ) && isset( $visibility_terms[ 'rated-' . $i ] ) ) {
 				$terms[] = $visibility_terms[ 'rated-' . $i ];
 			}
 		}
