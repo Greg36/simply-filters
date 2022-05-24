@@ -56,6 +56,7 @@ class ColorFilter extends Filter {
 				'id'      => $this->get_id(),
 				'key'     => $this->get_current_source_key(),
 				'options' => $this->prepare_colors_data( $options ),
+				'values'  => $this->get_selected_values(),
 				'query'   => $this->get_data( 'query', 'or' )
 			],
 				'Filters'

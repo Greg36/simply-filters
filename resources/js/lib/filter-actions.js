@@ -33,12 +33,19 @@ export default class FilterActions {
 				const param = {
 					key: e.target.name,
 					value: e.target.value,
-					delimiter: e.target.dataset.query === 'and' ? '+' : '|'
+					delimiter: e.target.dataset.query === 'and' ? ' ' : '|',
+					input: e.target
 				};
 
 				// Handle URL change
-				if( filter.type === 'Radio' || filter.type === 'Select' ) {
-					this.replaceURLParam( param );
+				if( filter.type === 'Slider' ) {
+					this.priceURLParam( param );
+				} else if( filter.type === 'Radio' || filter.type === 'Select' ) {
+					if( param.value === 'no-filter' ) {
+						this.removeURLParam( param );
+					} else {
+						this.replaceURLParam( param );
+					}
 				} else if( e.target.checked ) {
 					this.addURLParam( param );
 				} else {
@@ -123,9 +130,21 @@ export default class FilterActions {
 		}
 	}
 
-	// addURLParam( param ) {
-	//
-	// }
+	priceURLParam( param ) {
+
+		let price = {};
+		if( param.key === 'price-min' ) {
+			price.min = parseInt( param.value );
+			price.max = parseInt( param.input.nextElementSibling.value );
+		} else {
+			price.min = parseInt( param.input.previousElementSibling.value );
+			price.max = parseInt( param.value );
+		}
+
+		param.key = 'price';
+		param.value = `${price.min}_${price.max}`;
+		this.replaceURLParam( param );
+	}
 
 	updateURL() {
 		let url = this.url.origin + this.url.pathname + decodeURIComponent( this.url.search );

@@ -33,6 +33,7 @@ class CheckboxFilter extends Filter {
 				'id'      => $this->get_id(),
 				'key'     => $this->get_current_source_key(),
 				'options' => $options,
+				'values'  => $this->get_selected_values(),
 				'query'   => $this->get_data( 'query', 'or' )
 			],
 				'Filters'

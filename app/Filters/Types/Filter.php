@@ -346,6 +346,24 @@ abstract class Filter {
 		return '';
 	}
 
+	/**
+	 * Return source taxonomy
+	 *
+	 * @return string
+	 */
+	protected function get_current_source_taxonomy() {
+
+		if ( ! isset( $this->data['sources'] ) || ! $this->data['sources'] ) {
+			return '';
+		}
+
+        if( $this->data['sources'] === 'attributes' ) {
+            return $this->data['attributes'];
+        }
+
+		return $this->data['sources'];
+	}
+
 	// @todo: move this and other ADMIN only functions to FilterSettings class
 	public function render_new_filter_preview() {
 		?>
@@ -362,6 +380,27 @@ abstract class Filter {
             </div>
         </div>
 		<?php
+	}
+
+
+	/**
+	 * Return selected values in the filter taken from URL params
+	 *
+	 * @return array
+	 */
+	protected function get_selected_values() {
+		$params = \Hybrid\app( 'filter-values' );
+		if( empty( $params ) ) return [];
+
+		$key = $this->get_current_source_taxonomy();
+
+		foreach ( $params as $param ) {
+            if( $param['key'] === $key ) {
+                return $param['data'];
+            }
+        }
+
+		return [];
 	}
 
 	public function render_meta_fields() {

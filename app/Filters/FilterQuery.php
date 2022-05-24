@@ -95,6 +95,8 @@ class FilterQuery {
 			}
 		}
 
+		\Hybrid\app()->instance( 'filter-values', $data );
+
 		return $data;
 	}
 
@@ -292,8 +294,8 @@ class FilterQuery {
 	 * @return array|false
 	 */
 	private function get_rating_query() {
-		$params = $this->get_params_by_type( 'rating' );
-		if ( ! $params ) {
+		$param = current( $this->get_params_by_type( 'rating' ) );
+		if ( ! $param ) {
 			return false;
 		}
 
@@ -301,7 +303,7 @@ class FilterQuery {
 
 		$terms = [];
 		for ( $i = 1; $i <= 5; $i ++ ) {
-			if ( in_array( $i, $params[0]['data'] ) && isset( $visibility_terms[ 'rated-' . $i ] ) ) {
+			if ( in_array( $i, $param['data'] ) && isset( $visibility_terms[ 'rated-' . $i ] ) ) {
 				$terms[] = $visibility_terms[ 'rated-' . $i ];
 			}
 		}
@@ -330,8 +332,8 @@ class FilterQuery {
 	private function get_price_query( $args ) {
 		global $wpdb;
 
-		$params = $this->get_params_by_type( 'price' );
-		if ( ! $params ) {
+		$param = current( $this->get_params_by_type( 'price' ) );
+		if ( ! $param ) {
 			return $args;
 		}
 
@@ -343,8 +345,8 @@ class FilterQuery {
 		// Add where clause for min and max price in lookup table
 		$price_query = $wpdb->prepare(
 			' AND NOT (%f < wc_product_meta_lookup.min_price OR %f > wc_product_meta_lookup.max_price ) ',
-			$params[0]['data']['max'],
-			$params[0]['data']['min']
+			$param['data']['max'],
+			$param['data']['min']
 		);
 		$args['where'] .= $price_query;
 

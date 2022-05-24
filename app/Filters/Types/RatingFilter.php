@@ -26,7 +26,8 @@ class RatingFilter extends Filter {
 		if ( wc_review_ratings_enabled() ) {
 			TemplateLoader::render( 'types/rating', [
 				'id'  => $this->get_id(),
-				'key' => _x( 'rating', 'slug', $this->locale )
+				'key' => _x( 'rating', 'slug', $this->locale ),
+				'values'  => $this->get_selected_values(),
 			],
 				'Filters'
 			);
@@ -34,6 +35,10 @@ class RatingFilter extends Filter {
 			// @todo: info to admin about reviews not being enabled?
 		}
 	}
+
+    protected function get_current_source_taxonomy() {
+        return 'rating';
+    }
 
 	protected function filter_preview() {
 		?>

@@ -34,9 +34,10 @@ class RadioFilter extends Filter {
 			] );
 
 			TemplateLoader::render( 'types/radio', [
-				'id'         => $this->get_id(),
-				'key'        => $this->get_current_source_key(),
-				'options'    => $options
+				'id'      => $this->get_id(),
+				'key'     => $this->get_current_source_key(),
+				'options' => $options,
+				'values'  => $this->get_selected_values(),
 			],
 				'Filters'
 			);

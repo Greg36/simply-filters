@@ -26,7 +26,8 @@ class SliderFilter extends Filter {
 		TemplateLoader::render( 'types/slider', [
 			'id'    => $this->get_id(),
 			'key'   => _x( 'price', 'slug', $this->locale ),
-			'price' => $this->get_price_range()
+			'price' => $this->get_price_range(),
+            'values' => $this->get_selected_values()
 		],
 			'Filters'
 		);
@@ -70,6 +71,10 @@ class SliderFilter extends Filter {
 			'min' => intval( $price['min'] ),
 			'max' => intval( $price['max'] )
 		];
+	}
+
+	protected function get_current_source_taxonomy() {
+		return '_price';
 	}
 
 	protected function filter_preview() {

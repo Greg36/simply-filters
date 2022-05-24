@@ -4,6 +4,7 @@
  * @var $key string
  * @var $query string
  * @var $options array
+ * @var $values array
  */
 
 use function SimplyFilters\load_inline_svg;
@@ -24,11 +25,12 @@ use function SimplyFilters\load_inline_svg;
 			);
 
 			// Input
-			printf( '<input type="checkbox" id="%1$s" name="%2$s" value="%3$s" data-query="%4$s"> <label for="%1$s">%5$s</label>',
+			printf( '<input type="checkbox" id="%1$s" name="%2$s" value="%3$s" data-query="%4$s" %5$s> <label for="%1$s">%6$s</label>',
 				esc_attr( $id . '_' . $color['slug'] ),
 				esc_attr( $key ),
 				esc_attr( $color['slug'] ),
                 esc_attr( $query ),
+				in_array( $color['slug'], $values ) ? 'checked' : '',
 				esc_html( $color['label'] )
 			);
 
