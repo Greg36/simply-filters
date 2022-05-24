@@ -42,8 +42,15 @@ class SliderFilter extends Filter {
 	private function get_price_range() {
         global $wpdb;
 
-        $args = \Hybrid\app( 'filtered-query-args' );
-        $join = $args['join'];
+		$args = \Hybrid\app( 'filtered-query-args' );
+
+        // Remove price query part to have full range on the slider
+        $price_query = \Hybrid\app( 'filtered-query-price' );
+        if( $price_query ) {
+	        $args['where'] = str_replace( $price_query, '', $args['where'] );
+        }
+
+		$join = $args['join'];
         $where = $args['where'];
 
         $sql = "

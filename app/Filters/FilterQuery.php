@@ -328,7 +328,6 @@ class FilterQuery {
 	 * @return mixed|void
 	 */
 	private function get_price_query( $args ) {
-
 		global $wpdb;
 
 		$params = $this->get_params_by_type( 'price' );
@@ -342,11 +341,15 @@ class FilterQuery {
 		}
 
 		// Add where clause for min and max price in lookup table
-		$args['where'] .= $wpdb->prepare(
+		$price_query = $wpdb->prepare(
 			' AND NOT (%f < wc_product_meta_lookup.min_price OR %f > wc_product_meta_lookup.max_price ) ',
-			$params[0]['data']['min'],
-			$params[0]['data']['max']
+			$params[0]['data']['max'],
+			$params[0]['data']['min']
 		);
+		$args['where'] .= $price_query;
+
+		// Save price query
+		\Hybrid\app()->instance( 'filtered-query-price', $price_query );
 
 		return $args;
 	}
