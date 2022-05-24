@@ -13,7 +13,8 @@ class RadioFilter extends Filter {
 	 */
 	protected $supports = [
 		'label',
-		'sources'
+		'sources',
+		'all_option'
 	];
 
 	public function __construct() {
@@ -26,10 +27,16 @@ class RadioFilter extends Filter {
 		$options = $this->get_current_source_options();
 
 		if ( $options ) {
+
+			array_unshift( $options, [
+				'slug' => 'no-filter',
+				'name' => $this->get_data( 'all_option' )
+			] );
+
 			TemplateLoader::render( 'types/radio', [
-				'id'      => $this->get_id(),
-				'key'     => $this->get_current_source_key(),
-				'options' => $options
+				'id'         => $this->get_id(),
+				'key'        => $this->get_current_source_key(),
+				'options'    => $options
 			],
 				'Filters'
 			);

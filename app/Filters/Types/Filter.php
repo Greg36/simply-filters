@@ -204,6 +204,15 @@ abstract class Filter {
 			// Load controls for each source field
 			$this->add_source_settings();
 		}
+
+        // All options label
+        if( in_array( 'all_option', $this->supports, true ) ) {
+	        $this->settings->add( 'all_option', 'text', [
+		        'name'        => __( 'All elements label', $this->locale ),
+		        'description' => __( 'First option selected by default have all elements show, what should be its label i.e. "All brands"', $this->locale ),
+//		        'required'    => true
+	        ] );
+        }
 	}
 
 	/**
