@@ -31,30 +31,22 @@ class FilterQuery {
 	private $tag_slug;
 
 	/**
-	 * @var string
-	 */
-	private $tax_query;
-
-	/**
 	 * @var bool
 	 */
 	private $attribute_lookup_enabled;
 
 	public function __construct( \WP_Query $query ) {
-
 		global $wpdb;
 
 		$this->query                    = $query;
 		$this->taxonomies               = get_object_taxonomies( 'product' );
 		$this->attribute_lookup_enabled = 'yes' === get_option( 'woocommerce_attribute_lookup_enabled' );
 		$this->lookup_table_name = $wpdb->prefix . 'wc_product_attributes_lookup';
-
-//		$this->tax_query  = \WC_Query::get_main_tax_query();
-//		if( empty( $this->tax_query ) ) $this->tax_query = ['relation' => 'AND'];
-//
-//		$this->meta_query = \WC_Query::get_main_meta_query();
 	}
 
+	/**
+	 * Parse URL and apply it to the product query
+	 */
 	public function filter() {
 
 		// Bail early if query has already been filtered
@@ -219,11 +211,22 @@ class FilterQuery {
 		];
 	}
 
-
+	/**
+	 * Apply price and attribute params to query on later hook
+	 * where there is direct access to post clauses
+	 *
+	 * @param $args
+	 * @param $wp_query
+	 *
+	 * @return array
+	 */
 	public function query_post_clauses( $args, $wp_query ) {
-		// @todo remove this filter in the_post to not duplicate this queries
+		if( $wp_query->get( 'sf-filters-clauses-applied' ) ) return $args;
+
 		$args = $this->get_price_query( $args );
-		$args = $this->get_attributes_query( $args, $wp_query );
+		$args = $this->get_attributes_query( $args );
+
+		$wp_query->set( 'sf-filters-clauses-applied', true );
 
 		return $args;
 	}
@@ -346,6 +349,14 @@ class FilterQuery {
 		return $args;
 	}
 
+	/**
+	 * When the attribute lookup table is enabled use to it query
+	 * attributes in more performant way
+	 *
+	 * @param $args
+	 *
+	 * @return array
+	 */
 	private function get_attributes_query( $args ) {
 
 		global $wpdb;
@@ -355,14 +366,13 @@ class FilterQuery {
 			return $args;
 		}
 
-		$clause_root = " {$wpdb->posts}.ID IN ( SELECT product_or_parent_id FROM (";
-
 		if ( 'yes' === get_option( 'woocommerce_hide_out_of_stock_items' ) ) {
 			$in_stock_clause = ' AND in_stock = 1';
 		} else {
 			$in_stock_clause = '';
 		}
 
+		$clause_root = " {$wpdb->posts}.ID IN ( SELECT product_or_parent_id FROM (";
 		$filter_ids = [];
 		$clauses    = [];
 
@@ -372,7 +382,6 @@ class FilterQuery {
 				'fields'   => 'ids',
 				'slug'     => $param['data']
 			] );
-
 
 			if ( ! empty( $term_ids ) ) {
 				if ( $param['operator'] === 'AND' && count( $term_ids ) > 1 ) {
@@ -391,6 +400,8 @@ class FilterQuery {
 			}
 		}
 
+		// Compound query when filtering by more than one attribute
+		// with a AND parameter
 		if ( ! empty( $filter_ids ) ) {
 			$count     = count( $filter_ids );
 			$term_list = '(' . join( ',', $filter_ids ) . ')';
@@ -412,6 +423,7 @@ class FilterQuery {
 			)";
 		}
 
+		// Apply clauses to the query
 		if ( ! empty( $clauses ) ) {
 			$args['where'] .= ' AND (' . join( ' temp ) AND ', $clauses ) . ' temp ))';
 		} elseif ( ! empty( $params ) ) {
@@ -419,7 +431,6 @@ class FilterQuery {
 		}
 
 		return $args;
-
 	}
 
 	/**
