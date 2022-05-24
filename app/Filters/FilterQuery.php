@@ -60,7 +60,11 @@ class FilterQuery {
 		// Apply tax query
 		$this->query->set( 'tax_query', $this->get_tax_query() );
 
+		// Filter posts clauses
 		add_filter( 'posts_clauses', [ $this, 'query_post_clauses' ], 10, 2 );
+
+		// Save filtered post clauses
+		add_filter( 'posts_clauses_request', [ $this, 'save_post_clauses' ], 10, 2 );
 
 		$this->query->set( 'sf-filters-applied', true );
 	}
@@ -225,8 +229,6 @@ class FilterQuery {
 
 		$args = $this->get_price_query( $args );
 		$args = $this->get_attributes_query( $args );
-
-		$wp_query->set( 'sf-filters-clauses-applied', true );
 
 		return $args;
 	}
@@ -430,6 +432,15 @@ class FilterQuery {
 			$args['where'] .= ' AND 1=0';
 		}
 
+		return $args;
+	}
+
+	public function save_post_clauses( $args, $wp_query ) {
+		if( $wp_query->get( 'sf-filters-clauses-applied' ) ) return $args;
+
+		\Hybrid\app()->instance( 'filtered-query-args', $args );
+
+		$wp_query->set( 'sf-filters-clauses-applied', true );
 		return $args;
 	}
 

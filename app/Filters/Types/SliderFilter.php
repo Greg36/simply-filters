@@ -33,37 +33,37 @@ class SliderFilter extends Filter {
 	}
 
 	/**
-	 * Get the max and min price for queried products.
-	 * Search builds upon the main query to preserve all query vars.
+	 * Get the max and min price for queried products
+	 * Search builds upon the main query args to be
+     * limited only to filtered products
 	 *
 	 * @return array
 	 */
 	private function get_price_range() {
-		$query = clone \WC_Query::get_main_query();
+        global $wpdb;
 
-		// @todo: Possible option for price filter: limit the range to selected fitlers or leave it
+        $args = \Hybrid\app( 'filtered-query-args' );
+        $join = $args['join'];
+        $where = $args['where'];
 
-		$query->set( 'posts_per_page', 1 );
-		$query->set( 'meta_key', '_price' );
-		$query->set( 'orderby', 'meta_value_num' );
-		$query->set( 'no_found_rows', false );
-		$query->set( 'fields', 'ids' );
+        $sql = "
+            SELECT MIN( min_price ) as min, MAX( max_price ) as max
+            FROM {$wpdb->wc_product_meta_lookup}
+            WHERE product_id IN (
+                SELECT ID FROM gjiw_posts
+                $join
+                WHERE 1=1
+                $where
+            )
+        ";
 
-		// Query the product and get its price
-		$query->set( 'order', 'ASC' );
-		$min = get_post_meta( $query->get_posts()[0], '_price', true );
-        // @todo: if there are no products
-
-		// For the max price just reverse the order
-		$query->set( 'order', 'DESC' );
-		$max = get_post_meta( $query->get_posts()[0], '_price', true );
+        $price = $wpdb->get_row( $sql, ARRAY_A );
 
 		return [
-			'min' => $min,
-			'max' => $max
+			'min' => intval( $price['min'] ),
+			'max' => intval( $price['max'] )
 		];
 	}
-
 
 	protected function filter_preview() {
 		?>
