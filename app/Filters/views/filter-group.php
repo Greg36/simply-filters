@@ -6,7 +6,7 @@
  */
 ?>
 
-<div class="sf-filter-group">
+<div class="sf-filter-group" data-action="<?php esc_attr_e( $settings['auto_submit'] ); ?>">
     
     <?php
 

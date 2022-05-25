@@ -1,4 +1,5 @@
 import FilterUrl from "./lib/filter-url";
+import { debounce } from "./lib/helpers";
 
 document.addEventListener( 'DOMContentLoaded', () => {
 
@@ -7,15 +8,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		/**
 		 *  Trigger callback after given wait without concurrent event triggers
 		 */
-		const debounce = ( callback, wait ) => {
-			let timeoutId = null;
-			return ( ...args ) => {
-				window.clearTimeout( timeoutId );
-				timeoutId = window.setTimeout( () => {
-					callback.apply( null, args );
-				}, wait );
-			};
-		}
+
 
 		/**
 		 * Debounce price change and change the URL

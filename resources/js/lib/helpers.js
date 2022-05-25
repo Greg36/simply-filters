@@ -1,4 +1,4 @@
-export { uniqid, addLoader, removeLoader, addFormNotice, invalidInputNotice };
+export { uniqid, addLoader, removeLoader, addFormNotice, invalidInputNotice, debounce };
 
 import { __ } from '@wordpress/i18n';
 
@@ -118,4 +118,14 @@ function invalidInputNotice( message, input ) {
 			notice.remove();
 		}, 200 );
 	} );
+}
+
+function debounce( callback, wait ) {
+	let timeoutId = null;
+	return ( ...args ) => {
+		window.clearTimeout( timeoutId );
+		timeoutId = window.setTimeout( () => {
+			callback.apply( null, args );
+		}, wait );
+	};
 }
