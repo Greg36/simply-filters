@@ -39,10 +39,12 @@ class FiltersServiceProvider extends ServiceProvider {
 
 	public function boot() {
 
-		// @todo: should this be enqueued only if not admin?
+		// Scripts and styles
 		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_styles' ] );
 		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
+		add_action( 'wp_footer', [ $this, 'late_enqueue_scripts' ] );
 
+		// Post types
 		add_action( 'init', [ $this, 'register_group_post_type' ] );
 		add_action( 'init', [ $this, 'register_single_post_type' ] );
 
@@ -77,6 +79,19 @@ class FiltersServiceProvider extends ServiceProvider {
 	 */
 	public function enqueue_scripts() {
 		wp_enqueue_script( 'simply-filters_public', $this->getAssetPath( 'js/public.js' ), null, null, true );
+	}
+
+	/**
+	 * Register the files to enqueue in footer page's content has been rendered
+	 *
+	 * @since    1.0.0
+	 */
+	public function late_enqueue_scripts() {
+
+		// Enqueue slider script and dependencies if slider filter is used on the page
+		if( $this->app->get( 'enqueue-slider' ) ) {
+			wp_enqueue_script( 'simply-filters_slider', $this->getAssetPath( 'js/range-slider.js' ), ['jquery', 'jquery-ui-slider'], null, true );
+		}
 	}
 
 	/**

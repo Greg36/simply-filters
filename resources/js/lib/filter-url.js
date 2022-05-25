@@ -1,7 +1,8 @@
 export default class FilterUrl {
 	
-	constructor() {
-		this.url = new URL( location.href );
+	constructor( url = '' ) {
+		if( ! url ) url = location.href;
+		this.url = new URL( url );
 	}
 	
 	update( action, param ) {
@@ -106,7 +107,7 @@ export default class FilterUrl {
 
 		param.key = 'price';
 		param.value = `${price.min}_${price.max}`;
-		this.replaceURLParam( param );
+		this.replace( param );
 	}
 
 	pushToHistory() {

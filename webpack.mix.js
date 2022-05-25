@@ -42,6 +42,7 @@ mix.version();
  * Compile JavaScript.
  */
 mix.js( 'resources/js/admin.js', 'js' )
+	.js( 'resources/js/range-slider.js', 'js' )
 	.js( 'resources/js/public.js', 'js' );
 
 /**

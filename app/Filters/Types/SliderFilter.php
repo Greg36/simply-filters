@@ -20,13 +20,16 @@ class SliderFilter extends Filter {
 		$this->type        = 'Slider';
 		$this->name        = __( 'Slider', $this->locale );
 		$this->description = __( 'Choose price range', $this->locale );
+
+        // Set flag for slider script to be enqueued
+        \Hybrid\app()->instance( 'enqueue-slider', true );
 	}
 
 	public function render() {
 		TemplateLoader::render( 'types/slider', [
 			'id'    => $this->get_id(),
 			'key'   => _x( 'price', 'slug', $this->locale ),
-			'price' => $this->get_price_range(),
+			'range' => $this->get_price_range(),
             'values' => $this->get_selected_values()
 		],
 			'Filters'
@@ -68,8 +71,8 @@ class SliderFilter extends Filter {
         $price = $wpdb->get_row( $sql, ARRAY_A );
 
 		return [
-			'min' => intval( $price['min'] ),
-			'max' => intval( $price['max'] )
+			'min' => ! is_null( $price['min'] ) ? intval( $price['min'] ) : 0,
+			'max' => ! is_null( $price['min'] ) ? intval( $price['max'] ) : 100
 		];
 	}
 

@@ -3,7 +3,7 @@ import FilterUrl from "./filter-url";
 export default class FilterActions {
 
 	constructor() {
-		this.url = new FilterUrl( location.href );
+		this.url = new FilterUrl();
 		this.filters = [];
 
 		const filters = document.querySelectorAll( '.sf-filter' );
