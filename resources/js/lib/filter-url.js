@@ -36,7 +36,7 @@ export default class FilterUrl {
 			this.pushToHistory( param );
 
 			// Dispatch event to apply filters
-			if( param.group.dataset.action === 'automatic' ) {
+			if ( param.group.dataset.action === 'automatic' ) {
 				const event = new Event( 'sf-filter-products' );
 				window.dispatchEvent( event );
 			}

@@ -79,6 +79,10 @@ class FiltersServiceProvider extends ServiceProvider {
 	 */
 	public function enqueue_scripts() {
 		wp_enqueue_script( 'simply-filters_public', $this->getAssetPath( 'js/public.js' ), null, null, true );
+
+		wp_localize_script( 'simply-filters_public', 'sf_filters', [
+			'loader_src'     => \SimplyFilters\get_svg( 'loader' ),
+		] );
 	}
 
 	/**

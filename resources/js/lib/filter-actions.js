@@ -1,4 +1,5 @@
 import FilterUrl from "./filter-url";
+import { addLoader, removeLoader } from "./helpers";
 
 export default class FilterActions {
 
@@ -11,6 +12,7 @@ export default class FilterActions {
 		window.addEventListener( 'sf-filter-products', () => {
 			this.filterProducts();
 		} );
+
 	}
 
 	initFilters() {
@@ -68,41 +70,123 @@ export default class FilterActions {
 			} );
 		} );
 
-
 	}
 
 	filterProducts() {
-		const xhr = new XMLHttpRequest();
-		xhr.onload = () => {
-			if (xhr.readyState === 4) {
-				if (xhr.status === 200) {
-					this.updatePage( xhr.responseXML );
-				} else {
-					this.updateError( xhr );
-				}
-			}
-		}
-		xhr.open( 'GET', location.href );
-		xhr.responseType = 'document';
-		xhr.send();
+
+
+		fetch( location.href, {
+			method: 'GET',
+		} ).then( ( response ) => {
+			return response.text();
+		} ).then( ( html ) => {
+			this.updatePage( html )
+		} );
+
+		addLoader( document.body );
+
+		// const xhr = new XMLHttpRequest();
+		// xhr.onload = () => {
+		// 	if (xhr.readyState === 4) {
+		// 		if (xhr.status === 200) {
+		// 			this.updatePage( xhr.responseXML );
+		// 		} else {
+		// 			this.updateError( xhr );
+		// 		}
+		// 	}
+		// }
+		// xhr.open( 'GET', location.href );
+		// xhr.responseType = 'document';
+		//
+		// addLoader( document.body );
+		//
+		// xhr.send();
 	}
 
-	updatePage( content ) {
+	updatePage( html ) {
+
+		debugger;
+
+		// Setup new document
+		let content = document.implementation.createHTMLDocument( document.title );
+		content.documentElement.innerHTML = html;
+
 		// @todo: use here user-entered selectors?
+		const selectors = [
+			'.woocommerce-pagination',
+			'.woocommerce-breadcrumb',
+			'.products',
+			'.woocommerce-result-count',
+			'.woocommerce-ordering',
+			'.woocommerce-products-header__title',
+		];
+		selectors.forEach( ( selector ) => {
+			const home = document.querySelectorAll( selector );
+			const ext = content.querySelectorAll( selector );
 
-		// Products
-		document.querySelector( 'ul.products' ).innerHTML = content.querySelector( 'ul.products' ).innerHTML;
+			// Both elements are present in both trees in equal quantity
+			if ( home.length > 0 && home.length === ext.length ) {
+				home.forEach( ( ele, index ) => {
+					ele.replaceWith( ext[index] );
+				} );
+				return;
+			}
 
-		// Pagination
-		// document.querySelector( 'nav.woocommerce-pagination' ).innerHTML = content.querySelector( 'nav.woocommerce-pagination' ).innerHTML;
+			// Content is present only on new content
+			if ( home.length === 0 && ext.length > 0 ) {
+				ext.forEach( ( ele ) => {
+					let location = this.getRelativeDOMPosition( ext, ele );
+					if( location.selector ) {
+						let root = document.querySelector( location.selector );
 
-		// Result count
-		document.querySelector( 'p.woocommerce-result-count' ).innerHTML = content.querySelector( 'p.woocommerce-result-count' ).innerHTML;
+						// Traverse children according to queried order
+						while( location.index.length > 1 ) {
+							root = root.children[ location.index.shift() ];
+						}
 
+						// Insert on specified index
+						root.insertBefore( ele, root.children[ location.index.shift() ] );
+					}
+				} );
+				return;
+			}
+
+			// Content is present only on present content
+			if ( home.length > 0 && ext.length === 0 ) {
+				home.forEach( ( ele ) => {
+					ele.remove();
+				} );
+			}
+		} );
+
+		removeLoader();
+	}
+
+	/**
+	 * Step up te DOM tree and find the closest element with unique ID
+	 * saving children index on the path
+	 *
+	 * @param doc
+	 * @param ele
+	 * @param location
+	 */
+	getRelativeDOMPosition( doc, ele, location = [] ) {
+		location.push( Array.from( ele.parentNode.children ).indexOf( ele ) )
+
+		if ( ele.parentElement.id ) {
+			let parent = document.querySelectorAll( '#' + ele.parentNode.id );
+			if ( parent.length === 1 ) return {
+				selector: '#' + ele.parentNode.id,
+				index: location.reverse(),
+			}
+		} else {
+			return this.getRelativeDOMPosition( doc, ele.parentElement, location );
+		}
 	}
 
 	updateError( request ) {
 
+		removeLoader();
 	}
 
 }

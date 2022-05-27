@@ -54,7 +54,11 @@ function uniqid( prefix, moreEntropy ) {
 }
 
 function addLoader( node ) {
-	let loader = '<div id="sf-ajax-loader"><img src="' + sf_admin.loader_src + '" aria-hidden="true" alt=""></div>';
+	let src = '';
+	if( window.hasOwnProperty( 'sf_admin' ) ) src = sf_admin.loader_s
+	if( window.hasOwnProperty( 'sf_filters' ) )	src = sf_filters.loader_src;
+
+	let loader = '<div id="sf-ajax-loader"><img src="' + src + '" aria-hidden="true" alt=""></div>';
 	node.insertAdjacentHTML( 'beforeend', loader );
 	setTimeout( function () {
 		let loaderNode = document.getElementById( 'sf-ajax-loader' );

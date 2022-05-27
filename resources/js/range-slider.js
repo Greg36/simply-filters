@@ -17,7 +17,8 @@ document.addEventListener( 'DOMContentLoaded', () => {
 			const url = new FilterUrl();
 			url.update( 'replace', {
 				key: 'price',
-				value: `${data.min}_${data.max}`
+				value: `${data.min}_${data.max}`,
+				group: data.group
 			} );
 		}, 300 );
 
@@ -36,6 +37,8 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		/**
 		 * Check if value is in range and correct it if needed
 		 * @param input
+		 * @param min
+		 * @param max
 		 */
 		const validateRange = ( input, min, max ) => {
 			if ( parseInt( input.value ) > parseInt( input.max ) ) {
@@ -58,7 +61,8 @@ document.addEventListener( 'DOMContentLoaded', () => {
 
 			const ui = slider.querySelector( '.sf-slider__ui' ),
 				min = slider.querySelector( '.sf-slider__input--min' ),
-				max = slider.querySelector( '.sf-slider__input--max' );
+				max = slider.querySelector( '.sf-slider__input--max' ),
+				group = slider.closest( '.sf-filter-group' );
 
 			ui.style.display = 'block';
 
@@ -74,7 +78,8 @@ document.addEventListener( 'DOMContentLoaded', () => {
 					inputs[1].value = ui.values[1];
 					updatePrice( {
 						min: min.value,
-						max: max.value
+						max: max.value,
+						group: group
 					} )
 				}
 			} );
