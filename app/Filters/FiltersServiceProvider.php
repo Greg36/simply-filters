@@ -82,6 +82,8 @@ class FiltersServiceProvider extends ServiceProvider {
 
 		wp_localize_script( 'simply-filters_public', 'sf_filters', [
 			'loader_src'     => \SimplyFilters\get_svg( 'loader' ),
+			'price_format' => get_option( 'woocommerce_currency_pos' ),
+			'currency' => get_woocommerce_currency_symbol()
 		] );
 	}
 

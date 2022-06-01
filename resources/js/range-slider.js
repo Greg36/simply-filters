@@ -6,11 +6,6 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	(function () {
 
 		/**
-		 *  Trigger callback after given wait without concurrent event triggers
-		 */
-
-
-		/**
 		 * Debounce price change and change the URL
 		 */
 		const updatePrice = debounce( ( data ) => {
@@ -56,6 +51,26 @@ document.addEventListener( 'DOMContentLoaded', () => {
 			}
 		}
 
+		/**
+		 * Format price based on site's currency settings
+		 *
+		 * @param price
+		 */
+		const formatPrice = ( price ) => {
+			const symbol = sf_filters.currency;
+			switch ( sf_filters.price_format ) {
+				case 'left' :
+					return '' + symbol + price;
+				case 'right' :
+					return '' + price + symbol;
+				case 'left_space' :
+					return '' + symbol + '&nbsp;' + price;
+				case 'right_space' :
+					return '' + price + '&nbsp;' + symbol;
+			}
+			return price;
+		}
+
 		let sliders = document.querySelectorAll( '.sf-slider' );
 		sliders.forEach( ( slider ) => {
 
@@ -73,6 +88,9 @@ document.addEventListener( 'DOMContentLoaded', () => {
 				max: parseInt( max.dataset.max ),
 				values: [min.value, max.value],
 				slide: function ( event, ui ) {
+
+					if( ui.values[1] - ui.values[0] < 1 ) return false;
+
 					let inputs = event.target.nextElementSibling.children;
 					inputs[0].value = ui.values[0];
 					inputs[1].value = ui.values[1];
