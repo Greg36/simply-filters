@@ -3,44 +3,24 @@
  * included in this file.
  */
 
-
-
-
-
-/**
- * Admin AJAX loader
- */
-#sf-ajax-loader {
-	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	z-index: 10000;
-	opacity: 0;
-	transition: opacity 0.3s ease-in-out;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	background: #f1f1f1;
-	border-radius: 10px;
-
-	img {
-		width: 51px;
-		height: 51px;
-		background: none;
-		position: relative;
-		z-index: 10001;
-	}
-
-	&.fade-in {
-		opacity: 0.5;
-	}
+#page {
+	padding: 30px;
 }
 
+// Variables
+@import "variables";
 
+// Main public styles
+@import "public/general";
+@import "public/filters";
 
-
+// Filters
+@import "public/filters/checkbox";
+@import "public/filters/radio";
+@import "public/filters/select";
+@import "public/filters/color";
+@import "public/filters/rating";
+//@import "public/filters/slider";
 
 
 

@@ -1,10 +1,10 @@
 
 // Variables
-@import "admin/variables";
+@import "variables";
 
 // Main admin styles
 @import "admin/general";
 
 // Page specific styles
-@import "admin/screens/edit-screen";
-@import "admin/screens/settings-screen";
+@import "admin/edit-screen";
+@import "admin/settings-screen";

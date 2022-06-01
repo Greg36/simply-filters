@@ -74,7 +74,6 @@ export default class FilterActions {
 
 	filterProducts() {
 
-
 		fetch( location.href, {
 			method: 'GET',
 		} ).then( ( response ) => {
@@ -84,28 +83,9 @@ export default class FilterActions {
 		} );
 
 		addLoader( document.body );
-
-		// const xhr = new XMLHttpRequest();
-		// xhr.onload = () => {
-		// 	if (xhr.readyState === 4) {
-		// 		if (xhr.status === 200) {
-		// 			this.updatePage( xhr.responseXML );
-		// 		} else {
-		// 			this.updateError( xhr );
-		// 		}
-		// 	}
-		// }
-		// xhr.open( 'GET', location.href );
-		// xhr.responseType = 'document';
-		//
-		// addLoader( document.body );
-		//
-		// xhr.send();
 	}
 
 	updatePage( html ) {
-
-		debugger;
 
 		// Setup new document
 		let content = document.implementation.createHTMLDocument( document.title );

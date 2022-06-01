@@ -1,0 +1,52 @@
+
+.sf-radio {
+	ul {
+		margin: 0;
+		padding: 0;
+	}
+
+	li {
+		display: flex;
+		align-items: center;
+		padding: 6px 0;
+
+	}
+
+	&__input {
+		width: 18px;
+		height: 18px;
+		border-radius: 20px;
+		box-sizing: border-box;
+		border: 2px solid #4F76A3;
+		position: relative;
+		background-color: #fff;
+		appearance: none;
+		cursor: pointer;
+
+		&:checked {
+			background-color: #fff;
+
+			&::after {
+				transform: rotate(45deg);
+				content: "";
+				width: 9px;
+				height: 9px;
+				border-radius: 20px;
+				background-color: #4F76A3;
+				position: absolute;
+				top: 3px;
+				left: 3px;
+			}
+
+			& + .sf-checkbox__label {
+				font-weight: 600;
+			}
+		}
+	}
+
+	&__label {
+		color: $font__primary;
+		font-size: 14px;
+		padding-left: 12px;
+	}
+}

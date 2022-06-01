@@ -17,6 +17,16 @@ use function SimplyFilters\load_inline_svg;
 
 			echo '<li class="sf-color__item">';
 
+			// Input
+			printf( '<input class="sf-color__input" type="checkbox" id="%1$s" name="%2$s" value="%3$s" data-query="%4$s" %5$s>',
+				esc_attr( $id . '_' . $color['slug'] ),
+				esc_attr( $key ),
+				esc_attr( $color['slug'] ),
+				esc_attr( $query ),
+				in_array( $color['slug'], $values ) ? 'checked' : '',
+
+			);
+
 			// Swatch
 			printf( '<div class="sf-color__swatch %s" style="background-color: %s;">%s</div>',
 				esc_attr( $color['class'] ),
@@ -24,15 +34,11 @@ use function SimplyFilters\load_inline_svg;
 				load_inline_svg( 'check.svg' )
 			);
 
-			// Input
-			printf( '<input type="checkbox" id="%1$s" name="%2$s" value="%3$s" data-query="%4$s" %5$s> <label for="%1$s">%6$s</label>',
-				esc_attr( $id . '_' . $color['slug'] ),
-				esc_attr( $key ),
-				esc_attr( $color['slug'] ),
-                esc_attr( $query ),
-				in_array( $color['slug'], $values ) ? 'checked' : '',
-				esc_html( $color['label'] )
-			);
+            // Label
+            printf( '<label class="sf-color__label" for="%1$s">%2$s</label>',
+	            esc_attr( $id . '_' . $color['slug'] ),
+	            esc_html( $color['label'] )
+            );
 
 			echo '</li>';
 		}

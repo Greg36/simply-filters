@@ -1,0 +1,81 @@
+.sf-rating {
+	ul {
+		margin: 0;
+		padding: 0;
+	}
+
+	li {
+		display: flex;
+		align-items: center;
+		padding: 6px 0;
+	}
+
+	&__input {
+		width: 18px;
+		height: 18px;
+		border-radius: 3px;
+		box-sizing: border-box;
+		border: 2px solid #4F76A3;
+		position: relative;
+		background-color: #fff;
+		appearance: none;
+		cursor: pointer;
+
+		&:checked {
+			background-color: #4F76A3;
+
+			&::after, &::before {
+				content: '';
+				position: absolute;
+				background-color: #fff;
+				width: 2px;
+			}
+
+			&::after {
+				height: 11px;
+				transform: rotate(45deg);
+				left: 8px;
+				top: 2px;
+			}
+
+			&::before {
+				height: 6px;
+				transform: rotate(-45deg);
+				left: 3px;
+				top: 6px;
+			}
+
+			& + .sf-checkbox__label {
+				font-weight: 600;
+			}
+		}
+	}
+
+	&__stars {
+		display: flex;
+	}
+
+	&__label {
+		cursor: pointer;
+		color: $font__primary;
+		font-size: 14px;
+		padding-left: 10px;
+	}
+}
+
+.sf-star {
+	width: 16px;
+	height: 15px;
+	background: url("../svg/star-e.svg");
+	background-repeat: no-repeat;
+	background-position: center;
+	display: block;
+
+	&--half {
+		background-image: url("../svg/star-h.svg");
+	}
+
+	&--full {
+		background-image: url("../svg/star-f.svg");
+	}
+}

@@ -733,8 +733,8 @@ body.post-type-sf_filter_group {
 
 		&::after {
 			content: "";
-			width: 8px;
-			height: 8px;
+			width: 9px;
+			height: 9px;
 			border-radius: 20px;
 			background-color: #4F76A3;
 			position: absolute;
@@ -809,7 +809,7 @@ body.post-type-sf_filter_group {
 
 		&::after {
 			transform: none;
-			top: 2px;
+			top: 0;
 			left: 0;
 			width: 30px;
 			height: 30px;

@@ -1,0 +1,63 @@
+
+// @todo: change ul and li into __list and __item - same with other filters
+
+.sf-checkbox {
+	ul {
+		margin: 0;
+		padding: 0;
+	}
+
+	li {
+		display: flex;
+		align-items: center;
+		padding: 6px 0;
+	}
+
+	&__input {
+		width: 18px;
+		height: 18px;
+		border-radius: 3px;
+		box-sizing: border-box;
+		border: 2px solid #4F76A3;
+		position: relative;
+		background-color: #fff;
+		appearance: none;
+		cursor: pointer;
+
+		&:checked {
+			background-color: #4F76A3;
+
+			&::after, &::before {
+				content: '';
+				position: absolute;
+				background-color: #fff;
+				width: 2px;
+			}
+
+			&::after {
+				height: 11px;
+				transform: rotate(45deg);
+				left: 8px;
+				top: 2px;
+			}
+
+			&::before {
+				height: 6px;
+				transform: rotate(-45deg);
+				left: 3px;
+				top: 6px;
+			}
+
+			& + .sf-checkbox__label {
+				font-weight: 600;
+			}
+		}
+	}
+
+	&__label {
+		cursor: pointer;
+		color: $font__primary;
+		font-size: 14px;
+		padding-left: 10px;
+	}
+}

@@ -1,0 +1,78 @@
+.sf-slider {
+	display: flex;
+	align-items: center;
+	height: 100%;
+
+	&__wrap {
+		width: 100%;
+	}
+
+	&__handler {
+		position: relative;
+		height: 4px;
+		width: 100%;
+		background: #E3E5E8;
+
+		span {
+			width: 18px;
+			height: 18px;
+			background: #4F76A2;
+			border: 1px solid #326195;
+			border-radius: 40px;
+			position: absolute;
+			top: -7px;
+		}
+	}
+
+	&__bar {
+		position: absolute;
+		left: 28%;
+		right: 18%;
+		top: 0;
+		height: 4px;
+		background: #4F76A2;
+	}
+
+	&__left {
+		left: 28%;
+	}
+
+	&__right {
+		right: 18%;
+	}
+
+	&__values {
+		display: flex;
+		justify-content: space-between;
+		margin-top: 24px;
+		position: relative;
+
+		&::after {
+			content: "";
+			background: #E3E5E8;
+			height: 1px;
+			width: 25px;
+			position: absolute;
+			top: 50%;
+			left: calc( 50% - 12px );
+		}
+
+		> div {
+			border: $meta__border;
+			border-radius: 5px;
+			background: #fff;
+			line-height: 32px;
+			font-size: 14px;
+			font-weight: 600;
+			color: $font__primary;
+			min-width: 87px;
+			padding: 0 12px;
+			box-sizing: border-box;
+		}
+	}
+
+	&__from {}
+
+	&__to {}
+
+}
