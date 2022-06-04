@@ -41,7 +41,7 @@ class Settings {
 
 		$data = [];
 		foreach ( $this->settings as $setting ) {
-			$value = isset( $this->data[ $setting['key'] ] ) ? $this->data[ $setting['key'] ] : false;
+			$value                   = isset( $this->data[ $setting['key'] ] ) ? $this->data[ $setting['key'] ] : false;
 			$data[ $setting['key'] ] = $setting['control']->parse_data( $value );
 		}
 
@@ -59,7 +59,7 @@ class Settings {
 	public function add( $key, $type, $data, $order = 10 ) {
 		$control = $this->get_control( $type, $data );
 
-		if( $control ) {
+		if ( $control ) {
 			$this->settings[] = [
 				'key'     => $key,
 				'control' => $control,
@@ -101,10 +101,11 @@ class Settings {
 			foreach ( $this->settings as $setting ) {
 				$key = $setting['key'];
 				$setting['control']->render( [
-						'key'   => $this->prefix_key( $key ),
-						'value' => isset( $this->data[ $key ] ) ? $this->data[ $key ] : '',
-						'id'    => $this->prefix_id( $key ),
-						'label' => $key
+						'key'           => $this->prefix_key( $key ),
+						'value'         => isset( $this->data[ $key ] ) ? $this->data[ $key ] : '',
+						'load_defaults' => isset( $this->data['load_defaults'] ) ? $this->data['load_defaults'] : false,
+						'id'            => $this->prefix_id( $key ),
+						'label'         => $key
 					]
 				);
 			}

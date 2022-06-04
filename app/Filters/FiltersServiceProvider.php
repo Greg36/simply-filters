@@ -220,7 +220,8 @@ class FiltersServiceProvider extends ServiceProvider {
 				'label'      => __( '(no label)', $this->app->get( 'locale' ) ),
 				'enabled'    => true,
 				'sources'    => 'attributes',
-				'attributes' => false
+				'attributes' => false,
+				'load_defaults' => true,
 			] );
 
 			// Render the filter field row

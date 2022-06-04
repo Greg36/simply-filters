@@ -7,7 +7,7 @@ abstract class Control {
 	/**
 	 * @var string Setting's unique key.
 	 */
-    protected $key;
+	protected $key;
 
 	/**
 	 * @var string Setting's label.
@@ -17,52 +17,55 @@ abstract class Control {
 	/**
 	 * @var Setting's value.
 	 */
-    protected $value;
+	protected $value;
 
 	/**
 	 * @var string Setting's name.
 	 */
-    protected $name;
+	protected $name;
 
 	/**
 	 * @var string Setting's description.
 	 */
-    protected $description;
+	protected $description;
 
 	/**
 	 * @var array Setting's array options.
 	 */
-    protected $options = [];
+	protected $options = [];
 
 	protected abstract function render_setting_field();
 
 	/**
-     * Initialize field with data // @todo better doc
-     *
-	 * @param $args
+	 * Initialize field with data // @param $args
+	 * @todo better doc
+	 *
 	 */
-    public function __construct( $args ) {
-		$this->name = $args['name'];
+	public function __construct( $args ) {
+		$this->name        = $args['name'];
 		$this->description = isset( $args['description'] ) ? $args['description'] : '';
-		$this->options = isset( $args['options'] ) ? $args['options'] : [];
-        // @todo: this where default should be handled
+		$this->options     = isset( $args['options'] ) ? $args['options'] : [];
+		$this->value       = isset( $args['default'] ) ? $args['default'] : '';
 	}
 
 	/**
-     * Render settings field
-     *
+	 * Render settings field
+	 *
 	 * @param $key
 	 */
 	public function render( $data ) {
-        $this->key = $data['key'];
-        $this->value = $data['value'];
-        $this->id = $data['id'];
-        $this->label = $data['label'];
-        $this->render_settings_row();
-    }
+		$this->key   = $data['key'];
+		$this->id    = $data['id'];
+		$this->label = $data['label'];
+		if ( ! $data['load_defaults'] ) {
+			$this->value = $data['value'];
+		}
 
-	public function parse_data( $data ){
-        return $data;
+		$this->render_settings_row();
+	}
+
+	public function parse_data( $data ) {
+		return $data;
 	} // @todo: change to get_data / save_data   or something like get/save_setting ?
 
 	/**
@@ -70,15 +73,15 @@ abstract class Control {
 	 */
 	protected function render_settings_row() {
 		?>
-		<tr class="sf-option">
-			<td>
-				<label for="<?php esc_attr_e( $this->key ); ?>"><?php esc_html_e( $this->name ); ?></label>
-				<p><?php echo wp_kses_post( $this->description ); ?></p>
-			</td>
-			<td>
+        <tr class="sf-option">
+            <td>
+                <label for="<?php esc_attr_e( $this->key ); ?>"><?php esc_html_e( $this->name ); ?></label>
+                <p><?php echo wp_kses_post( $this->description ); ?></p>
+            </td>
+            <td>
 				<?php $this->render_setting_field(); ?>
-			</td>
-		</tr>
+            </td>
+        </tr>
 		<?php
 	}
 }

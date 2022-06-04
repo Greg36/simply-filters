@@ -188,7 +188,8 @@ abstract class Filter {
 				'options'     => [
 					'or'  => __( 'OR - Product needs to match any of selected options to be shown ', $this->locale ),
 					'and' => __( 'AND - Product needs to match all selected options to be shown', $this->locale )
-				]
+				],
+                'default' => 'or'
 			] );
 		}
 
