@@ -189,7 +189,7 @@ abstract class Filter {
 					'or'  => __( 'OR - Product needs to match any of selected options to be shown ', $this->locale ),
 					'and' => __( 'AND - Product needs to match all selected options to be shown', $this->locale )
 				],
-                'default' => 'or'
+				'default'     => 'or'
 			] );
 		}
 
@@ -206,14 +206,23 @@ abstract class Filter {
 			$this->add_source_settings();
 		}
 
-        // All options label
-        if( in_array( 'all_option', $this->supports, true ) ) {
-	        $this->settings->add( 'all_option', 'text', [
-		        'name'        => __( 'All elements label', $this->locale ),
-		        'description' => __( 'First option selected by default have all elements show, what should be its label i.e. "All brands"', $this->locale ),
-//		        'required'    => true
-	        ] );
-        }
+		// All options label
+		if ( in_array( 'all_option', $this->supports, true ) ) {
+			$this->settings->add( 'all_option', 'text', [
+				'name'        => __( 'All elements label', $this->locale ),
+				'description' => __( 'First option selected by default have all elements show, what should be its label i.e. "All brands"', $this->locale ),
+				// @todo: make this required
+			] );
+		}
+
+		// Products count
+		if ( in_array( 'count', $this->supports, true ) ) {
+			$this->settings->add( 'count', 'toggle', [
+				'name'        => __( 'Display product count', $this->locale ),
+				'description' => __( 'Show/hide product count next to options', $this->locale ),
+				'default'     => true
+			] );
+		}
 	}
 
 	/**
@@ -358,9 +367,9 @@ abstract class Filter {
 			return '';
 		}
 
-        if( $this->data['sources'] === 'attributes' ) {
-            return $this->data['attributes'];
-        }
+		if ( $this->data['sources'] === 'attributes' ) {
+			return $this->data['attributes'];
+		}
 
 		return $this->data['sources'];
 	}
@@ -391,15 +400,17 @@ abstract class Filter {
 	 */
 	protected function get_selected_values() {
 		$params = \Hybrid\app( 'filter-values' );
-		if( empty( $params ) ) return [];
+		if ( empty( $params ) ) {
+			return [];
+		}
 
 		$key = $this->get_current_source_taxonomy();
 
 		foreach ( $params as $param ) {
-            if( $param['key'] === $key ) {
-                return $param['data'];
-            }
-        }
+			if ( $param['key'] === $key ) {
+				return $param['data'];
+			}
+		}
 
 		return [];
 	}
@@ -435,6 +446,71 @@ abstract class Filter {
 			checked( $this->is_enabled(), true, false )
 		);
 		echo '<span class="sf-switch__slider"></span></label>';
+	}
+
+	/**
+	 * Performs a query to count how many times given term ids appear in filtered products
+	 *
+	 * @param $terms
+	 *
+	 * @return array|false
+	 */
+	protected function get_product_counts_in_terms( $terms ) {
+		// @todo cache this in a daily transient
+
+		global $wpdb;
+		$product_count = false;
+
+		if ( $this->get_data( 'count' ) ) {
+
+			// Get JOIN and WHERE args from main product query to limit results to only filtered products
+			$query_args = \Hybrid\app( 'filtered-query-args' );
+			$join       = $query_args['join'];
+			$where      = $query_args['where'];
+
+			$term_ids = $this->parse_term_ids( $terms );
+
+			$sql = "
+                SELECT term_taxonomy.term_id AS term_id, COUNT( DISTINCT {$wpdb->posts}.ID) AS post_count
+                FROM {$wpdb->posts}
+                INNER JOIN {$wpdb->term_relationships} AS term_relationships ON {$wpdb->posts}.ID = term_relationships.object_id
+                INNER JOIN {$wpdb->term_taxonomy} AS term_taxonomy ON term_relationships.term_taxonomy_id = term_taxonomy.term_taxonomy_id
+                $join
+                WHERE 1=1
+                $where
+                AND term_taxonomy.term_id IN (" . implode( ',', $term_ids ) . ")
+                GROUP BY term_taxonomy.term_id
+            ";
+
+			$results = $wpdb->get_results( $sql, ARRAY_A );
+
+			$product_count = wp_list_pluck( $results, 'post_count', 'term_id' );
+		}
+
+		return $product_count;
+	}
+
+	/**
+     * Extract only term ids from terms array
+     *
+	 * @param $terms
+	 *
+	 * @return array
+	 */
+	private function parse_term_ids( $terms ) {
+		if ( isset( end( $terms )['id'] ) ) {
+			$term_ids = array_map( function ( $term ) {
+				return isset( $term['id'] ) ? $term['id'] : false;
+			}, $terms );
+
+			$term_ids = array_filter( $term_ids, function ( $term ) {
+				return is_numeric( $term );
+			} );
+
+            return $term_ids;
+		} else {
+			return $terms;
+		}
 	}
 
 }

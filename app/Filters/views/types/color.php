@@ -5,6 +5,7 @@
  * @var $query string
  * @var $options array
  * @var $values array
+ * @var $count array
  */
 
 use function SimplyFilters\load_inline_svg;
@@ -14,6 +15,13 @@ use function SimplyFilters\load_inline_svg;
     <ul class="sf-color__list">
 		<?php
 		foreach ( $options as $color ) {
+
+			$label = esc_html( $color['label'] );
+			if( $count !== false ) {
+				$label .= '<span class="sf-label-count">';
+				$label .= isset( $count[ $color['id'] ] ) ? ' (' . intval( $count[ $color['id'] ] ) . ')' : ' (0)';
+				$label .= '</span>';
+			}
 
 			echo '<li class="sf-color__item">';
 
@@ -37,7 +45,7 @@ use function SimplyFilters\load_inline_svg;
             // Label
             printf( '<label class="sf-color__label" for="%1$s">%2$s</label>',
 	            esc_attr( $id . '_' . $color['slug'] ),
-	            esc_html( $color['label'] )
+	            $label
             );
 
 			echo '</li>';

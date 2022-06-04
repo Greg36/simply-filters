@@ -15,7 +15,8 @@ class ColorFilter extends Filter {
 	protected $supports = [
 		'label',
 		'sources',
-        'query'
+        'query',
+		'count'
 	];
 
 	public function __construct() {
@@ -57,7 +58,8 @@ class ColorFilter extends Filter {
 				'key'     => $this->get_current_source_key(),
 				'options' => $this->prepare_colors_data( $options ),
 				'values'  => $this->get_selected_values(),
-				'query'   => $this->get_data( 'query', 'or' )
+				'query'   => $this->get_data( 'query', 'or' ),
+				'count'   => $this->get_product_counts_in_terms( $options )
 			],
 				'Filters'
 			);
@@ -100,7 +102,8 @@ class ColorFilter extends Filter {
 				'slug'  => $term['slug'],
 				'label' => $term['name'],
 				'hex'   => $hex,
-				'class' => $this->check_color_luminance( $hex )
+				'class' => $this->check_color_luminance( $hex ),
+                'id'    => $term['id']
 			];
 		}
 
