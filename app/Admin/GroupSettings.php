@@ -50,21 +50,15 @@ class GroupSettings {
 			]
 		] );
 
-		$settings->add( 'test_col', 'color', [
-			'name'        => __( 'color', $locale ),
-			'description' => __( 'colorcolor', $locale ),
-			'options'     => [
-				[
-					'name' => 'Background color',
-					'id'   => false,
-					'slug' => 'bg_color',
-				],
-				[
-					'name' => 'Foreground color',
-					'id'   => false,
-					'slug' => 'fg_color',
-				]
-			]
+		$settings->add( 'more_show', 'toggle', [
+			'name' => __( 'More options button' , $locale ),
+			'description' => __( 'Enable to limit how many options are shown at once before "Show more" button appears' )
+		] );
+
+		$settings->add( 'more_count', 'number', [
+			'name' => __( 'Number of options to show', $locale ),
+			'description' => __( 'How many options should be displayed initially', $locale ),
+			'default' => 5
 		] );
 
 		$this->settings = $settings;

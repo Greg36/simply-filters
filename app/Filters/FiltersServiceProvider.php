@@ -81,9 +81,12 @@ class FiltersServiceProvider extends ServiceProvider {
 		wp_enqueue_script( 'simply-filters_public', $this->getAssetPath( 'js/public.js' ), null, null, true );
 
 		wp_localize_script( 'simply-filters_public', 'sf_filters', [
-			'loader_src'     => \SimplyFilters\get_svg( 'loader' ),
+			'loader_src'   => \SimplyFilters\get_svg( 'loader' ),
 			'price_format' => get_option( 'woocommerce_currency_pos' ),
-			'currency' => get_woocommerce_currency_symbol()
+			'currency'     => get_woocommerce_currency_symbol(),
+			'locale'       => [
+				'show_less' => __( 'Show less', $this->app->get( 'locale') )
+			]
 		] );
 	}
 
@@ -95,8 +98,8 @@ class FiltersServiceProvider extends ServiceProvider {
 	public function late_enqueue_scripts() {
 
 		// Enqueue slider script and dependencies if slider filter is used on the page
-		if( $this->app->get( 'enqueue-slider' ) ) {
-			wp_enqueue_script( 'simply-filters_slider', $this->getAssetPath( 'js/range-slider.js' ), ['jquery', 'jquery-ui-slider'], null, true );
+		if ( $this->app->get( 'enqueue-slider' ) ) {
+			wp_enqueue_script( 'simply-filters_slider', $this->getAssetPath( 'js/range-slider.js' ), [ 'jquery', 'jquery-ui-slider' ], null, true );
 		}
 	}
 
@@ -216,11 +219,11 @@ class FiltersServiceProvider extends ServiceProvider {
 			 */
 			$filter = new $class;
 			$filter->initialize( [
-				'id'         => uniqid(),
-				'label'      => __( '(no label)', $this->app->get( 'locale' ) ),
-				'enabled'    => true,
-				'sources'    => 'attributes',
-				'attributes' => false,
+				'id'            => uniqid(),
+				'label'         => __( '(no label)', $this->app->get( 'locale' ) ),
+				'enabled'       => true,
+				'sources'       => 'attributes',
+				'attributes'    => false,
 				'load_defaults' => true,
 			] );
 

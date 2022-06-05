@@ -24,7 +24,7 @@ class FilterGroup {
 
 	public function __construct( $post_id ) {
 
-		$this->post_id = $post_id;
+		$this->post_id  = $post_id;
 		$this->settings = new GroupSettings( $post_id );
 
 		$this->query_filters_data();
@@ -68,7 +68,9 @@ class FilterGroup {
 
 		if ( ! empty( $this->filters ) ) {
 			foreach ( $this->filters as $filter ) {
-				$filters[] = FilterFactory::build( $filter );
+				$filter_object = FilterFactory::build( $filter );
+				$filter_object->set_group( $this );
+				$filters[] = $filter_object;
 			}
 		}
 
@@ -91,7 +93,7 @@ class FilterGroup {
 
 		TemplateLoader::render( 'filter-group', [
 			'group_id' => $this->post_id,
-			'filters' => $this->get_filters(),
+			'filters'  => $this->get_filters(),
 			'settings' => $this->get_settings(),
 		],
 			'Filters'

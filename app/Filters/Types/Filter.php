@@ -3,6 +3,7 @@
 namespace SimplyFilters\Filters\Types;
 
 use SimplyFilters\Admin\Settings;
+use SimplyFilters\Filters\FilterGroup;
 
 abstract class Filter {
 
@@ -50,6 +51,11 @@ abstract class Filter {
 	protected $settings;
 
 	/**
+	 * @var $group Filter's current group
+	 */
+	protected $group;
+
+	/**
 	 * @var array Supported settings
 	 */
 	protected $supports = [];
@@ -79,6 +85,15 @@ abstract class Filter {
 
 		$this->set_sources();
 		$this->load_settings();
+	}
+
+	/**
+     * Set group filter belongs to
+     *
+	 * @param FilterGroup $group
+	 */
+	public function set_group( $group ) {
+		$this->group = $group;
 	}
 
 	/**
@@ -513,4 +528,16 @@ abstract class Filter {
 		}
 	}
 
+	/**
+     * Get settings from filter's group
+     *
+	 * @return array
+	 */
+	protected function get_group_settings() {
+        if( ! $this->group ) {
+            return [];
+        }
+
+        return $this->group->get_settings();
+	}
 }

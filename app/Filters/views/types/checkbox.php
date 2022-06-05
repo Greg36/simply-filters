@@ -4,31 +4,42 @@
  * @var $key string
  * @var $options array
  * @var $values array
- * @var $query string
- * @var $count array
+ * @var $settings array
  */
 ?>
 <div class="sf-checkbox">
-    <ul class="sf-checkbox__list">
+    <ul class="sf-checkbox__list sf-option-list">
 		<?php
-		foreach ( $options as $option ) {
+		foreach ( $options as $key => $option ) {
 
-            $label = esc_html( $option['name'] );
-            if( $count !== false ) {
-                $label .= '<span class="sf-label-count">';
-	            $label .= isset( $count[ $option['id'] ] ) ? ' (' . intval( $count[ $option['id'] ] ) . ')' : ' (0)';
-	            $label .= '</span>';
-            }
+			printf( '<li class="sf-checkbox__check %s">',
+				$settings['group']['more_show'] && intval( $settings['group']['more_count'] ) <= $key ? 'sf-option-more' : ''
+			);
 
-			printf( '<li class="sf-checkbox__check"><input class="sf-checkbox__input" type="checkbox" id="%1$s" name="%2$s" value="%3$s" data-query="%4$s" %5$s> <label class="sf-checkbox__label" for="%1$s">%6$s</label></li>',
+			// Input
+			printf( '<input class="sf-checkbox__input" type="checkbox" id="%s" name="%s" value="%s" data-query="%s" %s>',
 				esc_attr( $id . '_' . $option['slug'] ),
 				esc_attr( $key ),
 				esc_attr( $option['slug'] ),
-                esc_attr( $query ),
-                in_array( $option['slug'], $values ) ? 'checked' : '',
+				esc_attr( $settings['query'] ),
+				in_array( $option['slug'], $values ) ? 'checked' : '',
+			);
+
+			// Label
+			$label = esc_html( $option['name'] );
+			$label .= \SimplyFilters\get_product_count( $settings['count'], $option );
+			printf( '<label class="sf-checkbox__label" for="%s">%s</label>',
+				esc_attr( $id . '_' . $option['slug'] ),
 				$label
 			);
+
+			echo '</li>';
 		}
 		?>
     </ul>
+
+	<?php
+	// Button to show more options
+    echo \SimplyFilters\get_more_options_button( $settings['group'], count( $options ) );
+	?>
 </div>

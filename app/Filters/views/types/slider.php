@@ -5,6 +5,7 @@
  * @var $range array
  * @var $locale string
  * @var $values array
+ * @var $inputs bool
  */
 ?>
 <div class="sf-slider">
@@ -15,8 +16,8 @@
 			esc_attr( $id . '-min' ),
 			esc_attr( $key . '-min' ),
 			esc_attr( isset( $values['min'] ) && $values['min'] > $range['min'] ? $values['min'] : $range['min'] ),
-            esc_attr( $range['min'] ),
-            esc_attr( $range['max'] ),
+			esc_attr( $range['min'] ),
+			esc_attr( $range['max'] ),
 			__( 'Min price', $locale )
 		);
 

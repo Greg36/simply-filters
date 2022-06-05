@@ -296,7 +296,7 @@ export default class AdminFilter {
 			this.removeTooltips();
 			this.saveRemovedID();
 
-			jQuery( this.filter ).slideToggle( 300 );
+
 			setTimeout( () => {
 				this.filter.remove();
 				updateOrderNumbers();

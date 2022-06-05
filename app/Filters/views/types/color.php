@@ -2,35 +2,29 @@
 /**
  * @var $id int
  * @var $key string
- * @var $query string
  * @var $options array
  * @var $values array
- * @var $count array
+ * @var $settings array
  */
 
 use function SimplyFilters\load_inline_svg;
 
 ?>
 <div class="sf-color">
-    <ul class="sf-color__list">
+    <ul class="sf-color__list sf-option-list">
 		<?php
-		foreach ( $options as $color ) {
+		foreach ( $options as $key => $color ) {
 
-			$label = esc_html( $color['label'] );
-			if( $count !== false ) {
-				$label .= '<span class="sf-label-count">';
-				$label .= isset( $count[ $color['id'] ] ) ? ' (' . intval( $count[ $color['id'] ] ) . ')' : ' (0)';
-				$label .= '</span>';
-			}
-
-			echo '<li class="sf-color__item">';
+			printf( '<li class="sf-color__item %s">',
+				$settings['group']['more_show'] && intval( $settings['group']['more_count'] ) <= $key ? 'sf-option-more' : ''
+			);
 
 			// Input
-			printf( '<input class="sf-color__input" type="checkbox" id="%1$s" name="%2$s" value="%3$s" data-query="%4$s" %5$s>',
+			printf( '<input class="sf-color__input" type="checkbox" id="%s" name="%s" value="%s" data-query="%s" %s>',
 				esc_attr( $id . '_' . $color['slug'] ),
 				esc_attr( $key ),
 				esc_attr( $color['slug'] ),
-				esc_attr( $query ),
+				esc_attr( $settings['query'] ),
 				in_array( $color['slug'], $values ) ? 'checked' : '',
 
 			);
@@ -43,6 +37,8 @@ use function SimplyFilters\load_inline_svg;
 			);
 
             // Label
+			$label = esc_html( $color['label'] );
+			$label .= \SimplyFilters\get_product_count( $settings['count'], $color );
             printf( '<label class="sf-color__label" for="%1$s">%2$s</label>',
 	            esc_attr( $id . '_' . $color['slug'] ),
 	            $label
@@ -52,4 +48,9 @@ use function SimplyFilters\load_inline_svg;
 		}
 		?>
     </ul>
+
+	<?php
+	// Button to show more options
+	echo \SimplyFilters\get_more_options_button( $settings['group'], count( $options ) );
+	?>
 </div>

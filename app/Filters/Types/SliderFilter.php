@@ -14,50 +14,50 @@ class SliderFilter extends Filter {
 	 */
 	protected $supports = [
 		'label'
-    ];
+	];
 
 	public function __construct() {
 		$this->type        = 'Slider';
 		$this->name        = __( 'Slider', $this->locale );
 		$this->description = __( 'Choose price range', $this->locale );
 
-        // Set flag for slider script to be enqueued
-        \Hybrid\app()->instance( 'enqueue-slider', true );
+		// Set flag for slider script to be enqueued
+		\Hybrid\app()->instance( 'enqueue-slider', true );
 	}
 
 	public function render() {
 		TemplateLoader::render( 'types/slider', [
-			'id'    => $this->get_id(),
-			'key'   => _x( 'price', 'slug', $this->locale ),
-			'range' => $this->get_price_range(),
-            'values' => $this->get_selected_values()
+			'id'     => $this->get_id(),
+			'key'    => _x( 'price', 'slug', $this->locale ),
+			'range'  => $this->get_price_range(),
+			'values' => $this->get_selected_values(),
 		],
 			'Filters'
-		);
+		);// @todo: toggle off is always false and will always take default value
 	}
 
 	/**
 	 * Get the max and min price for queried products
 	 * Search builds upon the main query args to be
-     * limited only to filtered products
+	 * limited only to filtered products
 	 *
 	 * @return array
 	 */
 	private function get_price_range() {
-        global $wpdb;
+		global $wpdb;
 
 		$args = \Hybrid\app( 'filtered-query-args' );
 
-        // Remove price query part to have full range on the slider
-        $price_query = \Hybrid\app( 'filtered-query-price' );
-        if( $price_query ) {
-	        $args['where'] = str_replace( $price_query, '', $args['where'] );
-        }
+		// Remove price query part to have full range on the slider
+		$price_query = \Hybrid\app( 'filtered-query-price' );
+		if ( $price_query ) {
+			$args['where'] = str_replace( $price_query, '', $args['where'] );
+		}
 
-		$join = $args['join'];
-        $where = $args['where'];
+		$join  = $args['join'];
+		$where = $args['where'];
 
-        $sql = "
+		$sql = "
             SELECT MIN( min_price ) as min, MAX( max_price ) as max
             FROM {$wpdb->wc_product_meta_lookup}
             WHERE product_id IN (
@@ -68,7 +68,7 @@ class SliderFilter extends Filter {
             )
         ";
 
-        $price = $wpdb->get_row( $sql, ARRAY_A );
+		$price = $wpdb->get_row( $sql, ARRAY_A );
 
 		return [
 			'min' => ! is_null( $price['min'] ) ? intval( $price['min'] ) : 0,

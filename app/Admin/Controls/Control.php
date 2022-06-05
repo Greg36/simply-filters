@@ -57,7 +57,7 @@ abstract class Control {
 		$this->key   = $data['key'];
 		$this->id    = $data['id'];
 		$this->label = $data['label'];
-		if ( ! $data['load_defaults'] ) {
+		if ( ! $data['load_defaults'] ) { // @todo: load_defaults work for AJAX but does not for initializing new group or global settings
 			$this->value = $data['value'];
 		}
 

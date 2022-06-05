@@ -16,7 +16,7 @@ class CheckboxFilter extends Filter {
 		'label',
 		'sources',
 		'query',
-        'count'
+		'count'
 	];
 
 	public function __construct() {
@@ -30,14 +30,17 @@ class CheckboxFilter extends Filter {
 		$options = $this->get_current_source_options();
 
 		if ( $options ) {
-            // @todo: instead of going with long list of options figure out a way to pass them all automatically
+			// @todo: instead of going with long list of options figure out a way to pass them all automatically
 			TemplateLoader::render( 'types/checkbox', [
-				'id'      => $this->get_id(),
-				'key'     => $this->get_current_source_key(),
-				'options' => $options,
-				'values'  => $this->get_selected_values(),
-				'query'   => $this->get_data( 'query', 'or' ),
-                'count'   => $this->get_product_counts_in_terms( $options )
+				'id'       => $this->get_id(),
+				'key'      => $this->get_current_source_key(),
+				'options'  => $options,
+				'values'   => $this->get_selected_values(),
+				'settings' => [
+					'group' => $this->get_group_settings(),
+					'query' => $this->get_data( 'query', 'or' ),
+					'count' => $this->get_product_counts_in_terms( $options ),
+				]
 			],
 				'Filters'
 			);

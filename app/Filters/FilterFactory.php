@@ -18,7 +18,7 @@ class FilterFactory {
 
 		if ( class_exists( $class ) ) {
 			$filter = new $class;
-			$filter->initialize( $data ); // @todo I could remove that and pass $class( $data )
+			$filter->initialize( $data );
 		}
 
 		return $filter;

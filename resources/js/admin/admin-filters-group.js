@@ -18,6 +18,9 @@ function initFiltersGroup() {
 		new AdminFilter( current );
 	} );
 
+	// Setup group settings
+	setupGroupSettings();
+
 	// Setup color inputs for group settings
 	jQuery( '.sf-settings .sf-color__field' ).wpColorPicker({
 		defaultColor: false,
@@ -140,4 +143,25 @@ function removeUnmodifiedFilters() {
 			} );
 		}
 	} );
+}
+
+/**
+ * Setup events related to filter group settings
+ */
+function setupGroupSettings() {
+
+	const group_settings = document.querySelector( '.sf-settings' );
+
+	if( group_settings ) {
+		const group_id = group_settings.dataset.filter_group_id,
+			more_toggle = group_settings.querySelector( '#' + group_id + '-more_show' ),
+			more_count =  group_settings.querySelector( '#' + group_id + '-more_count' ).closest( '.sf-option' );
+
+		// Hide more count setting initially
+		if( ! more_toggle.checked ) more_count.style.display = 'none';
+
+		more_toggle.addEventListener( 'change', ( e ) => {
+			more_count.style.display = e.target.checked ? '' : 'none';
+		} );
+	}
 }

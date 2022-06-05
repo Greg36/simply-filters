@@ -65,3 +65,42 @@ function get_stars( $count = 1, $max = 5 ) {
 
 	return $stars;
 }
+
+/**
+ * Return product count label
+ *
+ * @param $count
+ * @param $id
+ *
+ * @return string
+ */
+function get_product_count( $count, $option ) {
+	$label = '';
+	if ( $count !== false && isset( $option['id'] ) ) {
+		$label .= '<span class="sf-label-count">';
+		$label .= isset( $count[ $option['id'] ] ) ? ' (' . intval( $count[ $option['id'] ] ) . ')' : ' (0)';
+		$label .= '</span>';
+	}
+
+	return $label;
+}
+
+/**
+ * Return show more options button
+ *
+ * @param $group_settings
+ * @param $options_count
+ *
+ * @return string
+ */
+function get_more_options_button( $group_settings, $options_count ) {
+	$button = '';
+	if ( $group_settings['more_show'] && $options_count > intval( $group_settings['more_count'] ) ) {
+		$button = sprintf( '<button class="sf-more-btn" aria-expanded="false">%s&nbsp;(%d)</button>',
+			__( 'Show more', \Hybrid\app( 'locale' ) ),
+			$options_count - intval( $group_settings['more_count'] )
+		);
+	}
+
+	return $button;
+}

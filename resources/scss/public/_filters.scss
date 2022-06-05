@@ -41,5 +41,31 @@
 		}
 	}
 
+	.sf-option-list{
+		transition: height 0.2s ease-out;
+		overflow: hidden;
+	}
 
+	.sf-option-more {
+		visibility: hidden;
+		height: 0;
+		margin: 0;
+		padding: 0;
+		min-height: 0;
+	}
+
+	.sf-more-btn {
+		background: none;
+		padding: 9px 0 6px;
+		border: none;
+		color: $font__highlight;
+		font-weight: 600;
+		font-size: 14px;
+		cursor:pointer;
+
+		&:hover {
+			text-decoration: underline;
+		}
+	}
 }
+

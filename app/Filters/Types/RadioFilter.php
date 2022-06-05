@@ -35,11 +35,14 @@ class RadioFilter extends Filter {
 			] );
 
 			TemplateLoader::render( 'types/radio', [
-				'id'      => $this->get_id(),
-				'key'     => $this->get_current_source_key(),
-				'options' => $options,
-				'values'  => $this->get_selected_values(),
-				'count'   => $this->get_product_counts_in_terms( $options )
+				'id'       => $this->get_id(),
+				'key'      => $this->get_current_source_key(),
+				'options'  => $options,
+				'values'   => $this->get_selected_values(),
+				'settings' => [
+					'group' => $this->get_group_settings(),
+					'count' => $this->get_product_counts_in_terms( $options )
+				]
 			],
 				'Filters'
 			);

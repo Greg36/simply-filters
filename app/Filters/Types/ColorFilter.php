@@ -15,7 +15,7 @@ class ColorFilter extends Filter {
 	protected $supports = [
 		'label',
 		'sources',
-        'query',
+		'query',
 		'count'
 	];
 
@@ -54,12 +54,15 @@ class ColorFilter extends Filter {
 
 		if ( $options ) {
 			TemplateLoader::render( 'types/color', [
-				'id'      => $this->get_id(),
-				'key'     => $this->get_current_source_key(),
-				'options' => $this->prepare_colors_data( $options ),
-				'values'  => $this->get_selected_values(),
-				'query'   => $this->get_data( 'query', 'or' ),
-				'count'   => $this->get_product_counts_in_terms( $options )
+				'id'       => $this->get_id(),
+				'key'      => $this->get_current_source_key(),
+				'options'  => $this->prepare_colors_data( $options ),
+				'values'   => $this->get_selected_values(),
+				'settings' => [
+					'group' => $this->get_group_settings(),
+					'query' => $this->get_data( 'query', 'or' ),
+					'count' => $this->get_product_counts_in_terms( $options )
+				]
 			],
 				'Filters'
 			);
@@ -103,7 +106,7 @@ class ColorFilter extends Filter {
 				'label' => $term['name'],
 				'hex'   => $hex,
 				'class' => $this->check_color_luminance( $hex ),
-                'id'    => $term['id']
+				'id'    => $term['id']
 			];
 		}
 
