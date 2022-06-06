@@ -1,5 +1,5 @@
 import FilterUrl from "./filter-url";
-import { addLoader, removeLoader } from "./helpers";
+import { addLoader, getCookie, removeLoader, setCookie } from "./helpers";
 import { setupSliders } from "../range-slider";
 
 export default class FilterActions {
@@ -9,7 +9,8 @@ export default class FilterActions {
 		this.filters = [];
 
 		this.initFilters();
-		this.setupMoreButton();
+		this.setupMoreButtons();
+		this.setupCollapseButtons();
 
 		window.addEventListener( 'sf-filter-products', () => {
 			this.filterProducts();
@@ -122,16 +123,16 @@ export default class FilterActions {
 			if ( home.length === 0 && ext.length > 0 ) {
 				ext.forEach( ( ele ) => {
 					let location = this.getRelativeDOMPosition( ext, ele );
-					if( location.selector ) {
+					if ( location.selector ) {
 						let root = document.querySelector( location.selector );
 
 						// Traverse children according to queried order
-						while( location.index.length > 1 ) {
-							root = root.children[ location.index.shift() ];
+						while ( location.index.length > 1 ) {
+							root = root.children[location.index.shift()];
 						}
 
 						// Insert on specified index
-						root.insertBefore( ele, root.children[ location.index.shift() ] );
+						root.insertBefore( ele, root.children[location.index.shift()] );
 					}
 				} );
 				return;
@@ -159,12 +160,12 @@ export default class FilterActions {
 
 		let values = {};
 		replace.forEach( ( label ) => {
-			values[ label.parentNode.getAttribute( 'for' ) ] = label.innerHTML.trim();
+			values[label.parentNode.getAttribute( 'for' )] = label.innerHTML.trim();
 		} );
 
 		options.forEach( ( label ) => {
 			let label_id = label.parentNode.getAttribute( 'for' );
-			if( values.hasOwnProperty( label_id ) ) label.innerHTML = ' ' + values[ label_id ];
+			if ( values.hasOwnProperty( label_id ) ) label.innerHTML = ' ' + values[label_id];
 		} );
 	}
 
@@ -174,13 +175,13 @@ export default class FilterActions {
 
 		sliders.forEach( ( slider ) => {
 			const update = content.getElementById( slider.id );
-			if( update ) {
+			if ( update ) {
 				slider.replaceWith( update );
 				updated = true;
 			}
 		} );
 
-		if( updated ) {
+		if ( updated ) {
 			setupSliders();
 		}
 	}
@@ -210,7 +211,7 @@ export default class FilterActions {
 	/**
 	 * Set events for show more options button
 	 */
-	setupMoreButton() {
+	setupMoreButtons() {
 		document.querySelectorAll( '.sf-filter .sf-more-btn' ).forEach( ( button ) => {
 			const filter = button.closest( '.sf-filter' );
 			const options = filter.querySelectorAll( '.sf-option-more' );
@@ -221,13 +222,15 @@ export default class FilterActions {
 
 			button.addEventListener( 'click', ( e ) => {
 
-				if( button.classList.contains( 'sf-more-btn--open' ) ) {
+				if ( button.classList.contains( 'sf-more-btn--open' ) ) {
 
 					// Close list
 					list.style.height = list.offsetHeight + 'px';
 					button.innerHTML = label;
 
-					setTimeout( () => { list.style.height = initial_height + 'px'; }, 0 );
+					setTimeout( () => {
+						list.style.height = initial_height + 'px';
+					}, 0 );
 					setTimeout( () => {
 						list.style.height = '';
 						button.ariaExpanded = false;
@@ -247,13 +250,90 @@ export default class FilterActions {
 					const target_height = list.offsetHeight;
 					list.style.height = initial_height + 'px';
 
-					setTimeout( () => { list.style.height = target_height + 'px'; }, 0 );
-					setTimeout( () => { list.style.height = ''; }, 200 );
+					setTimeout( () => {
+						list.style.height = target_height + 'px';
+					}, 0 );
+					setTimeout( () => {
+						list.style.height = '';
+					}, 200 );
 				}
 
 				button.classList.toggle( 'sf-more-btn--open' );
 			} );
 		} );
+	}
+
+	setupCollapseButtons() {
+		document.querySelectorAll( '.sf-filter .sf-filter__collapse' ).forEach( ( button ) => {
+			const filter = button.closest( '.sf-filter' );
+			const options = filter.querySelector( '.sf-filter__filter' );
+
+			button.addEventListener( 'click', ( e ) => {
+				if ( options.classList.contains( 'sf-filter--collapsed' ) ) {
+
+					// Open options
+					button.classList.remove( 'collapsed' );
+					options.classList.remove( 'sf-filter--collapsed' );
+
+					const target_height = options.offsetHeight;
+					options.style.height = '0px';
+
+					setTimeout( () => {
+						options.style.height = target_height + 'px';
+					}, 0 );
+					setTimeout( () => {
+						options.style.height = '';
+					}, 200 );
+
+					this.updateCollapseCookie( filter.dataset.id, false );
+
+				} else {
+
+					// Close options
+					button.classList.add( 'collapsed' );
+					options.style.height = options.offsetHeight + 'px';
+
+					setTimeout( () => {
+						options.style.height = '0px';
+					}, 0 );
+					setTimeout( () => {
+						options.style.height = '';
+						options.classList.add( 'sf-filter--collapsed' );
+					}, 200 );
+
+					this.updateCollapseCookie( filter.dataset.id, true );
+				}
+			} );
+		} );
+	}
+
+	/**
+	 * Update filter collapse cookie
+	 *
+	 * @param id
+	 * @param value
+	 */
+	updateCollapseCookie( id, value ) {
+		const cookie_name = 'sf-filters-collapsed';
+		let cookie = getCookie( cookie_name );
+
+		if ( typeof cookie === 'undefined' ) {
+			if ( value ) setCookie( cookie_name, id, 7 );
+		} else {
+			let cookies = cookie.split( '|' );
+			if( ! cookies.includes( id ) && value ) {
+
+				// Add id to cookie
+				cookies.push( id );
+				setCookie( cookie_name, cookies.join( '|' ), 7 );
+			} else if( cookies.includes( id ) && ! value ) {
+
+				// Remove id from cookie
+				cookies = cookies.filter( item => item !== id );
+				setCookie( cookie_name, cookies.join( '|' ), 7 );
+			}
+		}
+
 	}
 
 }

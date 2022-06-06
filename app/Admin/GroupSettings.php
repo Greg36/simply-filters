@@ -60,6 +60,11 @@ class GroupSettings {
 			'description' => __( 'How many options should be displayed initially', $locale ),
 			'default' => 5
 		] );
+		
+		$settings->add( 'collapse', 'toggle', [
+			'name' => __( 'Collapse filter button', $locale ),
+			'description' => __( 'Display arrow that will allow to collapse filter to only its title. <strong style="color: #b15252;">NOTICE:</strong> this will save a cookie to remember collapsed filters.', $locale )
+		]);
 
 		$this->settings = $settings;
 	}

@@ -1,4 +1,4 @@
-export { uniqid, addLoader, removeLoader, addFormNotice, invalidInputNotice, debounce };
+export { uniqid, addLoader, removeLoader, addFormNotice, invalidInputNotice, debounce, setCookie, getCookie };
 
 import { __ } from '@wordpress/i18n';
 
@@ -132,4 +132,35 @@ function debounce( callback, wait ) {
 			callback.apply( null, args );
 		}, wait );
 	};
+}
+
+/**
+ * Set a cookie
+ *
+ * @param cName
+ * @param cValue
+ * @param expDays
+ */
+function setCookie(cName, cValue, expDays) {
+	let date = new Date();
+	date.setTime(date.getTime() + (expDays * 24 * 60 * 60 * 1000));
+	const expires = "expires=" + date.toUTCString();
+	document.cookie = cName + "=" + cValue + "; " + expires + "; path=/";
+}
+
+/**
+ * Get a cookie by name
+ *
+ * @param cName
+ * @returns {*}
+ */
+function getCookie(cName) {
+	const name = cName + "=";
+	const cDecoded = decodeURIComponent(document.cookie);
+	const cArr = cDecoded .split('; ');
+	let res;
+	cArr.forEach(val => {
+		if (val.indexOf(name) === 0) res = val.substring(name.length);
+	})
+	return res;
 }

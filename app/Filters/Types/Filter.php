@@ -152,6 +152,19 @@ abstract class Filter {
 	}
 
 	/**
+     * Check in cookie if filter is collapsed
+     *
+	 * @return bool
+	 */
+	public function is_filter_collapsed() {
+        if( isset( $_COOKIE[ 'sf-filters-collapsed' ] ) ) {
+            $ids = explode( '|', $_COOKIE[ 'sf-filters-collapsed' ] );
+            if( in_array( $this->get_id(), $ids ) ) return true;
+        }
+        return false;
+	}
+
+	/**
 	 * Return filter's data value
 	 *
 	 * @param $key

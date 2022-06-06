@@ -4,11 +4,46 @@
 
 	&__heading {
 		margin-bottom: 8px;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	&__filter {
+		transition: height 0.2s ease-out;
+		overflow: hidden;
 	}
 
 	&__label {
 		font-size: 16px;
 		font-weight: 600;
+	}
+
+	&__collapse {
+		background: none;
+		border: none;
+		padding: 0;
+		border-radius: 0;
+
+		&.collapsed {
+			svg {
+				transform: scale(1,-1);
+			}
+		}
+
+		svg {
+			width: 14px;
+			height: 24px;
+			cursor: pointer;
+		}
+	}
+
+	&--collapsed {
+		visibility: hidden;
+		height: 0;
+		margin: 0;
+		padding: 0;
+		min-height: 0;
 	}
 
 	.screen-reader-text {
