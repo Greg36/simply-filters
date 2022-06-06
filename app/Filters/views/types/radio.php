@@ -11,10 +11,10 @@
     <ul class="sf-radio__list sf-option-list">
 		<?php
         if( empty( $values ) ) $values = ['no-filter'];
-		foreach ( $options as $key => $option ) {
+		foreach ( $options as $index => $option ) {
 
 			printf( '<li class="sf-checkbox__check %s">',
-				$settings['group']['more_show'] && intval( $settings['group']['more_count'] ) <= $key ? 'sf-option-more' : ''
+				$settings['group']['more_show'] && intval( $settings['group']['more_count'] ) <= $index ? 'sf-option-more' : ''
 			);
 
             // Input

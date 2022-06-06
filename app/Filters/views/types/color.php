@@ -13,10 +13,10 @@ use function SimplyFilters\load_inline_svg;
 <div class="sf-color">
     <ul class="sf-color__list sf-option-list">
 		<?php
-		foreach ( $options as $key => $color ) {
+		foreach ( $options as $index => $color ) {
 
 			printf( '<li class="sf-color__item %s">',
-				$settings['group']['more_show'] && intval( $settings['group']['more_count'] ) <= $key ? 'sf-option-more' : ''
+				$settings['group']['more_show'] && intval( $settings['group']['more_count'] ) <= $index ? 'sf-option-more' : ''
 			);
 
 			// Input

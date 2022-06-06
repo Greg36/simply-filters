@@ -81,17 +81,19 @@ export default class FilterActions {
 		} ).then( ( response ) => {
 			return response.text();
 		} ).then( ( html ) => {
-			this.updatePage( html )
+
+			// Setup new document
+			const content = document.implementation.createHTMLDocument( document.title );
+			content.documentElement.innerHTML = html;
+
+			this.updatePageFragments( content );
+			this.updateOptionCounters( content );
 		} );
 
 		addLoader( document.body );
 	}
 
-	updatePage( html ) {
-
-		// Setup new document
-		let content = document.implementation.createHTMLDocument( document.title );
-		content.documentElement.innerHTML = html;
+	updatePageFragments( content ) {
 
 		// @todo: use here user-entered selectors?
 		const selectors = [
@@ -114,7 +116,7 @@ export default class FilterActions {
 				return;
 			}
 
-			// Content is present only on new content
+			// Content is present only on new version
 			if ( home.length === 0 && ext.length > 0 ) {
 				ext.forEach( ( ele ) => {
 					let location = this.getRelativeDOMPosition( ext, ele );
@@ -145,6 +147,26 @@ export default class FilterActions {
 	}
 
 	/**
+	 * Find option count values in filters and replace them with data from new content
+	 *
+	 * @param content
+	 */
+	updateOptionCounters( content ) {
+		const options = document.querySelectorAll( '.sf-filter .sf-label-count' );
+		const replace = content.querySelectorAll( '.sf-filter .sf-label-count' );
+
+		let values = {};
+		replace.forEach( ( label ) => {
+			values[ label.parentNode.getAttribute( 'for' ) ] = label.innerHTML.trim();
+		} );
+
+		options.forEach( ( label ) => {
+			let label_id = label.parentNode.getAttribute( 'for' );
+			if( values.hasOwnProperty( label_id ) ) label.innerHTML = ' ' + values[ label_id ];
+		} );
+	}
+
+	/**
 	 * Step up te DOM tree and find the closest element with unique ID
 	 * saving children index on the path
 	 *
@@ -164,11 +186,6 @@ export default class FilterActions {
 		} else {
 			return this.getRelativeDOMPosition( doc, ele.parentElement, location );
 		}
-	}
-
-	updateError( request ) {
-
-		removeLoader();
 	}
 
 	/**
