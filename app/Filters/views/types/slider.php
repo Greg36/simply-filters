@@ -8,25 +8,32 @@
  * @var $inputs bool
  */
 ?>
-<div class="sf-slider">
+<div class="sf-slider" id="slider-<?php esc_attr_e( $id ); ?>">
     <div class="sf-slider__ui" style="display: none;"></div>
     <div class="sf-slider__inputs">
 		<?php
+
+		$min = $range['min'] > 0 ? $range['min'] - 1 : 1;
+		$max = $range['max'];
+
+		$from = isset( $values['min'] ) ? \SimplyFilters\limit_value_to_range( $values['min'], $min, $max ) : $min;
+		$to   = isset( $values['max'] ) ? \SimplyFilters\limit_value_to_range( $values['max'], $min, $max ) : $max;
+
 		printf( '<input type="number" class="sf-slider__input sf-slider__input--min" id="%1$s" name="%2$s" value="%3$s" data-min="%4$s" min="%4$s" max="%5$s" placeholder="%6$s">',
 			esc_attr( $id . '-min' ),
 			esc_attr( $key . '-min' ),
-			esc_attr( isset( $values['min'] ) && $values['min'] > $range['min'] ? $values['min'] : $range['min'] ),
-			esc_attr( $range['min'] ),
-			esc_attr( $range['max'] ),
+			esc_attr( $from ),
+			esc_attr( $min ),
+			esc_attr( $max ),
 			__( 'Min price', $locale )
 		);
 
 		printf( '<input type="number" class="sf-slider__input sf-slider__input--max" id="%1$s" name="%2$s" value="%3$s" data-max="%4$s" min="%5$s" max="%4$s" placeholder="%6$s">',
 			esc_attr( $id . '-max' ),
 			esc_attr( $key . '-max' ),
-			esc_attr( isset( $values['max'] ) && $values['max'] < $range['max'] ? $values['max'] : $range['max'] ),
-			esc_attr( $range['max'] ),
-			esc_attr( $range['min'] ),
+			esc_attr( $to ),
+			esc_attr( $max ),
+			esc_attr( $min ),
 			__( 'Max price', $locale )
 		);
 		?>

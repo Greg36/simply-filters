@@ -2,7 +2,13 @@ export default class FilterUrl {
 
 	constructor( url = '' ) {
 		if ( !url ) url = location.href;
-		this.url = new URL( url );
+
+		if( window.hasOwnProperty( 'sf_filter_url' ) ) {
+			this.url = sf_filter_url;
+		} else {
+			this.url = new URL( url );
+			window.sf_filter_url = this.url;
+		}
 	}
 
 	/**

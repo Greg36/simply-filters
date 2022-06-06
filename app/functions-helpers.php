@@ -29,3 +29,19 @@ function calculateLuminance( $color ) {
 	// For the sRGB colorspace, the relative luminance of a color is defined as:
 	return 0.2126 * $_r + 0.7152 * $_g + 0.0722 * $_b;
 }
+
+/**
+ * Limit the value to not be outside set min-max range
+ *
+ * @param $value
+ * @param $min
+ * @param $max
+ *
+ * @return int
+ */
+function limit_value_to_range( $value, $min, $max ) {
+	if( $value < $min ) return $min;
+	if( $value > $max ) return $max;
+
+	return $value;
+}

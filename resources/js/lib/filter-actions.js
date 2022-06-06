@@ -1,5 +1,6 @@
 import FilterUrl from "./filter-url";
 import { addLoader, removeLoader } from "./helpers";
+import { setupSliders } from "../range-slider";
 
 export default class FilterActions {
 
@@ -88,6 +89,7 @@ export default class FilterActions {
 
 			this.updatePageFragments( content );
 			this.updateOptionCounters( content );
+			this.updateRangeSliders( content );
 		} );
 
 		addLoader( document.body );
@@ -164,6 +166,23 @@ export default class FilterActions {
 			let label_id = label.parentNode.getAttribute( 'for' );
 			if( values.hasOwnProperty( label_id ) ) label.innerHTML = ' ' + values[ label_id ];
 		} );
+	}
+
+	updateRangeSliders( content ) {
+		const sliders = document.querySelectorAll( '.sf-filter .sf-slider' );
+		let updated = false;
+
+		sliders.forEach( ( slider ) => {
+			const update = content.getElementById( slider.id );
+			if( update ) {
+				slider.replaceWith( update );
+				updated = true;
+			}
+		} );
+
+		if( updated ) {
+			setupSliders();
+		}
 	}
 
 	/**
