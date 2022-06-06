@@ -31,7 +31,7 @@ class RatingFilter extends Filter {
 				'id'     => $this->get_id(),
 				'key'    => _x( 'rating', 'slug', $this->locale ),
 				'values' => $options,
-				'count'  => $this->get_product_counts_by_rating( $options )
+				'count'  => $this->get_product_counts_by_rating()
 			],
 				'Filters'
 			);

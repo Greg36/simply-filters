@@ -12,22 +12,30 @@
 		<?php
 		for ( $rating = 5; $rating >= 1; $rating-- ) {
 
+            echo '<li class="sf-rating__item">';
+
+            // Input
+            printf( '<input class="sf-rating__input" type="checkbox" id="%s" name="%s" value="%s" %s>',
+	            esc_attr( $id . '_' . $rating ),
+	            esc_attr( $key ),
+	            $rating,
+	            in_array( $rating, $values ) ? 'checked' : '',
+            );
+
+            // Label
 			$rating_count = '';
 			if( $count !== false ) {
 				$rating_count .= '<span class="sf-label-count">&nbsp;';
 				$rating_count .= isset( $count[ $rating ] ) ? '(' . intval( $count[ $rating ] ) . ')' : '(0)';
 				$rating_count .= '</span>';
 			}
+			printf( '<label class="sf-rating__label" for="%s"><div class="sf-rating__stars" aria-hidden="true">%s</div> <span class="screen-reader-text">%s</span></label>',
+	            esc_attr( $id . '_' . $rating ),
+	            \SimplyFilters\get_stars( $rating ) . $rating_count,
+	            __( 'Rating:', $locale ) . ' ' . $rating
+            );
 
-            // @todo: split this into separate printfs
-			printf( '<li class="sf-rating__item"><input class="sf-rating__input" type="checkbox" id="%1$s" name="%2$s" value="%3$s" %4$s> <label class="sf-rating__label" for="%1$s"><div class="sf-rating__stars" aria-hidden="true">%5$s</div> <span class="screen-reader-text">%6$s</span></label></li>',
-				esc_attr( $id . '_' . $rating ),
-				esc_attr( $key ),
-				$rating,
-				in_array( $rating, $values ) ? 'checked' : '',
-				\SimplyFilters\get_stars( $rating ) . $rating_count,
-                __( 'Rating:', $locale ) . ' ' . $rating
-			);
+            echo '</li>';
 		}
 		?>
     </ul>
