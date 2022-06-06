@@ -88,8 +88,8 @@ abstract class Filter {
 	}
 
 	/**
-     * Set group filter belongs to
-     *
+	 * Set group filter belongs to
+	 *
 	 * @param FilterGroup $group
 	 */
 	public function set_group( $group ) {
@@ -238,6 +238,33 @@ abstract class Filter {
 				'default'     => true
 			] );
 		}
+
+		// Order by
+		if ( in_array( 'order_by', $this->supports, true ) ) {
+			$this->settings->add( 'order_by', 'select', [
+				'name'        => __( 'Order by', $this->locale ),
+				'description' => __( 'Select how options should be ordered. By default you can go to category or attribute and manually change order.', $this->locale ),
+				'options'     => [
+					'default' => __( 'Default', $this->locale ),
+					'name'    => __( 'Name', $this->locale ),
+					'count'   => __( 'Count', $this->locale )
+				],
+				'default'     => 'order'
+			] );
+		}
+
+		// Order type
+		if ( in_array( 'order_type', $this->supports, true ) ) {
+			$this->settings->add( 'order_type', 'select', [
+				'name'        => __( 'Order type', $this->locale ),
+				'description' => __( 'Type by which options are ordered', $this->locale ),
+				'options'     => [
+					'asc'  => __( 'ASC', $this->locale ),
+					'desc' => __( 'DESC', $this->locale )
+				],
+				'default'     => 'desc'
+			] );
+		}
 	}
 
 	/**
@@ -262,7 +289,6 @@ abstract class Filter {
 	 * @return array
 	 */
 	public function get_default_sources() {
-		// @todo add custom_taxonomy option?
 		return [
 			'attributes'   => __( 'Attributes', $this->locale ),
 			'product_cat'  => __( 'Product category', $this->locale ),
@@ -322,25 +348,65 @@ abstract class Filter {
 					$this->data['attributes'] = 'pa_' . array_shift( $attributes )->attribute_name;
 				}
 
-				return \SimplyFilters\get_terms_list( $this->data['attributes'] );
+				return \SimplyFilters\get_terms_list( [
+					'taxonomy' => $this->data['attributes']
+				] );
 
 			case 'product_cat' :
 
-				if ( $this->data['product_cat'] === 'all' || ! $this->data['product_cat'] ) {
-					return \SimplyFilters\get_product_categories();
+				$args = [ 'taxonomy' => 'product_cat' ];
+
+				if ( $this->data['product_cat'] !== 'all' ) {
+					$args['parent'] = $this->data['product_cat'];
 				}
 
-				return \SimplyFilters\get_terms_list( 'product_cat', $this->data['product_cat'] );
+				return \SimplyFilters\get_terms_list( $args );
 
 			case 'product_tag' :
 
-				return \SimplyFilters\get_terms_list( 'product_tag' );
+				return \SimplyFilters\get_terms_list( [
+					'taxonomy' => 'product_tag'
+				] );
 
 			default :
 
 				return [];
 		}
 
+	}
+
+	/**
+	 * Get order options from filter's settings
+	 *
+	 * @return array
+	 */
+	protected function order_options( $options, $count ) {
+
+		$orderby = $this->data['order_by'];
+		$order   = $this->data['order_type'];
+
+        // Keep all setting at the top
+		$first = $options[0]['slug'] === 'no-filter' ? [ array_shift( $options ) ] : [];
+
+		if ( $orderby === 'name' ) {
+			usort( $options, function ( $a, $b ) {
+				return strcmp( $a['name'], $b['name'] );
+			} );
+		}
+
+        if ( $orderby === 'count' && ! empty( $count ) ) {
+            usort( $options, function ( $a, $b ) use ( $count ) {
+                $a = isset( $count[ $a['id'] ] ) ? intval( $count[ $a['id'] ] ) : 0;
+                $b = isset( $count[ $b['id'] ] ) ? intval( $count[ $b['id'] ] ) : 0;
+                return ( $a < $b ) ? -1 : 1;
+            } );
+        }
+
+		if ( $order === 'desc' ) {
+			$options = array_reverse( $options );
+		}
+
+        return array_merge( $first, $options );
 	}
 
 	/**
@@ -506,8 +572,8 @@ abstract class Filter {
 	}
 
 	/**
-     * Extract only term ids from terms array
-     *
+	 * Extract only term ids from terms array
+	 *
 	 * @param $terms
 	 *
 	 * @return array
@@ -522,22 +588,22 @@ abstract class Filter {
 				return is_numeric( $term );
 			} );
 
-            return $term_ids;
+			return $term_ids;
 		} else {
 			return $terms;
 		}
 	}
 
 	/**
-     * Get settings from filter's group
-     *
+	 * Get settings from filter's group
+	 *
 	 * @return array
 	 */
 	protected function get_group_settings() {
-        if( ! $this->group ) {
-            return [];
-        }
+		if ( ! $this->group ) {
+			return [];
+		}
 
-        return $this->group->get_settings();
+		return $this->group->get_settings();
 	}
 }

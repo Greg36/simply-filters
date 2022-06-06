@@ -16,7 +16,9 @@ class ColorFilter extends Filter {
 		'label',
 		'sources',
 		'query',
-		'count'
+		'count',
+		'order_by',
+		'order_type'
 	];
 
 	public function __construct() {
@@ -51,17 +53,18 @@ class ColorFilter extends Filter {
 
 	public function render() {
 		$options = $this->get_current_source_options();
+        $count = $this->get_product_counts_in_terms( $options );
 
 		if ( $options ) {
 			TemplateLoader::render( 'types/color', [
 				'id'       => $this->get_id(),
 				'key'      => $this->get_current_source_key(),
-				'options'  => $this->prepare_colors_data( $options ),
+				'options'  => $this->prepare_colors_data( $this->order_options( $options, $count ) ),
 				'values'   => $this->get_selected_values(),
 				'settings' => [
 					'group' => $this->get_group_settings(),
 					'query' => $this->get_data( 'query', 'or' ),
-					'count' => $this->get_product_counts_in_terms( $options )
+					'count' => $count
 				]
 			],
 				'Filters'

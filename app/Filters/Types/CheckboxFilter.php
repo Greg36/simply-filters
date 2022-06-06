@@ -16,7 +16,9 @@ class CheckboxFilter extends Filter {
 		'label',
 		'sources',
 		'query',
-		'count'
+		'count',
+		'order_by',
+		'order_type'
 	];
 
 	public function __construct() {
@@ -28,18 +30,19 @@ class CheckboxFilter extends Filter {
 	public function render() {
 		// @todo: Possible option for selected tags or categories - make the links clickable to go to that category
 		$options = $this->get_current_source_options();
+		$count   = $this->get_product_counts_in_terms( $options );
 
 		if ( $options ) {
 			// @todo: instead of going with long list of options figure out a way to pass them all automatically
 			TemplateLoader::render( 'types/checkbox', [
 				'id'       => $this->get_id(),
 				'key'      => $this->get_current_source_key(),
-				'options'  => $options,
+				'options'  => $this->order_options( $options, $count ),
 				'values'   => $this->get_selected_values(),
 				'settings' => [
 					'group' => $this->get_group_settings(),
 					'query' => $this->get_data( 'query', 'or' ),
-					'count' => $this->get_product_counts_in_terms( $options ),
+					'count' => $count,
 				]
 			],
 				'Filters'

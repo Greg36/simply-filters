@@ -15,7 +15,9 @@ class SelectFilter extends Filter {
 		'label',
 		'sources',
 		'all_option',
-		'count'
+		'count',
+		'order_by',
+		'order_type'
 	];
 
 	public function __construct() {
@@ -26,6 +28,7 @@ class SelectFilter extends Filter {
 
 	public function render() {
 		$options = $this->get_current_source_options();
+		$count   = $this->get_product_counts_in_terms( $options );
 
 		if ( $options ) {
 
@@ -37,9 +40,9 @@ class SelectFilter extends Filter {
 			TemplateLoader::render( 'types/select', [
 				'id'      => $this->get_id(),
 				'key'     => $this->get_current_source_key(),
-				'options' => $options,
+				'options' => $this->order_options( $options, $count ),
 				'values'  => $this->get_selected_values(),
-				'count'   => $this->get_product_counts_in_terms( $options )
+				'count'   => $count
 			],
 				'Filters'
 			);

@@ -15,7 +15,9 @@ class RadioFilter extends Filter {
 		'label',
 		'sources',
 		'all_option',
-		'count'
+		'count',
+		'order_by',
+		'order_type'
 	];
 
 	public function __construct() {
@@ -26,6 +28,7 @@ class RadioFilter extends Filter {
 
 	public function render() {
 		$options = $this->get_current_source_options();
+        $count = $this->get_product_counts_in_terms( $options );
 
 		if ( $options ) {
 
@@ -37,11 +40,11 @@ class RadioFilter extends Filter {
 			TemplateLoader::render( 'types/radio', [
 				'id'       => $this->get_id(),
 				'key'      => $this->get_current_source_key(),
-				'options'  => $options,
+				'options'  => $this->order_options( $options, $count ),
 				'values'   => $this->get_selected_values(),
 				'settings' => [
 					'group' => $this->get_group_settings(),
-					'count' => $this->get_product_counts_in_terms( $options )
+					'count' => $count
 				]
 			],
 				'Filters'

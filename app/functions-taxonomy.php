@@ -22,17 +22,17 @@ function get_attributes() {
  *
  * @return array
  */
-function get_product_categories() {
+function get_product_categories( $args = [] ) {
 	$categories = [
 		'all' => __( 'All categories', \Hybrid\app( 'locale' ) ),
 	];
 
 	foreach (
 		get_terms(
-			array(
+			wp_parse_args( $args, [
 				'taxonomy'   => 'product_cat',
 				'hide_empty' => false,
-			)
+			] )
 		) as $term
 	) {
 		$categories[ $term->term_id ] = $term->name;
@@ -46,21 +46,19 @@ function get_product_categories() {
  *
  * @return array
  */
-function get_terms_list( $taxonomy, $parent = 0 ) {
+function get_terms_list( $args = [] ) {
 	foreach (
 		get_terms(
-			array(
-				'taxonomy'     => $taxonomy,
+			wp_parse_args( $args, [
 				'hide_empty'   => false,
-				'parent'       => $parent,
-				'hierarchical' => false
-			)
+				'hierarchical' => false,
+			] )
 		) as $term
 	) {
 		$terms[] = [
 			'name' => $term->name,
 			'slug' => $term->slug,
-			'id' => $term->term_id
+			'id'   => $term->term_id
 		];
 	}
 
