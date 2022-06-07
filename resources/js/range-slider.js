@@ -117,8 +117,3 @@ export const setupSliders = () => {
 
 	} );
 }
-
-// Initialize the sliders
-document.addEventListener( 'DOMContentLoaded', () => {
-	setupSliders()
-} );

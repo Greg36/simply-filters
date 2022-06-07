@@ -11,6 +11,7 @@ export default class FilterActions {
 		this.initFilters();
 		this.setupMoreButtons();
 		this.setupCollapseButtons();
+		setupSliders();
 
 		window.addEventListener( 'sf-filter-products', () => {
 			this.filterProducts();
