@@ -12,6 +12,7 @@ export default class FilterActions {
 		this.setupMoreButtons();
 		this.setupCollapseButtons();
 		this.setupSubmitButtons();
+		this.setupClearButtons();
 		setupSliders();
 
 		window.addEventListener( 'sf-filter-products', () => {
@@ -351,4 +352,27 @@ export default class FilterActions {
 		} );
 	}
 
+	/**
+	 * Setup events for clear all button
+	 */
+	setupClearButtons() {
+
+		// Clear filters on click
+		document.querySelectorAll( '.sf-filter-group__clear' ).forEach( ( clear ) => {
+			clear.addEventListener( 'click', (e) => {
+				// Checkbox
+				document.querySelectorAll( '.sf-filter input[type="checkbox"]' ).forEach( input => input.checked = false );
+
+				// Radio
+				document.querySelectorAll( '.sf-filter .sf-radio__list > li:first-of-type input[type="radio"]' ).forEach( input => input.checked = true );
+
+				// Select
+				document.querySelectorAll( '.sf-filter .sf-select__input' ).forEach( select => select.selectIndex = 0 );
+
+				// Apply filter
+				window.history.pushState( {}, '', this.url.url.origin + this.url.url.pathname );
+				window.dispatchEvent( new Event( 'sf-filter-products' ) );
+			} );
+		} );
+	}
 }

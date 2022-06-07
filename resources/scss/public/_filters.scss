@@ -1,7 +1,14 @@
 
 .sf-filter-group {
-	&__submit {
+	&__clear {
+		background-color: #fff;
+		color: $font__primary;
+		margin-bottom: 18px;
 
+		&:hover, &:focus {
+			color: $font__primary;
+			background: #fff;
+		}
 	}
 }
 

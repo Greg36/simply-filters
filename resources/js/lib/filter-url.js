@@ -42,9 +42,8 @@ export default class FilterUrl {
 			let url = this.getUpdatedURL();
 
 			if ( param.group.dataset.action === 'automatic' ) {
-				const event = new Event( 'sf-filter-products' );
-				window.dispatchEvent( event );
 				window.history.pushState( {}, '', url );
+				window.dispatchEvent( new Event( 'sf-filter-products' ) );
 			} else {
 				window.history.replaceState( {}, '', url );
 			}

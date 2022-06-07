@@ -11,6 +11,12 @@
     
     <?php
 
+    if( $settings['elements']['clear'] ) {
+	    printf( '<button class="sf-filter-group__clear sf-button">%s</button>',
+		    __( 'Clear filters', $locale )
+	    );
+    }
+
     if( $settings['elements']['title'] ) {
         printf( '<div class="sf-filter-group__heading"><h3>%s</h3></div>',
             esc_html( get_the_title( $group_id ) )
@@ -29,7 +35,7 @@
 			);
 		}
 	}
-    
+
     if( $settings['auto_submit'] === 'onsubmit' ) {
         printf( '<button class="sf-filter-group__submit sf-button">%s</button>',
             __( 'Apply filters', $locale )
