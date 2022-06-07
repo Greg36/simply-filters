@@ -39,12 +39,14 @@ export default class FilterUrl {
 
 		// Update URL when it has changed
 		if ( href !== this.url.href ) {
-			this.pushToHistory( param );
+			let url = this.getUpdatedURL();
 
-			// Dispatch event to apply filters
 			if ( param.group.dataset.action === 'automatic' ) {
 				const event = new Event( 'sf-filter-products' );
 				window.dispatchEvent( event );
+				window.history.pushState( {}, '', url );
+			} else {
+				window.history.replaceState( {}, '', url );
 			}
 		}
 	}
@@ -136,10 +138,11 @@ export default class FilterUrl {
 	}
 
 	/**
-	 * Replace URL in the browser by pushing new state to history
+	 * Get full URL with params
+	 *
+	 * @returns {string}
 	 */
-	pushToHistory( param ) {
-		let url = this.url.origin + this.url.pathname + decodeURIComponent( this.url.search );
-		window.history.pushState( {}, '', url );
+	getUpdatedURL() {
+		return this.url.origin + this.url.pathname + decodeURIComponent( this.url.search )
 	}
 }

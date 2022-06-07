@@ -3,6 +3,7 @@
  * @var $group_id int
  * @var $filters array
  * @var $settings array
+ * @var $locale string
  */
 ?>
 
@@ -27,9 +28,13 @@
 			], 'Filters'
 			);
 		}
-	} else {
-		// @todo admin notice that there are no filters
 	}
+    
+    if( $settings['auto_submit'] === 'onsubmit' ) {
+        printf( '<button class="sf-filter-group__submit sf-button">%s</button>',
+            __( 'Apply filters', $locale )
+        );
+    }
 
 	?>
 </div>

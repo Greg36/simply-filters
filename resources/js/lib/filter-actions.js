@@ -11,6 +11,7 @@ export default class FilterActions {
 		this.initFilters();
 		this.setupMoreButtons();
 		this.setupCollapseButtons();
+		this.setupSubmitButtons();
 		setupSliders();
 
 		window.addEventListener( 'sf-filter-products', () => {
@@ -334,7 +335,20 @@ export default class FilterActions {
 				setCookie( cookie_name, cookies.join( '|' ), 7 );
 			}
 		}
+	}
 
+	/**
+	 * Setup events for submit button
+	 */
+	setupSubmitButtons() {
+		document.querySelectorAll( '.sf-filter-group__submit' ).forEach( ( submit ) => {
+			submit.addEventListener( 'click', (e) => {
+				const url = this.url.getUpdatedURL();
+				const event = new Event( 'sf-filter-products' );
+				window.dispatchEvent( event );
+				window.history.pushState( {}, '', url );
+			} );
+		} );
 	}
 
 }

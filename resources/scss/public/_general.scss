@@ -29,3 +29,23 @@
 		opacity: 0.5;
 	}
 }
+
+.sf-button {
+	font-weight: 600;
+	font-size: 14px;
+	color: #fff;
+	transition: background-color 0.3s ease-out;
+	background-color: $button__bg;
+	border: $button__border;
+	padding: 9px 20px;
+	border-radius: 5px;
+	text-decoration: none;
+	display: inline-flex;
+	align-items: center;
+	cursor: pointer;
+
+	&:hover, &:focus {
+		color: #fff;
+		background-color: darken( $button__bg, 10 );
+	}
+}
