@@ -38,11 +38,13 @@ class SelectFilter extends Filter {
 			] );
 
 			TemplateLoader::render( 'types/select', [
-				'id'      => $this->get_id(),
-				'key'     => $this->get_current_source_key(),
-				'options' => $this->order_options( $options, $count ),
-				'values'  => $this->get_selected_values(),
-				'count'   => $count
+				'id'       => $this->get_id(),
+				'key'      => $this->get_current_source_key(),
+				'options'  => $this->order_options( $options, $count ),
+				'values'   => $this->get_selected_values(),
+				'settings' => [
+					'count' => $count
+				]
 			],
 				'Filters'
 			);

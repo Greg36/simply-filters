@@ -2,7 +2,6 @@
 
 namespace SimplyFilters\Filters\Types;
 
-use SimplyFilters\Admin\Controls\ToggleControl;
 use SimplyFilters\TemplateLoader;
 
 class CheckboxFilter extends Filter {
@@ -34,6 +33,8 @@ class CheckboxFilter extends Filter {
 
 		if ( $options ) {
 			// @todo: instead of going with long list of options figure out a way to pass them all automatically
+            //      ? to achieve this I could just send filter to the view and use methods or some decorator proxy to not expose whole object to view
+
 			TemplateLoader::render( 'types/checkbox', [
 				'id'       => $this->get_id(),
 				'key'      => $this->get_current_source_key(),

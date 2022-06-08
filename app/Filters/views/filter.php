@@ -29,4 +29,5 @@
 		<?php $filter->render(); ?>
 
     </div>
+
 </div>

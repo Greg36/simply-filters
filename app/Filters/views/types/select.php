@@ -3,7 +3,7 @@
  * @var $id int
  * @var $key string
  * @var $options array
- * @var $count array
+ * @var $settings array
  */
 ?>
 <div class="sf-select">
@@ -15,9 +15,9 @@
         foreach ( $options as $option ) {
 
 	        $label = esc_html( $option['name'] );
-	        if( $count !== false && $option['slug'] !== 'no-filter' ) {
+	        if( $settings[ 'count' ] !== false && $option['slug'] !== 'no-filter' ) {
 		        $label .= '<span class="sf-label-count">';
-		        $label .= isset( $count[ $option['id'] ] ) ? ' (' . intval( $count[ $option['id'] ] ) . ')' : ' (0)';
+		        $label .= isset( $settings[ 'count' ][ $option['id'] ] ) ? ' (' . intval( $settings[ 'count' ][ $option['id'] ] ) . ')' : ' (0)';
 		        $label .= '</span>';
 	        }
 

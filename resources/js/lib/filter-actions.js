@@ -93,6 +93,7 @@ export default class FilterActions {
 
 			this.updatePageFragments( content );
 			this.updateOptionCounters( content );
+			this.updateFilterLists( content );
 			this.updateRangeSliders( content );
 		} );
 
@@ -150,6 +151,37 @@ export default class FilterActions {
 		} );
 
 		removeLoader();
+	}
+
+	updateFilterLists( content ) {
+
+		// Get new filters
+		let update = {};
+		content.querySelectorAll( '.sf-filter' ).forEach( ( filter ) => {
+			update[ filter.dataset.id ] = filter;
+		} );
+
+		document.querySelectorAll( '.sf-filter' ).forEach( ( filter ) => {
+			if( update.hasOwnProperty( filter.dataset.id ) ) {
+				let list = filter.querySelector( '.sf-option-list' );
+				if( list ) {
+					const content = update[ filter.dataset.id ].querySelector( '.sf-option-list' ).closest( 'div' );
+					list = list.closest( 'div' );
+
+					// Keep list opened if it was open
+					if( list.querySelector( '.sf-more-btn--open' ) ) {
+						content.querySelector( '.sf-more-btn' ).classList.add( 'sf-more-btn--open' );
+					}
+
+					// Replace updated content
+					list.replaceWith( content );
+					this.initFilter( filter );
+				}
+			}
+		} );
+
+		// Reinstate more buttons
+		this.setupMoreButtons();
 	}
 
 	/**
@@ -263,6 +295,17 @@ export default class FilterActions {
 
 				button.classList.toggle( 'sf-more-btn--open' );
 			} );
+
+			// Open list initially
+			if( button.classList.contains( 'sf-more-btn--open' ) ) {
+				button.innerHTML = sf_filters.locale.show_less;
+				button.ariaExpanded = true;
+				options.forEach( ( option ) => {
+					option.classList.remove( 'sf-option-more' );
+				} );
+				list.style.height = '';
+			}
+
 		} );
 	}
 
