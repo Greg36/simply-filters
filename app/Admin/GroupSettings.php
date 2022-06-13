@@ -37,7 +37,6 @@ class GroupSettings {
 			'options'     => [
 				'title' => __( '<strong>Group title</strong> - show group title above filters', $locale ),
 				'clear' => __( '<strong>Clear all button</strong> - reset options button to clear all selected values', $locale ),
-				'empty' => __( '<strong>Empty options</strong> - display options without any products assigned to them', $locale ),
 			]
 		] );
 
