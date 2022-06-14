@@ -185,8 +185,90 @@ class AdminServiceProvider extends ServiceProvider {
 	 * @since   1.0.0
 	 */
 	public function settings_screen() {
-		TemplateLoader::render( 'settings-page', [
 
+		$locale = \Hybrid\app( 'locale' );
+		$settings = new Settings( 'options', get_option( 'sf-settings-visual' ) );
+
+		$settings->add( 'colors', 'color', [
+			'name' => __( 'Filter colors', $locale ),
+			'description' => __( 'Customize how filters look on the site. Changing colors here will affect all filters.', $locale ),
+			'options' => [
+				[
+					'id' => 'accent',
+					'slug' => 'accent',
+					'name' => __( 'Accent', $locale )
+				],
+				[
+					'id' => 'highlight',
+					'slug' => 'highlight',
+					'name' => __( 'Highlight', $locale )
+				],
+				[
+					'id' => 'background',
+					'slug' => 'background',
+					'name' => __( 'Background', $locale )
+				],
+				[
+					'id' => 'font',
+					'slug' => 'font',
+					'name' => __( 'Text', $locale )
+				]
+			]
+		] );
+
+		$settings->add( 'style', 'select', [
+			'name' => __( 'Elements style', $locale ),
+			'description' => __( 'Overall style of filter elements', $locale ),
+			'options' => [
+				'rounded' => __( 'Rounded', $locale ),
+				'squared' => __( 'Squared', $locale )
+			]
+		] );
+
+		$settings->add( 'change_selectors', 'toggle', [
+			'name' => __( 'Enable custom selectors', $locale ),
+			'description' => __( 'If your theme does not refresh products after filtering it might be due to custom CSS selectors. Enable this option to enter custom selector values.', $locale )
+		] );
+
+		$settings->add( 'selectors', 'text', [
+			'name' => __( 'Selector', $locale ),
+			'description' => __( 'Enter CSS selector for each part of the page - it will be replaced with new content on page reload.<br><br>If you don\'t know what values to enter contact your theme\'s support.', $locale ),
+			'options' => [
+				[
+					'key' => 'product',
+					'label' => __( 'Products selector', $locale ),
+					'default' => '.products'
+				],
+				[
+					'key' => 'pagination',
+					'label' => __( 'Pagination selector', $locale ),
+					'default' => '.woocommerce-pagination'
+				],
+				[
+					'key' => 'breadcrumbs',
+					'label' => __( 'Breadcrumbs selector', $locale ),
+					'default' => '.woocommerce-breadcrumb'
+				],
+				[
+					'key' => 'count',
+					'label' => __( 'Result count selector', $locale ),
+					'default' => '.woocommerce-result-count'
+				],
+				[
+					'key' => 'sorting',
+					'label' => __( 'Sorting selector', $locale ),
+					'default' => '.woocommerce-ordering'
+				],
+				[
+					'key' => 'title',
+					'label' => __( 'Page title selector', $locale ),
+					'default' => '.woocommerce-products-header__title'
+				],
+			]
+		]);
+
+		TemplateLoader::render( 'settings-page', [
+			'settings' => $settings,
 		] );
 	}
 
@@ -376,5 +458,13 @@ class AdminServiceProvider extends ServiceProvider {
 		}
 
 		return $data;
+	}
+
+	public function save_general_settings() {
+		// @todo: implement
+
+		if ( ! $this->app->get( 'is-page-settings' ) ) {
+			return;
+		}
 	}
 }

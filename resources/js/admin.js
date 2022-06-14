@@ -8,9 +8,21 @@ import { initFiltersGroup } from "./admin/admin-filters-group";
 
 document.addEventListener( 'DOMContentLoaded', () => {
 
+	// Post edit screen
 	if( sf_admin.current_screen.is_page_post ) {
 		initFiltersGroup();
 		enableTabsToggle( document.querySelector( '.sf-tabs' ) );
+	}
+
+	// General settings screen
+	if( sf_admin.current_screen.is_page_settings ) {
+
+		// Initialize color settings
+		jQuery( '.sf-settings .sf-color__field' ).wpColorPicker({
+			defaultColor: false,
+			hide: true,
+			palettes: true,
+		} );
 	}
 
 });

@@ -18,7 +18,7 @@ class CheckboxControl extends Control {
 				printf( '<li><input type="checkbox" id="%1$s" name="%2$s" value="%3$s" %4$s> <label for="%1$s">%5$s</label></li>',
 					esc_attr( $this->id . '_' . $value ),
 					esc_attr( $this->key . '[' . $value . ']' ),
-					$value,
+					esc_attr( $value ),
 					$this->is_option_checked( $value ) ? 'checked' : '',
 					wp_kses_post( $label )
 				);
