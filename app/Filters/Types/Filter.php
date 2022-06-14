@@ -617,6 +617,6 @@ abstract class Filter {
 			return [];
 		}
 
-		return $this->group->get_settings();
+		return $this->group->get_settings()->get_data();
 	}
 }

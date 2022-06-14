@@ -26,5 +26,9 @@
             </tbody>
 
         </table>
+
+        <div class="sf-settings__notice">
+            To change filter appearance go to <a href="<?php echo esc_url( add_query_arg( 'page', Hybrid\app( 'plugin_name' ), get_admin_url() . 'options-general.php' ) ) ?>">global settings</a>
+        </div>
     </div>
 </div>

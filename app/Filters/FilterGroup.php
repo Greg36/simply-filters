@@ -2,7 +2,7 @@
 
 namespace SimplyFilters\Filters;
 
-use SimplyFilters\Admin\GroupSettings;
+use SimplyFilters\Admin\Settings;
 use SimplyFilters\TemplateLoader;
 
 class FilterGroup {
@@ -10,7 +10,7 @@ class FilterGroup {
 	/**
 	 * @var number|string ID of the filter group post
 	 */
-	private $post_id;
+	private $group_id;
 
 	/**
 	 * @var array All filters in the group
@@ -18,16 +18,65 @@ class FilterGroup {
 	private $filters = [];
 
 	/**
-	 * @var GroupSettings
+	 * @var Settings
 	 */
 	private $settings;
 
-	public function __construct( $post_id ) {
-
-		$this->post_id  = $post_id;
-		$this->settings = new GroupSettings( $post_id );
-
+	public function __construct( $group_id ) {
+		$this->group_id  = $group_id;
+		$this->settings = new Settings( $group_id, (array) maybe_unserialize( get_post_field( 'post_content', $group_id ) ) );
+		$this->register_group_settings();
 		$this->query_filters_data();
+	}
+
+	/**
+	 * Register all settings for the group
+	 */
+	private function register_group_settings() {
+		$locale = \Hybrid\app( 'locale' );
+
+		$this->settings->add( 'elements', 'checkbox', [
+			'name'        => __( 'Enable elements', $locale ),
+			'description' => __( 'Elements that should be visible in this filter group', $locale ),
+			'options'     => [
+				'title' => __( '<strong>Group title</strong> - show group title above filters', $locale ),
+				'clear' => __( '<strong>Clear all button</strong> - reset options button to clear all selected values', $locale ),
+			]
+		] );
+
+		$this->settings->add( 'auto_submit', 'radio', [
+			'name'        => __( 'Filtering start', $locale ),
+			'description' => __( 'When should filtering of products start', $locale ),
+			'options'     => [
+				'automatic' => __( '<strong>Automatically</strong> - when any of the filters are changed', $locale ),
+				'onsubmit'  => __( '<strong>On submit</strong> - when user presses the Filter button', $locale )
+			]
+		] );
+
+		$this->settings->add( 'more_show', 'toggle', [
+			'name' => __( 'More options button' , $locale ),
+			'description' => __( 'Enable to limit how many options are shown at once before "Show more" button appears' )
+		] );
+
+		$this->settings->add( 'more_count', 'number', [
+			'name' => __( 'Number of options to show', $locale ),
+			'description' => __( 'How many options should be displayed initially', $locale ),
+			'default' => 5
+		] );
+
+		$this->settings->add( 'collapse', 'toggle', [
+			'name' => __( 'Collapse filter button', $locale ),
+			'description' => __( 'Display arrow that will allow to collapse filter to only its title. <strong style="color: #b15252;">NOTICE:</strong> this will save a cookie to remember collapsed filters.', $locale )
+		]);
+	}
+
+	/**
+	 * Get all group settings
+	 *
+	 * @return Settings
+	 */
+	public function get_settings() {
+		return $this->settings;
 	}
 
 	/**
@@ -38,7 +87,7 @@ class FilterGroup {
 	private function query_filters_data() {
 
 		// Check filters data for current group
-		if ( $this->post_id !== false && empty( $this->filters ) ) {
+		if ( $this->group_id !== false && empty( $this->filters ) ) {
 
 			// Query filters
 			$filters = get_posts(
@@ -48,7 +97,7 @@ class FilterGroup {
 					'orderby'          => 'menu_order',
 					'order'            => 'ASC',
 					'suppress_filters' => true,
-					'post_parent'      => $this->post_id,
+					'post_parent'      => $this->group_id,
 					'post_status'      => array( 'publish', 'trash' ),
 				)
 			);
@@ -77,10 +126,6 @@ class FilterGroup {
 		return $filters;
 	}
 
-	public function get_settings() {
-		return $this->settings->get_data();
-	}
-
 	/**
 	 * Render front-end markup of filter group
 	 *
@@ -92,9 +137,9 @@ class FilterGroup {
 //		if( \WC_Query::get_main_query() === null ) return;
 
 		TemplateLoader::render( 'filter-group', [
-			'group_id' => $this->post_id,
+			'group_id' => $this->group_id,
 			'filters'  => $this->get_filters(),
-			'settings' => $this->get_settings(),
+			'settings' => $this->get_settings()->get_data(),
 		],
 			'Filters'
 		);

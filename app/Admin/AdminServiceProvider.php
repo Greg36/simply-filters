@@ -29,7 +29,7 @@ class AdminServiceProvider extends ServiceProvider {
 		add_filter( 'post_updated_messages', [ $this, 'post_updated_message' ] );
 		add_filter( 'post_row_actions', [ $this, 'post_row_actions' ], 10, 2 );
 
-		add_action( 'admin_head', [ $this, 'init_filters_group' ] );
+		add_action( 'admin_head', [ $this, 'init_metaboxes' ] );
 		add_action( 'admin_menu', [ $this, 'init_settings' ] );
 
 		add_action( 'save_post', array( $this, 'save_filters' ), 10, 2 );
@@ -150,16 +150,16 @@ class AdminServiceProvider extends ServiceProvider {
 	}
 
 	/**
-	 * Initialize filters group settings
+	 * Initialize metaboxes
 	 */
-	public function init_filters_group() {
+	public function init_metaboxes() {
 
 		if ( ! $this->app->get( 'is-page-post' ) ) {
 			return;
 		}
 
-		$settings = new GroupSettings( get_the_ID() );
-		$settings->init_admin();
+		$metaboxes = new Metaboxes( get_the_ID() );
+		$metaboxes->init_metaboxes();
 	}
 
 	/**
@@ -185,7 +185,9 @@ class AdminServiceProvider extends ServiceProvider {
 	 * @since   1.0.0
 	 */
 	public function settings_screen() {
-		TemplateLoader::render( 'settings-page', [ 'test' => 'xd' ] );
+		TemplateLoader::render( 'settings-page', [
+
+		] );
 	}
 
 	/**

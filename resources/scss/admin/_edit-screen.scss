@@ -1006,6 +1006,19 @@ body.post-type-sf_filter_group {
 		}
 	}
 
+	&__notice {
+		background-color: #f8f9fb;
+		border: 1px solid #E5EAF0;
+		border-top: none;
+		padding: 20px;
+		text-align: center;
+
+		a {
+			text-decoration: none;
+			color: #2a74c9;
+		}
+	}
+
 	.sf-color__swatch {
 		display: none !important;
 	}
