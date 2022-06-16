@@ -13,21 +13,21 @@
 	&__input {
 		width: 19px;
 		height: 19px;
-		border-radius: 3px;
+		border-radius: var( --sf-corner );
 		box-sizing: border-box;
-		border: 2px solid #4F76A3;
+		border: 2px solid var( --sf-accent );
 		position: relative;
-		background-color: #fff;
+		background-color: var( --sf-background );
 		appearance: none;
 		cursor: pointer;
 
 		&:checked {
-			background-color: #4F76A3;
+			background-color: var( --sf-accent );
 
 			&::after, &::before {
 				content: '';
 				position: absolute;
-				background-color: #fff;
+				background-color: var( --sf-background );
 				width: 2px;
 			}
 
@@ -58,7 +58,7 @@
 
 	&__label {
 		cursor: pointer;
-		color: $font__primary;
+		color: var( --sf-font_options );
 		font-size: 14px;
 		padding-left: 10px;
 	}

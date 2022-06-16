@@ -4,6 +4,7 @@ namespace SimplyFilters\Filters;
 
 use Hybrid\Core\ServiceProvider;
 use SimplyFilters\Filters\Types\ColorFilter;
+use function SimplyFilters\adjustBrightness;
 
 /**
  * The public-facing functionality of the plugin.
@@ -70,6 +71,8 @@ class FiltersServiceProvider extends ServiceProvider {
 	 */
 	public function enqueue_styles() {
 		wp_enqueue_style( 'simply-filters_public', $this->getAssetPath( 'css/public.css' ), null, null, 'all' );
+
+		$this->enqueue_dynamic_styles();
 	}
 
 	/**
@@ -101,6 +104,52 @@ class FiltersServiceProvider extends ServiceProvider {
 		if ( $this->app->get( 'enqueue-slider' ) ) {
 			wp_enqueue_script( 'simply-filters_slider', $this->getAssetPath( 'js/range-slider.js' ), [ 'jquery', 'jquery-ui-slider' ], null, true );
 		}
+	}
+
+	/**
+	 * Include dynamic style variables
+	 */
+	private function enqueue_dynamic_styles() {
+		$options = get_option( 'sf-settings' );
+
+		// Element colors
+		$colors = isset( $options['colors'] ) ? $options['colors'] : [];
+		$colors = array_filter( $colors, function ( $option ) {
+			return sanitize_hex_color( $option );
+		});
+
+		$defaults = [
+			'accent' => '#4F76A3',
+			'accent-dark' => '',
+			'highlight' => '#3987e1',
+			'background' => '#ffffff',
+			'font_titles' => '#404040',
+			'font_options' => '#445C78'
+		];
+		$colors = wp_parse_args( $colors, $defaults );
+		$colors[ 'accent-dark' ] = adjustBrightness( $colors['accent'], -20 );
+		$styles = '';
+		foreach ( $colors as $key => $option ) {
+			if( ! array_key_exists( $key, $defaults ) ) continue;
+
+			$styles .= '--sf-' . $key . ': ' . $option . '; ';
+		}
+
+		// Elements style
+		$element_style = isset( $options['style'] ) ? esc_attr( $options['style'] ) : 'rounded';
+		if( $element_style === 'rounded' ) {
+			$styles .= '--sf-corner: 3px; ';
+			$styles .= '--sf-corner-button: 5px; ';
+		} else {
+			$styles .= '--sf-corner: 0; ';
+			$styles .= '--sf-corner-button: 0; ';
+		}
+
+		wp_add_inline_style( 'simply-filters_public', "
+		:root {
+			 {$styles}
+		}
+		" );
 	}
 
 	/**

@@ -213,10 +213,16 @@ class AdminServiceProvider extends ServiceProvider {
 					'default' => '#ffffff'
 				],
 				[
-					'id' => 'font',
-					'slug' => 'font',
-					'name' => __( 'Text', $locale ),
+					'id' => 'font_options',
+					'slug' => 'font_options',
+					'name' => __( 'Option text', $locale ),
 					'default' => '#445C78'
+				],
+				[
+					'id' => 'font_titles',
+					'slug' => 'font_titles',
+					'name' => __( 'Title text', $locale ),
+					'default' => '#404040'
 				]
 			]
 		] );

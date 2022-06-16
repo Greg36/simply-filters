@@ -14,7 +14,7 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background: #f1f1f1;
+	background: var( --sf-background );
 	border-radius: 10px;
 
 	img {
@@ -33,19 +33,19 @@
 .sf-button {
 	font-weight: 600;
 	font-size: 14px;
-	color: #fff;
+	color: var( --sf-background );
 	transition: background-color 0.3s ease-out;
-	background-color: $button__bg;
-	border: $button__border;
+	background-color: var( --sf-accent );
+	border: 1px solid var( --sf-accent-dark );
 	padding: 9px 20px;
-	border-radius: 5px;
+	border-radius: var( --sf-corner-button );
 	text-decoration: none;
 	display: inline-flex;
 	align-items: center;
 	cursor: pointer;
 
 	&:hover, &:focus {
-		color: #fff;
-		background-color: darken( $button__bg, 10 );
+		color: var( --sf-background );
+		background-color: var( --sf-accent-dark );
 	}
 }

@@ -6,13 +6,13 @@
 	}
 
 	.sf-slider__input {
-		border: 1px solid #C9D4E0;
-		border-radius: 5px;
-		background: #fff;
+		border: 1px solid var( --sf-accent );
+		border-radius: var( --sf-corner-button );
+		background: var( --sf-background );
 		line-height: 32px;
 		font-size: 14px;
 		font-weight: 600;
-		color: #445C78;
+		color: var( --sf-accent );
 		min-width: 87px;
 		padding-left: 12px;
 		box-sizing: border-box;
@@ -25,7 +25,7 @@
 	.ui-slider {
 		height: 4px;
 		width: calc( 100% - 18px );
-		background: #E3E5E8;
+		background: #E3E5E8; // @todo: this color
 		margin-bottom: 24px;
 		margin-top: 16px;
 		position: relative;
@@ -33,7 +33,7 @@
 
 	.ui-slider-range {
 		height: 4px;
-		background: #4F76A2;
+		background: var( --sf-accent );
 		position: absolute;
 		z-index: 1;
 		display: block;
@@ -43,8 +43,8 @@
 	.ui-slider-handle {
 		width: 18px;
 		height: 18px;
-		background: #4F76A2;
-		border: 1px solid #326195;
+		background: var( --sf-accent );
+		border: 1px solid var( --sf-accent-dark );
 		border-radius: 40px;
 		position: absolute;
 		z-index: 2;
