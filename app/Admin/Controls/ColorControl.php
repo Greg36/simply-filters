@@ -29,6 +29,8 @@ class ColorControl extends Control {
 				if ( ! $value ) {
                     if( isset( $this->value[ $option['slug'] ] ) ) {
 	                    $value = $this->value[ $option['slug'] ];
+                    } else if( isset( $option['default'] ) ) {
+                        $value = $option['default'];
                     } else {
 					    $value = '#ffffff';
                     }
@@ -39,10 +41,11 @@ class ColorControl extends Control {
 
                     <div class="sf-color__picker">
 		                <?php
-		                printf( '<input id="%s" name="%s" type="text" value="%s" class="sf-color__field" data-default-color="#fff"/>',
+		                printf( '<input id="%s" name="%s" type="text" value="%s" class="sf-color__field" data-default-color="%s"/>',
                             esc_attr( $id ),
 			                esc_attr( $key ),
-			                esc_attr( $value )
+			                esc_attr( $value ),
+                            isset( $option['default'] ) ? esc_attr( $option['default'] ) : '#ffffff'
 		                );
 		                ?>
                     </div>

@@ -57,6 +57,7 @@ body.post-type-sf_filter_group {
 
 		svg {
 			margin-right: 12px;
+
 			path {
 				transition: fill 0.3s ease-out;
 				fill: #fff;
@@ -77,12 +78,13 @@ body.post-type-sf_filter_group {
 				}
 			}
 		}
-		
+
 	}
 }
 
 .sf-tabs-target {
 	display: none;
+
 	&.open {
 		display: block;
 	}
@@ -408,6 +410,7 @@ body.post-type-sf_filter_group {
 	label {
 		padding-left: 14px;
 	}
+
 	li {
 		&:not(:last-of-type) {
 			margin-bottom: 12px;
@@ -577,6 +580,7 @@ body.post-type-sf_filter_group {
 			opacity: 1;
 			transform: scale(1);
 		}
+
 		.sf-new__bg {
 			opacity: 1;
 		}
@@ -740,6 +744,7 @@ body.post-type-sf_filter_group {
 	.sf-checkbox__check {
 		border-radius: 20px;
 	}
+
 	.sf-checkbox__check--checked {
 		background-color: #fff;
 
@@ -781,7 +786,7 @@ body.post-type-sf_filter_group {
 			position: relative;
 
 			&::before {
-				content:"";
+				content: "";
 				width: 0;
 				height: 0;
 				border-style: solid;
@@ -814,6 +819,7 @@ body.post-type-sf_filter_group {
 		border: none;
 		border-radius: 3px;
 	}
+
 	.sf-checkbox__check--checked {
 		&::before {
 			display: none;
@@ -916,7 +922,7 @@ body.post-type-sf_filter_group {
 			width: 25px;
 			position: absolute;
 			top: 50%;
-			left: calc( 50% - 12px );
+			left: calc(50% - 12px);
 		}
 
 		> div {
@@ -933,9 +939,11 @@ body.post-type-sf_filter_group {
 		}
 	}
 
-	&__from {}
+	&__from {
+	}
 
-	&__to {}
+	&__to {
+	}
 
 }
 
@@ -972,13 +980,16 @@ body.post-type-sf_filter_group {
 	&__list {
 		list-style: disc;
 		margin-left: 20px;
+
 		li {
 			margin-bottom: 12px;
 		}
+
 		h4 {
 			margin: 0;
 			margin-bottom: 2px;
 		}
+
 		p {
 			margin: 0;
 			margin-bottom: 4px;
@@ -1046,6 +1057,7 @@ body.post-type-sf_filter_group {
 	.sf-color__swatch {
 		display: none !important;
 	}
+
 	.sf-color__preview {
 		padding-left: 10px;
 	}
@@ -1053,7 +1065,7 @@ body.post-type-sf_filter_group {
 
 .sf-global-settings {
 	border: none;
-	padding: 0;
+	padding: 18px;
 	margin-top: 35px;
 
 	.sf-option > td {
@@ -1064,4 +1076,23 @@ body.post-type-sf_filter_group {
 		}
 	}
 
+	.wp-picker-active {
+
+		.wp-picker-default {
+			display: initial;
+			margin-left: 3px;
+		}
+
+		.wp-picker-input-wrap {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+
+
+	}
+}
+
+#sf-save-settings {
+	margin-top: 18px;
 }

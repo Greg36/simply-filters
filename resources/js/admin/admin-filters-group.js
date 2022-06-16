@@ -154,7 +154,8 @@ function setupGroupSettings() {
 
 	if( group_settings ) {
 		const group_id = group_settings.dataset.filter_group_id,
-			more_toggle = group_settings.querySelector( '#' + group_id + '-more_show' ),
+			more_toggle = group_settings.querySelector( '#' + group_id + '-' +
+				'more_show' ),
 			more_count =  group_settings.querySelector( '#' + group_id + '-more_count' ).closest( '.sf-option' );
 
 		// Hide more count setting initially

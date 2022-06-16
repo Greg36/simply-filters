@@ -19,10 +19,20 @@ document.addEventListener( 'DOMContentLoaded', () => {
 
 		// Initialize color settings
 		jQuery( '.sf-settings .sf-color__field' ).wpColorPicker({
-			defaultColor: false,
 			hide: true,
 			palettes: true,
 		} );
+
+
+		// Collapse selector options on toggle
+		const change_selectors = document.querySelector( '#sf-setting-options-change_selectors' );
+		const selectors = document.querySelector( '#sf-setting-options-selectors_product' ).closest( '.sf-option' );
+
+		if( ! change_selectors.checked ) selectors.style.display = 'none';
+		change_selectors.addEventListener( 'change', ( e ) => {
+			selectors.style.display = e.target.checked ? '' : 'none';
+		} );
+
 	}
 
 });

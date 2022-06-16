@@ -32,9 +32,10 @@ class AdminServiceProvider extends ServiceProvider {
 		add_action( 'admin_head', [ $this, 'init_metaboxes' ] );
 		add_action( 'admin_menu', [ $this, 'init_settings' ] );
 
-		add_action( 'save_post', array( $this, 'save_filters' ), 10, 2 );
-		add_filter( 'wp_insert_post_data', array( $this, 'save_group_settings' ), 90, 2 );
-		add_action( 'delete_post', array( $this, 'remove_group' ), 90, 2 );
+		add_action( 'save_post', [ $this, 'save_filters' ], 10, 2 );
+		add_filter( 'wp_insert_post_data', [ $this, 'save_group_settings' ], 90, 2 );
+		add_action( 'delete_post', [ $this, 'remove_group' ], 90, 2 );
+		add_action( 'admin_init', [ $this, 'save_general_settings' ], 95 );
 	}
 
 	/**
@@ -187,7 +188,7 @@ class AdminServiceProvider extends ServiceProvider {
 	public function settings_screen() {
 
 		$locale = \Hybrid\app( 'locale' );
-		$settings = new Settings( 'options', get_option( 'sf-settings-visual' ) );
+		$settings = new Settings( 'options', get_option( 'sf-settings' ) );
 
 		$settings->add( 'colors', 'color', [
 			'name' => __( 'Filter colors', $locale ),
@@ -196,22 +197,26 @@ class AdminServiceProvider extends ServiceProvider {
 				[
 					'id' => 'accent',
 					'slug' => 'accent',
-					'name' => __( 'Accent', $locale )
+					'name' => __( 'Accent', $locale ),
+					'default' => '#4F76A3'
 				],
 				[
 					'id' => 'highlight',
 					'slug' => 'highlight',
-					'name' => __( 'Highlight', $locale )
+					'name' => __( 'Highlight', $locale ),
+					'default' => '#3987e1'
 				],
 				[
 					'id' => 'background',
 					'slug' => 'background',
-					'name' => __( 'Background', $locale )
+					'name' => __( 'Background', $locale ),
+					'default' => '#ffffff'
 				],
 				[
 					'id' => 'font',
 					'slug' => 'font',
-					'name' => __( 'Text', $locale )
+					'name' => __( 'Text', $locale ),
+					'default' => '#445C78'
 				]
 			]
 		] );
@@ -227,11 +232,11 @@ class AdminServiceProvider extends ServiceProvider {
 
 		$settings->add( 'change_selectors', 'toggle', [
 			'name' => __( 'Enable custom selectors', $locale ),
-			'description' => __( 'If your theme does not refresh products after filtering it might be due to custom CSS selectors. Enable this option to enter custom selector values.', $locale )
+			'description' => __( 'If your theme does not refresh products after filtering it might be due to non-standard CSS selectors. Enable this option to enter custom selector values.', $locale )
 		] );
 
 		$settings->add( 'selectors', 'text', [
-			'name' => __( 'Selector', $locale ),
+			'name' => __( 'Selectors', $locale ),
 			'description' => __( 'Enter CSS selector for each part of the page - it will be replaced with new content on page reload.<br><br>If you don\'t know what values to enter contact your theme\'s support.', $locale ),
 			'options' => [
 				[
@@ -453,7 +458,7 @@ class AdminServiceProvider extends ServiceProvider {
 		$settings = isset( $_POST[ $prefix ][ $postarr['ID'] ] ) ? $_POST[ $prefix ][ $postarr['ID'] ] : [];
 
 		if ( ! empty( $settings ) ) {
-			$settings             = wp_unslash( $settings );
+			$settings             = wp_unslash( $settings ); // @todo is it safe enough sanitization?
 			$data['post_content'] = wp_slash( maybe_serialize( $settings ) );
 		}
 
@@ -461,10 +466,18 @@ class AdminServiceProvider extends ServiceProvider {
 	}
 
 	public function save_general_settings() {
-		// @todo: implement
 
-		if ( ! $this->app->get( 'is-page-settings' ) ) {
-			return;
+		// Check for general settings nonce
+		if( isset( $_POST['sf-setting'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['sf-general-settings'] ) ), 'sf-general-settings' ) ) {
+
+			$options = [];
+			if( ! empty( $_POST['sf-setting']['options'] ) ) {
+				foreach ( $_POST['sf-setting']['options'] as $key => $option ) {
+					$options[ sanitize_text_field( $key ) ] = wc_clean( $option );
+				}
+			}
+
+			update_option( 'sf-settings', $options );
 		}
 	}
 }
