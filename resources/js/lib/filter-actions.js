@@ -102,8 +102,7 @@ export default class FilterActions {
 
 	updatePageFragments( content ) {
 
-		// @todo: use here user-entered selectors?
-		const selectors = [
+		let selectors = [
 			'.woocommerce-pagination',
 			'.woocommerce-breadcrumb',
 			'.products',
@@ -111,6 +110,12 @@ export default class FilterActions {
 			'.woocommerce-ordering',
 			'.woocommerce-products-header__title',
 		];
+
+		// Get user entered selectors if they have been change
+		if( sf_filters.selectors ) {
+			selectors = sf_filters.selectors;
+		}
+
 		selectors.forEach( ( selector ) => {
 			const home = document.querySelectorAll( selector );
 			const ext = content.querySelectorAll( selector );

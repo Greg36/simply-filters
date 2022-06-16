@@ -88,8 +88,9 @@ class FiltersServiceProvider extends ServiceProvider {
 			'price_format' => get_option( 'woocommerce_currency_pos' ),
 			'currency'     => get_woocommerce_currency_symbol(),
 			'locale'       => [
-				'show_less' => __( 'Show less', $this->app->get( 'locale') )
-			]
+				'show_less' => __( 'Show less', $this->app->get( 'locale' ) )
+			],
+			'selectors'    => $this->get_custom_selectors()
 		] );
 	}
 
@@ -116,28 +117,30 @@ class FiltersServiceProvider extends ServiceProvider {
 		$colors = isset( $options['colors'] ) ? $options['colors'] : [];
 		$colors = array_filter( $colors, function ( $option ) {
 			return sanitize_hex_color( $option );
-		});
+		} );
 
-		$defaults = [
-			'accent' => '#4F76A3',
-			'accent-dark' => '',
-			'highlight' => '#3987e1',
-			'background' => '#ffffff',
-			'font_titles' => '#404040',
+		$defaults              = [
+			'accent'       => '#4F76A3',
+			'accent-dark'  => '',
+			'highlight'    => '#3987e1',
+			'background'   => '#ffffff',
+			'font_titles'  => '#404040',
 			'font_options' => '#445C78'
 		];
-		$colors = wp_parse_args( $colors, $defaults );
-		$colors[ 'accent-dark' ] = adjustBrightness( $colors['accent'], -20 );
-		$styles = '';
+		$colors                = wp_parse_args( $colors, $defaults );
+		$colors['accent-dark'] = adjustBrightness( $colors['accent'], - 20 );
+		$styles                = '';
 		foreach ( $colors as $key => $option ) {
-			if( ! array_key_exists( $key, $defaults ) ) continue;
+			if ( ! array_key_exists( $key, $defaults ) ) {
+				continue;
+			}
 
 			$styles .= '--sf-' . $key . ': ' . $option . '; ';
 		}
 
 		// Elements style
 		$element_style = isset( $options['style'] ) ? esc_attr( $options['style'] ) : 'rounded';
-		if( $element_style === 'rounded' ) {
+		if ( $element_style === 'rounded' ) {
 			$styles .= '--sf-corner: 3px; ';
 			$styles .= '--sf-corner-button: 5px; ';
 		} else {
@@ -318,5 +321,16 @@ class FiltersServiceProvider extends ServiceProvider {
 		$filter->render_setting_fields();
 
 		die();
+	}
+
+	/**
+	 * Get custom CSS selectors from general options
+	 */
+	private function get_custom_selectors() {
+		$options = get_option( 'sf-settings' );
+		if( isset( $options['change_selectors'] ) && $options['change_selectors'] ) {
+			return $options['selectors'];
+		}
+		return false;
 	}
 }
