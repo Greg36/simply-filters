@@ -11,7 +11,7 @@ const updatePrice = debounce( ( data ) => {
 		value: `${data.min}_${data.max}`,
 		group: data.group
 	} );
-}, 300 );
+}, 100 );
 
 /**
  * Update jQuery slider with values from input field and call update
@@ -85,12 +85,13 @@ export const setupSliders = () => {
 			max: parseInt( max.dataset.max ),
 			values: [min.value, max.value],
 			slide: function ( event, ui ) {
-
 				if( ui.values[1] - ui.values[0] < 1 ) return false;
 
 				let inputs = event.target.nextElementSibling.children;
 				inputs[0].value = ui.values[0];
 				inputs[1].value = ui.values[1];
+			},
+			stop: function () {
 				updatePrice( {
 					min: min.value,
 					max: max.value,
