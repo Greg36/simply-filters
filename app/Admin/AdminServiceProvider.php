@@ -4,6 +4,7 @@ namespace SimplyFilters\Admin;
 
 use Hybrid\Core\ServiceProvider;
 use SimplyFilters\Filters\DataParser;
+use SimplyFilters\Filters\Types\Filter;
 use SimplyFilters\TemplateLoader;
 
 /**
@@ -31,6 +32,8 @@ class AdminServiceProvider extends ServiceProvider {
 
 		add_action( 'admin_head', [ $this, 'init_metaboxes' ] );
 		add_action( 'admin_menu', [ $this, 'init_settings' ] );
+
+		add_action( 'sf_admin_before_filter_options', [ $this, 'display_rating_disabled_notice' ] );
 
 		add_action( 'save_post', [ $this, 'save_filters' ], 10, 2 );
 		add_filter( 'wp_insert_post_data', [ $this, 'save_group_settings' ], 90, 2 );
@@ -484,6 +487,22 @@ class AdminServiceProvider extends ServiceProvider {
 			}
 
 			update_option( 'sf-settings', $options );
+		}
+	}
+
+	/**
+	 * Add notice to rating filter options about rating being disabled in WC settings
+	 *
+	 * @param Filter $filter
+	 */
+	public function display_rating_disabled_notice( Filter $filter ) {
+		if ( ! wc_review_ratings_enabled() && $filter->get_type() === 'Rating' ) {
+
+			echo '<div class="sf-filter__notice">';
+			printf( __( 'Product rating is currently disabled in WooCommerce, for this filter to work enable star rating in <a href="%s" target="_blank" >settings</a>.', $this->app->get( 'locale' ) ),
+				admin_url( 'admin.php?page=wc-settings&tab=products' )
+			);
+			echo '</div>';
 		}
 	}
 }

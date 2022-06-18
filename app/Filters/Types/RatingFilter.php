@@ -35,8 +35,6 @@ class RatingFilter extends Filter {
 			],
 				'Filters'
 			);
-		} else {
-			// @todo: info to admin about reviews not being enabled?
 		}
 	}
 

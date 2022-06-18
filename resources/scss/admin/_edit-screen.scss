@@ -177,6 +177,14 @@ body.post-type-sf_filter_group {
 	&__options {
 		display: none;
 	}
+
+	&__notice {
+		background-color: #fbf4f4;
+		border: 1px solid #E5EAF0;
+		border-top: none;
+		padding: 20px;
+		text-align: center;
+	}
 }
 
 .sf-row {
