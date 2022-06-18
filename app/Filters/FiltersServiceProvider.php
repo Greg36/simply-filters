@@ -244,6 +244,8 @@ class FiltersServiceProvider extends ServiceProvider {
 
 		$filterer = new FilterQuery( $query );
 		$filterer->filter();
+
+		$this->app->instance( 'is-woocommerce-page', true );
 	}
 
 	/**

@@ -133,8 +133,8 @@ class FilterGroup {
 	 */
 	public function render() {
 
-		// @todo: better handle page without woocommerce query
-//		if( \WC_Query::get_main_query() === null ) return;
+		// Render filters only on a page with WooCommerce query
+		if( ! \Hybrid\app( 'is-woocommerce-page' ) ) return;
 
 		TemplateLoader::render( 'filter-group', [
 			'group_id' => $this->group_id,
