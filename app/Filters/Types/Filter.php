@@ -84,7 +84,7 @@ abstract class Filter {
 		$this->locale  = \Hybrid\app( 'locale' );
 
 		$this->set_sources();
-		$this->load_settings();
+		if( is_admin() ) $this->load_settings();
 	}
 
 	/**
