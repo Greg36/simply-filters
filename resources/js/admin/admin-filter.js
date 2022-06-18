@@ -81,6 +81,11 @@ export default class AdminFilter {
 			input.addEventListener( 'invalid', ( e ) => {
 				e.preventDefault();
 				invalidInputNotice( __( 'This field is required.', 'simply-filters' ), input );
+				addFormNotice( __( 'Fill in all required fields.', 'simply-filters' ), 'error' )
+
+				if( ! this.filter.classList.contains( 'open' ) ) {
+					this.toggleOptions();
+				}
 			} );
 		} );
 

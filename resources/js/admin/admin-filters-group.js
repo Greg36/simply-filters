@@ -131,6 +131,9 @@ function findDuplicatedValues() {
 function removeUnmodifiedFilters() {
 	document.querySelectorAll( '.sf-filter' ).forEach( ( current ) => {
 
+		// Skip open filters
+		if( current.classList.contains( 'open' ) ) return;
+
 		// Remove all fields that have not been changed
 		if ( !current.hasAttribute( 'data-save' ) || current.dataset.save !== 'true' ) {
 

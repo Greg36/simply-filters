@@ -152,16 +152,19 @@ abstract class Filter {
 	}
 
 	/**
-     * Check in cookie if filter is collapsed
-     *
+	 * Check in cookie if filter is collapsed
+	 *
 	 * @return bool
 	 */
 	public function is_filter_collapsed() {
-        if( isset( $_COOKIE[ 'sf-filters-collapsed' ] ) ) {
-            $ids = explode( '|', $_COOKIE[ 'sf-filters-collapsed' ] );
-            if( in_array( $this->get_id(), $ids ) ) return true;
-        }
-        return false;
+		if ( isset( $_COOKIE['sf-filters-collapsed'] ) ) {
+			$ids = explode( '|', $_COOKIE['sf-filters-collapsed'] );
+			if ( in_array( $this->get_id(), $ids ) ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**
@@ -398,7 +401,7 @@ abstract class Filter {
 		$orderby = $this->data['order_by'];
 		$order   = $this->data['order_type'];
 
-        // Keep all setting at the top
+		// Keep all setting at the top
 		$first = $options[0]['slug'] === 'no-filter' ? [ array_shift( $options ) ] : [];
 
 		if ( $orderby === 'name' ) {
@@ -407,19 +410,20 @@ abstract class Filter {
 			} );
 		}
 
-        if ( $orderby === 'count' && ! empty( $count ) ) {
-            usort( $options, function ( $a, $b ) use ( $count ) {
-                $a = isset( $count[ $a['id'] ] ) ? intval( $count[ $a['id'] ] ) : 0;
-                $b = isset( $count[ $b['id'] ] ) ? intval( $count[ $b['id'] ] ) : 0;
-                return ( $a < $b ) ? -1 : 1;
-            } );
-        }
+		if ( $orderby === 'count' && ! empty( $count ) ) {
+			usort( $options, function ( $a, $b ) use ( $count ) {
+				$a = isset( $count[ $a['id'] ] ) ? intval( $count[ $a['id'] ] ) : 0;
+				$b = isset( $count[ $b['id'] ] ) ? intval( $count[ $b['id'] ] ) : 0;
+
+				return ( $a < $b ) ? - 1 : 1;
+			} );
+		}
 
 		if ( $order === 'desc' ) {
 			$options = array_reverse( $options );
 		}
 
-        return array_merge( $first, $options );
+		return array_merge( $first, $options );
 	}
 
 	/**

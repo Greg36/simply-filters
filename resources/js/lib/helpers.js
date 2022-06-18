@@ -116,7 +116,7 @@ function invalidInputNotice( message, input ) {
 	notice = input.insertAdjacentElement( 'beforebegin', notice );
 
 	// Remove on input change
-	input.addEventListener( 'focus', () => {
+	input.addEventListener( 'input', () => {
 		jQuery( notice ).slideUp( 200 );
 		setTimeout( () => {
 			notice.remove();
