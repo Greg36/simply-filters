@@ -69,10 +69,23 @@ class SliderFilter extends Filter {
         ";
 
 		$price = $wpdb->get_row( $sql, ARRAY_A );
+        $min = $price['min'];
+        $max = $price['max'];
+
+        // Adjust price range if taxes are enabled, price includes tax on front-end and product prices are entered without tax
+		if ( wc_tax_enabled() && 'incl' === get_option( 'woocommerce_tax_display_shop' ) && ! wc_prices_include_tax() ) {
+			$tax_class = apply_filters( 'woocommerce_price_filter_widget_tax_class', '' );
+			$tax_rates = \WC_Tax::get_rates( $tax_class );
+
+			if ( $tax_rates ) {
+				$min += \WC_Tax::get_tax_total( \WC_Tax::calc_tax( $min, $tax_rates ) );
+				$max += \WC_Tax::get_tax_total( \WC_Tax::calc_tax( $max, $tax_rates ) );
+			}
+		}
 
 		return [
-			'min' => ! is_null( $price['min'] ) ? intval( $price['min'] ) : 0,
-			'max' => ! is_null( $price['min'] ) ? intval( $price['max'] ) : 100
+			'min' => ! is_null( $min ) ? intval( floor( $min ) ) : 0,
+			'max' => ! is_null( $min ) ? intval( ceil( $max ) ) : 100
 		];
 	}
 

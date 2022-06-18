@@ -336,17 +336,32 @@ class FilterQuery {
 		if ( ! $param ) {
 			return $args;
 		}
+		$min = $param['data']['min'];
+		$max = $param['data']['max'];
 
 		// Add meta lookup table to join clauses if it is not already present
 		if ( strpos( $args['join'], 'wc_product_meta_lookup' ) === false ) {
 			$args['join'] .= " LEFT JOIN {$wpdb->wc_product_meta_lookup} wc_product_meta_lookup ON $wpdb->posts.ID = wc_product_meta_lookup.product_id ";
 		}
 
+		/**
+		 * Adjust query if taxes are enabled, price includes tax on front-end and product prices are entered without tax
+		 */
+		if ( wc_tax_enabled() && 'incl' === get_option( 'woocommerce_tax_display_shop' ) && ! wc_prices_include_tax() ) {
+			$tax_class = apply_filters( 'woocommerce_price_filter_widget_tax_class', '' );
+			$tax_rates = \WC_Tax::get_rates( $tax_class );
+
+			if ( $tax_rates ) {
+				$min -= \WC_Tax::get_tax_total( \WC_Tax::calc_inclusive_tax( $min, $tax_rates ) );
+				$max -= \WC_Tax::get_tax_total( \WC_Tax::calc_inclusive_tax( $max, $tax_rates ) );
+			}
+		}
+
 		// Add where clause for min and max price in lookup table
 		$price_query = $wpdb->prepare(
 			' AND NOT (%f < wc_product_meta_lookup.min_price OR %f > wc_product_meta_lookup.max_price ) ',
-			$param['data']['max'],
-			$param['data']['min']
+			$max,
+			$min
 		);
 		$args['where'] .= $price_query;
 
