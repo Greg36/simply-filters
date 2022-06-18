@@ -23,8 +23,15 @@ class FilterGroup {
 	private $settings;
 
 	public function __construct( $group_id ) {
-		$this->group_id  = $group_id;
-		$this->settings = new Settings( $group_id, (array) maybe_unserialize( get_post_field( 'post_content', $group_id ) ) );
+		$this->group_id = $group_id;
+		$data           = (array) maybe_unserialize( get_post_field( 'post_content', $group_id ) );
+
+		// Load defaults for group settings only on new page
+		if ( \Hybrid\app( 'is-page-new' ) ) {
+			$data = [ 'load_defaults' => true ];
+		}
+
+		$this->settings = new Settings( $group_id, $data );
 		$this->register_group_settings();
 		$this->query_filters_data();
 	}
@@ -54,20 +61,20 @@ class FilterGroup {
 		] );
 
 		$this->settings->add( 'more_show', 'toggle', [
-			'name' => __( 'More options button' , $locale ),
+			'name'        => __( 'More options button', $locale ),
 			'description' => __( 'Enable to limit how many options are shown at once before "Show more" button appears' )
 		] );
 
 		$this->settings->add( 'more_count', 'number', [
-			'name' => __( 'Number of options to show', $locale ),
+			'name'        => __( 'Number of options to show', $locale ),
 			'description' => __( 'How many options should be displayed initially', $locale ),
-			'default' => 5
+			'default'     => 5
 		] );
 
 		$this->settings->add( 'collapse', 'toggle', [
-			'name' => __( 'Collapse filter button', $locale ),
+			'name'        => __( 'Collapse filter button', $locale ),
 			'description' => __( 'Display arrow that will allow to collapse filter to only its title. <strong style="color: #b15252;">NOTICE:</strong> this will save a cookie to remember collapsed filters.', $locale )
-		]);
+		] );
 	}
 
 	/**
@@ -134,7 +141,9 @@ class FilterGroup {
 	public function render() {
 
 		// Render filters only on a page with WooCommerce query
-		if( ! \Hybrid\app( 'is-woocommerce-page' ) ) return;
+		if ( ! \Hybrid\app( 'is-woocommerce-page' ) ) {
+			return;
+		}
 
 		TemplateLoader::render( 'filter-group', [
 			'group_id' => $this->group_id,
