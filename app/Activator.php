@@ -3,19 +3,7 @@
 namespace SimplyFilters;
 
 /**
- * Fired during plugin activation
- *
- * @link       https://gregn.pl
- * @since      1.0.0
- *
- * @package    SimplyFilters
- * @subpackage SimplyFilters/includes
- */
-
-/**
  * Fired during plugin activation.
- *
- * This class defines all code necessary to run during the plugin's activation.
  *
  * @since      1.0.0
  * @package    SimplyFilters
@@ -24,15 +12,24 @@ namespace SimplyFilters;
  */
 class Activator {
 
-	/**
-	 * Short Description. (use period)
-	 *
-	 * Long Description.
-	 *
-	 * @since    1.0.0
-	 */
 	public static function activate() {
+		self::set_default_general_settings();
+	}
 
+	/**
+	 * Set default options for general settings
+	 */
+	private static function set_default_general_settings() {
+		update_option( 'sf-settings',  [
+			'colors' => [
+				'accent' => '#4F76A3',
+				'highlight' => '#3987e1',
+				'background' => '#ffffff',
+				'font_options' => '#445C78',
+				'font_titles' => '#404040'
+			],
+			'style' => 'rounded',
+		] );
 	}
 
 }
