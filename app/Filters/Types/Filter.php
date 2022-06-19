@@ -231,7 +231,10 @@ abstract class Filter {
 
 			$this->settings->add( 'sources', 'select', [
 				'name'        => __( 'Sources', $this->locale ),
-				'description' => __( 'Categories, tags and attributes created for products. If you want to filter by i.e. clothing size you need to create an attribute first - learn more', $this->locale ), // @todo include the link
+				'description' => sprintf(
+					__( 'Categories, tags and attributes created for products. If you want to filter by i.e. clothing size you need to create an attribute first - <a href="%s" target="_blank">learn more</a>.', $this->locale ),
+					'https://woocommerce.com/document/managing-product-taxonomies/'
+				),
 				'options'     => $this->sources
 			] );
 
@@ -244,7 +247,7 @@ abstract class Filter {
 			$this->settings->add( 'all_option', 'text', [
 				'name'        => __( 'All elements label', $this->locale ),
 				'description' => __( 'First option selected by default have all elements show, what should be its label i.e. "All brands"', $this->locale ),
-				// @todo: make this required
+				'required'    => true
 			] );
 		}
 
@@ -481,15 +484,16 @@ abstract class Filter {
 	 */
 	protected function get_render_data() {
 		$options = $this->get_current_source_options();
+        $key = $this->get_current_source_key();
 		if ( empty( $options ) ) {
 			return false;
 		}
 
-		$count = $this->get_product_counts_in_terms( $options );
+		$count = $this->get_product_counts_in_terms( $options, $key );
 
 		return [
 			'id'       => $this->get_id(),
-			'key'      => $this->get_current_source_key(),
+			'key'      => $key,
 			'options'  => $this->order_options( $options, $count ),
 			'values'   => $this->get_selected_values(),
 			'settings' => [
@@ -500,7 +504,6 @@ abstract class Filter {
 		];
 	}
 
-	// @todo: move this and other ADMIN only functions to FilterSettings class
 	public function render_new_filter_preview() {
 		?>
         <div class="sf-preview">
@@ -581,9 +584,7 @@ abstract class Filter {
 	 *
 	 * @return array|false
 	 */
-	protected function get_product_counts_in_terms( $terms ) {
-		// @todo cache this in a daily transient
-
+	protected function get_product_counts_in_terms( $terms, $key = 'term' ) {
 		global $wpdb;
 		$product_count = false;
 
@@ -608,9 +609,18 @@ abstract class Filter {
                 GROUP BY term_taxonomy.term_id
             ";
 
-			$results = $wpdb->get_results( $sql, ARRAY_A );
+            $sql_hash = md5( $sql );
+			$cached_queries = (array) get_transient( 'sf_products_in_' . urlencode( $key ) );
 
-			$product_count = wp_list_pluck( $results, 'post_count', 'term_id' );
+			// Query products and save query to daily cache
+			if( ! isset( $cached_queries[ $sql_hash ] ) ) {
+	            $results = $wpdb->get_results( $sql, ARRAY_A );
+                $cached_queries[ $sql_hash ] = wp_list_pluck( $results, 'post_count', 'term_id' );
+
+                set_transient( 'sf_products_in_' . urlencode( $key ), $cached_queries, DAY_IN_SECONDS );
+            }
+
+			$product_count = $cached_queries[ $sql_hash ];
 		}
 
 		return $product_count;

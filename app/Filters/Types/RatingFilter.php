@@ -85,7 +85,7 @@ class RatingFilter extends Filter {
 		}
 
         // Query count  by term IDs
-		$products_count = $this->get_product_counts_in_terms( $term_ids );
+		$products_count = $this->get_product_counts_in_terms( $term_ids, 'rating' );
 
         // Match term IDs back to rating value
 		$rating_count = [];
