@@ -30,14 +30,12 @@ define( 'SF_URL', plugin_dir_url( __FILE__ ) );
 define( 'SF_PATH', plugin_dir_path( __FILE__ ) );
 define( 'SF_FILE', plugin_basename( __FILE__ ) );
 
-
 /*
  * Require Composer autoload
  */
 if ( file_exists( SF_PATH . 'vendor/autoload.php' ) ) {
 	require_once( SF_PATH . 'vendor/autoload.php' );
 }
-
 
 /*
  * Autoload any functions files
@@ -50,8 +48,6 @@ array_map( function( $file ) {
 	'functions-helpers'
 ] );
 
-
-
 /**
  * Run during plugin activation
  */
@@ -62,13 +58,12 @@ register_activation_hook( __FILE__, 'activate_SimplyFilters' );
 
 
 /**
- * Run during plugin deactivation
+ * Run during plugin uninstallation
  */
-function deactivate_SimplyFilters() {
-	\SimplyFilters\Deactivator::deactivate();
+function uninstall_SimplyFilters() {
+	\SimplyFilters\Uninstaller::uninstall();
 }
-register_deactivation_hook( __FILE__, 'deactivate_SimplyFilters' );
-
+register_uninstall_hook( __FILE__, 'uninstall_SimplyFilters' );
 
 /**
  * Begin execution of the plugin.
