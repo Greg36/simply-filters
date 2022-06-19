@@ -102,7 +102,6 @@ export default class FilterUrl {
 	 */
 	add( param ) {
 		if ( this.url.searchParams.has( param.key ) ) {
-			// @todo what if delimiter is different than one in param?
 			let values = this.url.searchParams.get( param.key ).split( param.delimiter );
 
 			if ( values.indexOf( param.value ) < 0 ) {
