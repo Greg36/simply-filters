@@ -303,9 +303,9 @@ class FiltersServiceProvider extends ServiceProvider {
 			die();
 		}
 
-		$id       = filter_var( $_POST['filter_id'], FILTER_SANITIZE_STRING );
+		$id       = filter_var( $_POST['filter_id'], FILTER_SANITIZE_NUMBER_INT );
 		$taxonomy = filter_var( $_POST['taxonomy'], FILTER_SANITIZE_STRING );
-		$term_id  = filter_var( $_POST['term_id'], FILTER_SANITIZE_STRING );
+		$term_id  = filter_var( $_POST['term_id'], FILTER_SANITIZE_NUMBER_INT );
 
 		// Bail if there is no key or term ID
 		if ( ! $taxonomy || ! $term_id || ! $id ) {
@@ -315,7 +315,7 @@ class FiltersServiceProvider extends ServiceProvider {
 		$filter = new ColorFilter();
 		$filter->initialize( [
 			'id'      => $id,
-			'sources' => $taxonomy,
+			'sources' => sanitize_text_field( $taxonomy ),
 			$taxonomy => $term_id
 		] );
 

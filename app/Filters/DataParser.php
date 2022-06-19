@@ -13,7 +13,7 @@ class DataParser {
 	public function save_filter( $id, $data ) {
 
 		// Remove slashes
-		$data = wp_unslash( $data ); // @todo: this is not enough sanitization
+		$data = wp_unslash( wc_clean( $data ) );
 
 		// Parse filter enabled checkbox
 		if ( ! isset( $data['enabled'] ) ) {

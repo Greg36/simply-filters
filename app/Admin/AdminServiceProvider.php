@@ -467,7 +467,7 @@ class AdminServiceProvider extends ServiceProvider {
 		$settings = isset( $_POST[ $prefix ][ $postarr['ID'] ] ) ? $_POST[ $prefix ][ $postarr['ID'] ] : [];
 
 		if ( ! empty( $settings ) ) {
-			$settings             = wp_unslash( $settings ); // @todo is it safe enough sanitization?
+			$settings             = wp_unslash( wc_clean( $settings ) );
 			$data['post_content'] = wp_slash( maybe_serialize( $settings ) );
 		}
 
