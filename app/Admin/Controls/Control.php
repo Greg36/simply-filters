@@ -36,11 +36,6 @@ abstract class Control {
 
 	protected abstract function render_setting_field();
 
-	/**
-	 * Initialize field with data // @param $args
-	 * @todo better doc
-	 *
-	 */
 	public function __construct( $args ) {
 		$this->name        = $args['name'];
 		$this->description = isset( $args['description'] ) ? $args['description'] : '';
@@ -57,16 +52,21 @@ abstract class Control {
 		$this->key   = $data['key'];
 		$this->id    = $data['id'];
 		$this->label = $data['label'];
-		if ( ! $data['load_defaults'] ) { // @todo: load_defaults work for AJAX but does not for initializing new group or global settings
+		if ( ! $data['load_defaults'] ) {
 			$this->value = $data['value'];
 		}
 
 		$this->render_settings_row();
 	}
 
+	/**
+     * Parse saved settings data
+     *
+	 * @param $data
+	 */
 	public function parse_data( $data ) {
 		return $data;
-	} // @todo: change to get_data / save_data   or something like get/save_setting ?
+	}
 
 	/**
 	 * Output admin setting's table row for the filter

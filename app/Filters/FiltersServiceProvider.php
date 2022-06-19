@@ -60,8 +60,8 @@ class FiltersServiceProvider extends ServiceProvider {
 		}
 
 		// Ajax calls
-		add_action( 'wp_ajax_sf/render_new_field', [ $this, 'ajax_render_new_settings_field' ] ); // @todo: move?
-		add_action( 'wp_ajax_sf/get_color_options', [ $this, 'ajax_get_color_settings_options' ] );// @todo: move?
+		add_action( 'wp_ajax_sf/render_new_field', [ $this, 'ajax_render_new_settings_field' ] );
+		add_action( 'wp_ajax_sf/get_color_options', [ $this, 'ajax_get_color_settings_options' ] );
 	}
 
 	/**
