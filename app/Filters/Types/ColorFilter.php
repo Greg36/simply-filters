@@ -51,24 +51,15 @@ class ColorFilter extends Filter {
 		] );
 	}
 
+	/**
+	 * Render the filter
+	 */
 	public function render() {
-		$options = $this->get_current_source_options();
-        $count = $this->get_product_counts_in_terms( $options );
+		$data = $this->get_render_data();
 
-		if ( $options ) {
-			TemplateLoader::render( 'types/color', [
-				'id'       => $this->get_id(),
-				'key'      => $this->get_current_source_key(),
-				'options'  => $this->prepare_colors_data( $this->order_options( $options, $count ) ),
-				'values'   => $this->get_selected_values(),
-				'settings' => [
-					'group' => $this->get_group_settings(),
-					'query' => $this->get_data( 'query', 'or' ),
-					'count' => $count
-				]
-			],
-				'Filters'
-			);
+		if( $data ) {
+            $data['options'] = $this->prepare_colors_data( $data['options'] );
+			TemplateLoader::render( 'types/color', $data, 'Filters' );
 		}
 	}
 

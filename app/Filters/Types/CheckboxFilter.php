@@ -26,29 +26,15 @@ class CheckboxFilter extends Filter {
 		$this->description = __( 'Choose one or many options', $this->locale );
 	}
 
+	/**
+	 * Render the filter
+	 */
 	public function render() {
-		// @todo: Possible option for selected tags or categories - make the links clickable to go to that category
-		$options = $this->get_current_source_options();
-		$count   = $this->get_product_counts_in_terms( $options );
+        $data = $this->get_render_data();
 
-		if ( $options ) {
-			// @todo: instead of going with long list of options figure out a way to pass them all automatically
-            //      ? to achieve this I could just send filter to the view and use methods or some decorator proxy to not expose whole object to view
-
-			TemplateLoader::render( 'types/checkbox', [
-				'id'       => $this->get_id(),
-				'key'      => $this->get_current_source_key(),
-				'options'  => $this->order_options( $options, $count ),
-				'values'   => $this->get_selected_values(),
-				'settings' => [
-					'group' => $this->get_group_settings(),
-					'query' => $this->get_data( 'query', 'or' ),
-					'count' => $count,
-				]
-			],
-				'Filters'
-			);
-		}
+        if( $data ) {
+	        TemplateLoader::render( 'types/checkbox', $data, 'Filters' );
+        }
 	}
 
 	protected function filter_preview() {

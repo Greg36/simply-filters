@@ -29,7 +29,7 @@ class Metaboxes {
 		);
 
 		add_meta_box( 'sf-filter-place',
-			__( 'Setup filters', \Hybrid\app( 'locale' ) ), // @todo change this label
+			__( 'Setup filters', \Hybrid\app( 'locale' ) ),
 			[ $this, 'info_metabox' ],
 			'sf_filter_group',
 			'side',

@@ -26,28 +26,21 @@ class SelectFilter extends Filter {
 		$this->description = __( 'Select only one from list', $this->locale );
 	}
 
+	/**
+	 * Render the filter
+	 */
 	public function render() {
-		$options = $this->get_current_source_options();
-		$count   = $this->get_product_counts_in_terms( $options );
+		$data = $this->get_render_data();
 
-		if ( $options ) {
+		if( $data ) {
 
-			array_unshift( $options, [
+			// Add all items option
+			array_unshift( $data['options'], [
 				'slug' => 'no-filter',
 				'name' => $this->get_data( 'all_option' )
 			] );
 
-			TemplateLoader::render( 'types/select', [
-				'id'       => $this->get_id(),
-				'key'      => $this->get_current_source_key(),
-				'options'  => $this->order_options( $options, $count ),
-				'values'   => $this->get_selected_values(),
-				'settings' => [
-					'count' => $count
-				]
-			],
-				'Filters'
-			);
+			TemplateLoader::render( 'types/select', $data, 'Filters' );
 		}
 	}
 

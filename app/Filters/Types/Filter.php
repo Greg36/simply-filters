@@ -84,7 +84,9 @@ abstract class Filter {
 		$this->locale  = \Hybrid\app( 'locale' );
 
 		$this->set_sources();
-		if( is_admin() ) $this->load_settings();
+		if ( is_admin() ) {
+			$this->load_settings();
+		}
 	}
 
 	/**
@@ -470,6 +472,32 @@ abstract class Filter {
 		}
 
 		return $this->data['sources'];
+	}
+
+	/**
+	 * Get filter's data required to render
+	 *
+	 * @return array|false
+	 */
+	protected function get_render_data() {
+		$options = $this->get_current_source_options();
+		if ( empty( $options ) ) {
+			return false;
+		}
+
+		$count = $this->get_product_counts_in_terms( $options );
+
+		return [
+			'id'       => $this->get_id(),
+			'key'      => $this->get_current_source_key(),
+			'options'  => $this->order_options( $options, $count ),
+			'values'   => $this->get_selected_values(),
+			'settings' => [
+				'group' => $this->get_group_settings(),
+				'query' => $this->get_data( 'query', 'or' ),
+				'count' => $count
+			]
+		];
 	}
 
 	// @todo: move this and other ADMIN only functions to FilterSettings class

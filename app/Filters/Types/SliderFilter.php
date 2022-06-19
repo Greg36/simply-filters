@@ -33,7 +33,7 @@ class SliderFilter extends Filter {
 			'values' => $this->get_selected_values(),
 		],
 			'Filters'
-		);// @todo: toggle off is always false and will always take default value
+		);
 	}
 
 	/**

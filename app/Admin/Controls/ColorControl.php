@@ -23,7 +23,7 @@ class ColorControl extends Control {
 				$id  = $this->id  . '-' . $option['slug'];
 
 				// Get the color value from term's meta
-				$value = get_term_meta( $option['id'], \Hybrid\app( 'term-color-key' ), true ); //@todo: this should be something to remove on uninstall
+				$value = get_term_meta( $option['id'], \Hybrid\app( 'term-color-key' ), true );
 
                 // If there is no term data use option value directly
 				if ( ! $value ) {
@@ -72,7 +72,7 @@ class ColorControl extends Control {
 
 		} else {
 			printf( '<div class="sf-color__no-elements">%s</div>',
-				__( 'There are no options for selected source', \Hybrid\app( 'locale' ) ) // @todo: change message for better one or even dedicated for attribute or category
+				__( 'There are no options for selected source', \Hybrid\app( 'locale' ) )
 			);
 		}
 
