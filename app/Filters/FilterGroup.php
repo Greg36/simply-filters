@@ -140,17 +140,16 @@ class FilterGroup {
 	 */
 	public function render() {
 
-		// Render filters only on a page with WooCommerce query
-		if ( ! \Hybrid\app( 'is-woocommerce-page' ) ) {
-			return;
-		}
+		// Render filters only on a page with WooCommerce query or block preview
+		if ( \Hybrid\app( 'is-woocommerce-page' ) || \Hybrid\app( 'is-block-preview' ) ) {
 
-		TemplateLoader::render( 'filter-group', [
-			'group_id' => $this->group_id,
-			'filters'  => $this->get_filters(),
-			'settings' => $this->get_settings()->get_data(),
-		],
-			'Filters'
-		);
+			TemplateLoader::render( 'filter-group', [
+				'group_id' => $this->group_id,
+				'filters'  => $this->get_filters(),
+				'settings' => $this->get_settings()->get_data(),
+			],
+				'Filters'
+			);
+		}
 	}
 }
