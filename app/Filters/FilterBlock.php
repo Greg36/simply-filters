@@ -69,7 +69,7 @@ class FilterBlock {
 	public function render_block( $attributes ) {
 		if( ! isset( $attributes['group_id'] ) ) return '';
 
-		\Hybrid\app()->instance( 'is-block-preview', true );
+		if( defined( 'REST_REQUEST' ) && REST_REQUEST ) \Hybrid\app()->instance( 'is-block-preview', true );
 
 		ob_start();
 
