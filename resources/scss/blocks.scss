@@ -1,0 +1,19 @@
+// Specificity hack to override default form and wp-core-ui styles for the filters block
+div.wp-block {
+
+	// Variables
+	@import "variables";
+
+	// Main public styles
+	@import "public/general";
+	@import "public/filters";
+
+	// Filters
+	@import "public/filters/checkbox";
+	@import "public/filters/radio";
+	@import "public/filters/select";
+	@import "public/filters/color";
+	@import "public/filters/rating";
+	@import "public/filters/slider";
+
+}

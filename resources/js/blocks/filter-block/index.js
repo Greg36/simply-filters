@@ -10,7 +10,7 @@ import { registerBlockType } from '@wordpress/blocks';
 import Block from './block';
 
 registerBlockType( 'simply-filters/filter-group', {
-	title: __( 'SF Filter Group xd', 'simply-filters' ),
+	title: __( 'SF Filter Group', 'simply-filters' ),
 	description: __( 'Description', 'simply-filters' ),
 	icon: 'format-image',
 	category: 'widgets',

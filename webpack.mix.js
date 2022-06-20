@@ -64,6 +64,7 @@ var sassConfig = {
 // Compile SASS/CSS.
 mix.sass( 'resources/scss/admin.scss', 'css' )
 	.sass( 'resources/scss/public.scss', 'css' )
+	.sass( 'resources/scss/blocks.scss', 'css' )
 	.options( sassConfig );
 
 /*

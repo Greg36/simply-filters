@@ -122,6 +122,9 @@ class AdminServiceProvider extends ServiceProvider {
 	 */
 	public function enqueue_styles() {
 		wp_enqueue_style( 'simply-filters_admin', $this->getAssetPath( 'css/admin.css' ), null, null, 'all' );
+		wp_enqueue_style( 'simply-filters_blocks', $this->getAssetPath( 'css/blocks.css' ), null, null, 'all' );
+
+		$this->enqueue_dynamic_styles( 'simply-filters_admin' );
 	}
 
 	/**
