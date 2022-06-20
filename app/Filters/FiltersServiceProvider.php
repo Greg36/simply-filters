@@ -81,15 +81,12 @@ class FiltersServiceProvider extends ServiceProvider {
 	 * @since    1.0.0
 	 */
 	public function enqueue_scripts() {
-		wp_enqueue_script( 'simply-filters_public', $this->getAssetPath( 'js/public.js' ), null, null, true );
+		wp_enqueue_script( 'simply-filters_public', $this->getAssetPath( 'js/public.js' ), [ 'wp-i18n' ], null, true );
 
 		wp_localize_script( 'simply-filters_public', 'sf_filters', [
 			'loader_src'   => \SimplyFilters\get_svg( 'loader' ),
 			'price_format' => get_option( 'woocommerce_currency_pos' ),
 			'currency'     => get_woocommerce_currency_symbol(),
-			'locale'       => [
-				'show_less' => __( 'Show less', $this->app->get( 'locale' ) )
-			],
 			'selectors'    => $this->get_custom_selectors()
 		] );
 	}

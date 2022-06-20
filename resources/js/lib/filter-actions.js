@@ -1,6 +1,7 @@
 import FilterUrl from "./filter-url";
 import { addLoader, getCookie, removeLoader, setCookie } from "./helpers";
 import { setupSliders } from "../range-slider";
+import { __ } from '@wordpress/i18n';
 
 export default class FilterActions {
 
@@ -282,7 +283,7 @@ export default class FilterActions {
 
 				} else {
 					// Open list
-					button.innerHTML = sf_filters.locale.show_less;
+					button.innerHTML = __( 'Show less', 'simply-filters' );
 					button.ariaExpanded = true;
 					options.forEach( ( option ) => {
 						option.classList.remove( 'sf-option-more' );
@@ -304,7 +305,7 @@ export default class FilterActions {
 
 			// Open list initially
 			if( button.classList.contains( 'sf-more-btn--open' ) ) {
-				button.innerHTML = sf_filters.locale.show_less;
+				button.innerHTML = __( 'Show less', 'simply-filters' );
 				button.ariaExpanded = true;
 				options.forEach( ( option ) => {
 					option.classList.remove( 'sf-option-more' );
