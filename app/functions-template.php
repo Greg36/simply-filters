@@ -78,7 +78,7 @@ function get_product_count( $count, $option ) {
 	$label = '';
 	if ( $count !== false && isset( $option['id'] ) ) {
 		$label .= '<span class="sf-label-count">';
-		$label .= isset( $count[ $option['id'] ] ) ? ' (' . intval( $count[ $option['id'] ] ) . ')' : ' (0)';
+		$label .= isset( $count[ $option['id'] ] ) ? '&nbsp;(' . intval( $count[ $option['id'] ] ) . ')' : ' (0)';
 		$label .= '</span>';
 	}
 

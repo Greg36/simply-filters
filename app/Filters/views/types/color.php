@@ -30,7 +30,7 @@ use function SimplyFilters\load_inline_svg;
 			);
 
 			// Swatch
-			printf( '<div class="sf-color__swatch %s" style="background-color: %s;">%s</div>',
+			$swatch = sprintf( '<div class="sf-color__swatch %s" style="background-color: %s;">%s</div>',
 				esc_attr( $color['class'] ),
 				sanitize_hex_color( $color['hex'] ),
 				load_inline_svg( 'check.svg' )
@@ -39,9 +39,9 @@ use function SimplyFilters\load_inline_svg;
             // Label
 			$label = esc_html( $color['label'] );
 			$label .= \SimplyFilters\get_product_count( $settings['count'], $color );
-            printf( '<label class="sf-color__label" for="%1$s">%2$s</label>',
+            printf( '<label class="sf-color__label" for="%s">%s</label>',
 	            esc_attr( $id . '_' . $color['slug'] ),
-	            $label
+	            $swatch . $label
             );
 
 			echo '</li>';

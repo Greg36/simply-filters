@@ -169,9 +169,10 @@ export default class FilterActions {
 		document.querySelectorAll( '.sf-filter' ).forEach( ( filter ) => {
 			if( update.hasOwnProperty( filter.dataset.id ) ) {
 				let list = filter.querySelector( '.sf-option-list' );
-				if( list ) {
-					const content = update[ filter.dataset.id ].querySelector( '.sf-option-list' ).closest( 'div' );
+				let content = update[ filter.dataset.id ].querySelector( '.sf-option-list' );
+				if( list && content ) {
 					list = list.closest( 'div' );
+					content = content.closest( 'div' );
 
 					// Keep list opened if it was open
 					if( list.querySelector( '.sf-more-btn--open' ) ) {

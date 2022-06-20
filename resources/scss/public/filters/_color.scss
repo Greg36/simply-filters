@@ -18,6 +18,14 @@
 		position: relative;
 		appearance: none;
 		cursor: pointer;
+		margin-right: 10px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		svg {
+			display: none;
+		}
 
 		&--contrast {
 			path {
@@ -34,17 +42,9 @@
 		width: 0;
 
 		&:checked {
-			&+.sf-color__swatch svg {
+			&+.sf-color__label svg {
 				display: block;
 			}
-		}
-	}
-
-	&__swatch {
-		svg {
-			display: none;
-			width: 30px;
-			height: 30px;
 		}
 	}
 
@@ -52,7 +52,8 @@
 		cursor: pointer;
 		color: var( --sf-font_options );
 		font-size: 14px;
-		padding-left: 10px;
+		display: flex;
+		align-items: center;
 	}
 
 }
