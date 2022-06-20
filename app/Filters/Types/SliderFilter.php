@@ -61,7 +61,7 @@ class SliderFilter extends Filter {
             SELECT MIN( min_price ) as min, MAX( max_price ) as max
             FROM {$wpdb->wc_product_meta_lookup}
             WHERE product_id IN (
-                SELECT ID FROM gjiw_posts
+                SELECT ID FROM {$wpdb->posts}
                 $join
                 WHERE 1=1
                 $where
