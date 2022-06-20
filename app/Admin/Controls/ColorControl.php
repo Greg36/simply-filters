@@ -19,7 +19,7 @@ class ColorControl extends Control {
 			foreach ( $this->options as $option ) {
 
 				// Each picker needs individual key and ID
-				$key = $this->key . '[' . $option['slug'] . ']';
+				$key = $this->key . '[' . $option['id'] . ']';
 				$id  = $this->id  . '-' . $option['slug'];
 
 				// Get the color value from term's meta
