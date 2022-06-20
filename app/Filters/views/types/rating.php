@@ -29,7 +29,7 @@
 				$rating_count .= isset( $count[ $rating ] ) ? '(' . intval( $count[ $rating ] ) . ')' : '(0)';
 				$rating_count .= '</span>';
 			}
-			printf( '<label class="sf-rating__label" for="%s"><div class="sf-rating__stars" aria-hidden="true">%s</div> <span class="screen-reader-text">%s</span></label>',
+			printf( '<label class="sf-rating__label" for="%s"><div class="sf-rating__stars" aria-hidden="true">%s</div><span class="screen-reader-text">%s</span></label>',
 	            esc_attr( $id . '_' . $rating ),
 	            \SimplyFilters\get_stars( $rating ) . $rating_count,
 	            __( 'Rating:', $locale ) . ' ' . $rating

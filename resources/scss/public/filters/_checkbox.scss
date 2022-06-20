@@ -1,5 +1,4 @@
-
-.sf-checkbox {
+.sf-filter .sf-checkbox {
 	ul {
 		margin: 0;
 		padding: 0;
@@ -9,6 +8,7 @@
 		display: flex;
 		align-items: center;
 		padding: 6px 0;
+		margin: 0;
 	}
 
 	&__input {
@@ -16,11 +16,13 @@
 		height: 19px;
 		border-radius: var( --sf-corner );
 		box-sizing: border-box;
-		border: 2px solid var( --sf-accent );
+		border: 2px solid;
+		border-color: var( --sf-accent );
 		position: relative;
 		background-color: var( --sf-background );
 		appearance: none;
 		cursor: pointer;
+		margin: 0;
 
 		&:checked {
 			background-color: var( --sf-accent );
@@ -57,5 +59,6 @@
 		color: var( --sf-font_options );
 		font-size: 14px;
 		padding-left: 10px;
+		margin: 0;
 	}
 }

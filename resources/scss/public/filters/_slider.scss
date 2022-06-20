@@ -1,4 +1,4 @@
-.sf-slider {
+.sf-filter .sf-slider {
 
 	&__inputs {
 		display: flex;
@@ -6,7 +6,8 @@
 	}
 
 	.sf-slider__input {
-		border: 1px solid var( --sf-accent );
+		border: 1px solid;
+		border-color: var( --sf-accent );
 		border-radius: var( --sf-corner-button );
 		background: var( --sf-background );
 		line-height: 32px;
@@ -14,8 +15,10 @@
 		font-weight: 600;
 		color: var( --sf-accent );
 		min-width: 87px;
+		max-width: 120px;
 		padding-left: 12px;
 		box-sizing: border-box;
+		margin: 0;
 
 		&--min {
 			margin-right: 20px;
@@ -24,7 +27,7 @@
 
 	.ui-slider {
 		height: 4px;
-		width: calc( 100% - 18px );
+		width: calc( 100% - 20px );
 		background: #E3E5E8;
 		margin-bottom: 24px;
 		margin-top: 16px;
