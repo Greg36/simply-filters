@@ -36,6 +36,12 @@
 	}
 }
 
+@media screen and (max-width: 600px) {
+	.sf-admin__toolbar {
+		display: none;
+	}
+}
+
 .sf-button {
 	font-weight: 600;
 	font-size: 14px;

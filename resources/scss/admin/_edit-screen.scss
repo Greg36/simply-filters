@@ -96,7 +96,6 @@ body.post-type-sf_filter_group {
 #sf-filter-group-fields {
 	background: transparent;
 	border: none;
-	margin-top: -20px;
 	box-shadow: none;
 
 	> .inside {
@@ -384,6 +383,7 @@ body.post-type-sf_filter_group {
 			width: 8px;
 			height: 8px;
 			background: #2a74c9;
+			margin: 0.1875rem;
 		}
 
 		&:checked + label {
@@ -399,6 +399,12 @@ body.post-type-sf_filter_group {
 		vertical-align: bottom;
 		margin-right: 8px;
 		margin-bottom: 0;
+
+		&::before {
+			margin: -0.1875rem 0 0 -0.25rem;
+			height: 1.3125rem;
+			width: 1.3125rem;
+		}
 
 		&:checked + label {
 			color: #2a74c9;
@@ -544,7 +550,7 @@ body.post-type-sf_filter_group {
 .sf-new {
 	display: none;
 	position: fixed;
-	top: 0;
+	top: 32px;
 	right: 0;
 	left: 0;
 	bottom: 0;
@@ -575,7 +581,7 @@ body.post-type-sf_filter_group {
 		padding: 32px 52px 42px;
 		box-sizing: border-box;
 		z-index: 102;
-		max-height: 90vh;
+		max-height: 88vh;
 		overflow: auto;
 
 		opacity: 0;
@@ -643,6 +649,9 @@ body.post-type-sf_filter_group {
 	}
 }
 
+/**
+ * Filter previews
+ */
 .sf-preview {
 	display: flex;
 	flex-direction: column;
@@ -683,10 +692,6 @@ body.post-type-sf_filter_group {
 	}
 }
 
-
-/**
- * Filter previews
- */
 .sf-preview .sf-checkbox {
 	ul {
 		margin: 0;
@@ -962,10 +967,6 @@ body.post-type-sf_filter_group {
 	box-shadow: none;
 	border: 1px solid #c9d4e0;
 
-	.postbox-header {
-		display: none;
-	}
-
 	.inside {
 		color: $font__secondary;
 		font-family: $font__family;
@@ -983,6 +984,7 @@ body.post-type-sf_filter_group {
 		margin-top: 4px;
 		font-size: 14px;
 		font-weight: 700;
+		display: none;
 	}
 
 	&__list {
@@ -1014,7 +1016,6 @@ body.post-type-sf_filter_group {
 		}
 	}
 }
-
 
 /**
  * Settings panel
@@ -1104,4 +1105,210 @@ body.post-type-sf_filter_group {
 #sf-save-settings {
 	margin-top: 18px;
 	cursor: pointer;
+}
+
+/*
+ * Media queries
+ */
+
+@media screen and (max-width: 1400px) {
+	.sf-option {
+		> td {
+			width: 250px;
+		}
+	}
+}
+
+@media screen and (max-width: 1350px) {
+	.sf-new {
+		left: 160px;
+	}
+}
+
+@media screen and (max-width: 1200px) {
+	.sf-new {
+		&__list {
+			grid-template-columns: 1fr 1fr;
+		}
+		&__wrap {
+			margin: 20px 20px 0;
+		}
+	}
+
+	.sf-preview {
+		&__body > div {
+			max-width: 230px;
+			margin: 0 auto;
+		}
+	}
+
+	.sf-color {
+
+		&__row {
+			align-items: flex-start;
+			flex-direction: column;
+		}
+
+		&__preview {
+			padding-left: 0;
+			padding-bottom: 12px;
+			order: -1;
+		}
+
+		> div:not(:last-of-type) {
+			margin-bottom: 25px;
+		}
+	}
+}
+
+@media screen and (max-width: 960px) {
+	.sf-new {
+		left: 36px;
+	}
+}
+
+@media screen and (min-width: 850px) {
+	#sf-filter-place {
+		.postbox-header {
+			display: none;
+		}
+	}
+
+	#sf-filter-group-fields {
+		margin-top: -20px;
+	}
+
+	.sf-place {
+		&__heading {
+			display: block;
+		}
+	}
+}
+
+@media screen and (max-width: 780px) {
+	.sf-new {
+		left: 0;
+	}
+}
+
+@media screen and (max-width: 750px) {
+	.sf-option {
+		> td {
+			width: 220px;
+		}
+	}
+}
+
+@media screen and (max-width: 600px) {
+
+	.sf-new {
+		&__wrap {
+			padding: 32px 31px 32px;
+		}
+
+		&__list {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	.sf-row {
+		padding: 10px;
+		height: auto;
+		flex-wrap: wrap;
+
+		&__enabled {
+			padding-left: 10px;
+		}
+
+		&__actions {
+			flex: 0 0 100%;
+			margin: 15px -10px 0 -10px;
+			border-top: 1px solid #e5eaf0;
+			padding: 10px 10px 0 10px;
+		}
+
+		&__order {
+			flex: 0 0 30px;
+		}
+
+		&__label {
+			flex-grow: 1;
+		}
+	}
+
+	.sf-filters {
+		&__header {
+			li {
+				&:nth-of-type(1) {
+					padding-left: 23px;
+				}
+				&:nth-of-type(2) {
+					width: auto;
+					flex-grow: 1;
+				}
+				&:nth-of-type(3) {
+					width: 19%;
+				}
+			}
+		}
+	}
+
+	.sf-filters__header li:nth-of-type(1) {
+		padding-left: 0;
+		width: calc(14% + 10px);
+	}
+	.sf-filters__header li:nth-of-type(2) {
+		width: auto;
+		flex-grow: 1;
+	}
+	.sf-filters__header li:nth-of-type(3) {
+		width: 19%;
+	}
+
+	.sf-options {
+		display: block;
+
+		tbody {
+			display: block;
+		}
+
+		&__footer {
+			display: flex;
+			justify-content: flex-end;
+		}
+	}
+
+	.sf-option {
+		display: flex;
+		flex-direction: column;
+		border-bottom: 2px solid #E5EAF0;
+
+		> td {
+			width: 100%;
+			background: #FCFCFC !important;
+			border: none !important;
+		}
+		> td + td {
+			padding-top: 0;
+		}
+	}
+
+	.sf-color {
+		&__row {
+			flex-direction: row;
+		}
+		&__preview {
+			order: 1;
+			padding-left: 20px;
+		}
+	}
+}
+
+@media screen and (max-width: 450px) {
+	.sf-tabs {
+		&__link {
+			padding: 13px 14px 9px;
+			font-size: 14px;
+		}
+	}
 }

@@ -205,8 +205,8 @@ export default class AdminFilter {
 		const attributes = this.getInput( 'attributes' ).closest( '.sf-option' );
 		const categories = this.getInput( 'product_cat' ).closest( '.sf-option' );
 
-		attributes.style.display = selected === 'attributes' ? 'table-row' : 'none';
-		categories.style.display = selected === 'product_cat' ? 'table-row' : 'none';
+		attributes.style.display = selected === 'attributes' ? '' : 'none';
+		categories.style.display = selected === 'product_cat' ? '' : 'none';
 	}
 
 	/**
