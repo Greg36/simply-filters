@@ -4,6 +4,11 @@ namespace SimplyFilters\Admin;
 
 use SimplyFilters\Admin\Controls\Control;
 
+/**
+ * Settings used for individual filter, group and general settings
+ *
+ * @since 1.0.0
+ */
 class Settings {
 
 	/**
@@ -17,20 +22,14 @@ class Settings {
 	private $data;
 
 	/**
-	 * @var
+	 * @var int
 	 */
 	private $id;
 
-	/**
-	 * @param array $settings
-	 */
 	public function __construct( $id, $data ) {
 		$this->id   = $id;
 		$this->data = $data;
-
-		$this->types = \Hybrid\app( 'input_controls' );
 	}
-
 
 	/**
 	 * Return parsed data from all settings
@@ -38,7 +37,6 @@ class Settings {
 	 * @return array
 	 */
 	public function get_data() {
-
 		$data = [];
 		foreach ( $this->settings as $setting ) {
 			$value                   = isset( $this->data[ $setting['key'] ] ) ? $this->data[ $setting['key'] ] : false;
@@ -49,7 +47,7 @@ class Settings {
 	}
 
 	/**
-	 * Save control object
+	 * Add new setting
 	 *
 	 * @param string $key
 	 * @param string $type
@@ -69,10 +67,10 @@ class Settings {
 	}
 
 	/**
-	 * Instantiate new control object
+	 * Instantiate new control object base on given type
 	 *
-	 * @param $type
-	 * @param $data
+	 * @param string $type
+	 * @param array $data
 	 *
 	 * @return Control | false
 	 */
@@ -88,7 +86,7 @@ class Settings {
 	}
 
 	/**
-	 * Render each setting control
+	 * Render all settings form fields
 	 */
 	public function render() {
 
@@ -141,5 +139,4 @@ class Settings {
 			$key
 		);
 	}
-
 }

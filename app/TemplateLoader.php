@@ -3,23 +3,20 @@
 namespace SimplyFilters;
 
 /**
- * Takes care of rendering partials and passing
- * data to the view.
+ * Takes care of rendering partials and passing data to the view.
  *
- * @package    SimplyFilters
- * @subpackage SimplyFilters/Admin
- * @author     Grzegorz Niedzielski <admin@gregn.pl>
+ * @since   1.0.0
  */
 class TemplateLoader {
 
 	/**
-	 * Load provided template from admin views folder and pass through variables
+	 * Include provided template and pass through variables
 	 *
 	 * @param string $view_path
 	 * @param array $args
 	 */
 	public static function render( $view_path, $args = array(), $type = 'Admin' ) {
-		if ( substr( $view_path, -4 ) !== '.php' ) {
+		if ( substr( $view_path, - 4 ) !== '.php' ) {
 			$view_path = static::get_path( "app/{$type}/views/{$view_path}.php" );
 		}
 
@@ -44,6 +41,7 @@ class TemplateLoader {
 	public static function get( $view_path = '', $view_args = array() ) {
 		ob_start();
 		static::render( $view_path, $view_args );
+
 		return ob_get_clean();
 	}
 

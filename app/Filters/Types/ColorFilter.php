@@ -2,15 +2,17 @@
 
 namespace SimplyFilters\Filters\Types;
 
-use SimplyFilters\Admin\Controls\ColorControl;
 use SimplyFilters\TemplateLoader;
 
+/**
+ * Color filter
+ *
+ * @since 1.0.0
+ */
 class ColorFilter extends Filter {
 
 	/**
-	 * Array of supported settings
-	 *
-	 * @var array
+	 * @var array Array of supported settings
 	 */
 	protected $supports = [
 		'label',
@@ -38,11 +40,11 @@ class ColorFilter extends Filter {
 	}
 
 	/**
-	 * Load filter's settings
+	 * Initialize filter settings
 	 */
-	protected function load_settings() {
+	protected function init_settings() {
 
-		parent::load_settings();
+		parent::init_settings();
 
 		$this->settings->add( 'color', 'color', [
 			'name'        => __( 'Select color', $this->locale ),
@@ -57,13 +59,15 @@ class ColorFilter extends Filter {
 	public function render() {
 		$data = $this->get_render_data();
 
-		if( $data ) {
-            $data['options'] = $this->prepare_colors_data( $data['options'] );
+		if ( $data ) {
+			$data['options'] = $this->prepare_colors_data( $data['options'] );
 			TemplateLoader::render( 'types/color', $data, 'Filters' );
 		}
 	}
 
-
+	/**
+	 * Render filter preview for new filter screen
+	 */
 	protected function filter_preview() {
 		?>
         <div class="sf-checkbox sf-color-preview">
@@ -85,6 +89,13 @@ class ColorFilter extends Filter {
 		<?php
 	}
 
+	/**
+	 * Get hex color value and check luminance for each option
+	 *
+	 * @param array $options Filter options array
+	 *
+	 * @return array
+	 */
 	private function prepare_colors_data( $options ) {
 
 		if ( empty( $options ) ) {
@@ -110,7 +121,7 @@ class ColorFilter extends Filter {
 	/**
 	 * If color has insufficient luminance add class
 	 *
-	 * @param $hex
+	 * @param string $hex Color hex value
 	 *
 	 * @return string
 	 */

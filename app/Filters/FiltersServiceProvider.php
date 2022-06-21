@@ -7,16 +7,15 @@ use SimplyFilters\Filters\Types\ColorFilter;
 use function SimplyFilters\adjustBrightness;
 
 /**
- * The public-facing functionality of the plugin.
- *
- * @package    SimplyFilters
- * @subpackage SimplyFilters/Filters
- * @author     Grzegorz Niedzielski <admin@gregn.pl>
+ * The public-facing functionality of the plugin
  */
 class FiltersServiceProvider extends ServiceProvider {
 
 	use \SimplyFilters\Assets;
 
+	/**
+	 * Register filter list and strings to app container
+	 */
 	public function register() {
 
 		$this->app->instance( 'group_post_type', 'sf_filter_group' );
@@ -38,6 +37,9 @@ class FiltersServiceProvider extends ServiceProvider {
 		] );
 	}
 
+	/**
+	 * Hook all actions and filters
+	 */
 	public function boot() {
 
 		// Scripts and styles
@@ -65,9 +67,7 @@ class FiltersServiceProvider extends ServiceProvider {
 	}
 
 	/**
-	 * Register the stylesheets for the public-facing side of the site.
-	 *
-	 * @since    1.0.0
+	 * Register the stylesheets for the public-facing side of the site
 	 */
 	public function enqueue_styles() {
 		wp_enqueue_style( 'simply-filters_public', $this->getAssetPath( 'css/public.css' ), null, null, 'all' );
@@ -76,9 +76,7 @@ class FiltersServiceProvider extends ServiceProvider {
 	}
 
 	/**
-	 * Register the JavaScript for the public-facing side of the site.
-	 *
-	 * @since    1.0.0
+	 * Register the JavaScript for the public-facing side of the site
 	 */
 	public function enqueue_scripts() {
 		wp_enqueue_script( 'simply-filters_public', $this->getAssetPath( 'js/public.js' ), [ 'wp-i18n' ], null, true );
@@ -93,8 +91,6 @@ class FiltersServiceProvider extends ServiceProvider {
 
 	/**
 	 * Register the files to enqueue in footer page's content has been rendered
-	 *
-	 * @since    1.0.0
 	 */
 	public function late_enqueue_scripts() {
 
@@ -106,8 +102,6 @@ class FiltersServiceProvider extends ServiceProvider {
 
 	/**
 	 * Register custom post type for filter group
-	 *
-	 * @since 1.0.0
 	 */
 	public function register_group_post_type() {
 
@@ -142,8 +136,6 @@ class FiltersServiceProvider extends ServiceProvider {
 
 	/**
 	 * Register custom post type for single filter
-	 *
-	 * @since 1.0.0
 	 */
 	public function register_single_post_type() {
 
@@ -162,8 +154,6 @@ class FiltersServiceProvider extends ServiceProvider {
 
 	/**
 	 * Register widgets
-	 *
-	 * @return void
 	 */
 	public function register_widgets() {
 		register_widget( FilterWidget::class );
@@ -171,8 +161,6 @@ class FiltersServiceProvider extends ServiceProvider {
 
 	/**
 	 * Register blocks
-	 *
-	 * @return void
 	 */
 	public function register_blocks() {
 		FilterBlock::getInstance();
@@ -180,8 +168,6 @@ class FiltersServiceProvider extends ServiceProvider {
 
 	/**
 	 * Register shortcodes
-	 *
-	 * @return void
 	 */
 	public function register_shortcodes() {
 		add_shortcode( $this->app->get( 'shortcode_tag' ), function ( $atts ) {
@@ -189,6 +175,11 @@ class FiltersServiceProvider extends ServiceProvider {
 		} );
 	}
 
+	/**
+	 * Do the actual filtering of the product query
+	 *
+	 * @param \WP_Query $query Main WooCommerce product query reference
+	 */
 	public function filter_query( \WP_Query $query ) {
 
 		$filterer = new FilterQuery( $query );
@@ -198,9 +189,7 @@ class FiltersServiceProvider extends ServiceProvider {
 	}
 
 	/**
-	 * Render new filter settings field
-	 *
-	 * @since 1.0.0
+	 * AJAX render new filter admin settings field
 	 */
 	public function ajax_render_new_settings_field() {
 
@@ -241,9 +230,7 @@ class FiltersServiceProvider extends ServiceProvider {
 	}
 
 	/**
-	 * Render new color settings options
-	 *
-	 * @since 1.0.0
+	 * AJAX render new color settings options
 	 */
 	public function ajax_get_color_settings_options() {
 
@@ -276,6 +263,8 @@ class FiltersServiceProvider extends ServiceProvider {
 
 	/**
 	 * Get custom CSS selectors from general options
+	 *
+	 * @return array|false
 	 */
 	private function get_custom_selectors() {
 		$options = get_option( 'sf-settings' );

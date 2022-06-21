@@ -1,10 +1,14 @@
 <?php
 /**
+ * Rating filter
+ *
  * @var $id int
  * @var $key string
  * @var $values array
  * @var $locale string
  * @var $count array
+ *
+ * @since 1.0.0
  */
 ?>
 <div class="sf-rating">

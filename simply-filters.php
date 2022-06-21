@@ -5,12 +5,11 @@
  *
  * @link              https://gregn.pl
  * @since             1.0.0
- * @package           SimplyFilters
  *
  * @wordpress-plugin
  * Plugin Name:       Simply Filters for WooCommerce
- * Plugin URI:        https://gregn.pl/simply-woocommerce-filters
- * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
+ * Plugin URI:        https://gregn.pl/simply-filters
+ * Description:       Simply add product's price, category and attribute filters to WooCommerce.
  * Version:           1.0.0
  * Author:            Grzegorz Niedzielski
  * Author URI:        https://gregn.pl
@@ -38,9 +37,9 @@ if ( file_exists( SF_PATH . 'vendor/autoload.php' ) ) {
 }
 
 /*
- * Autoload any functions files
+ * Autoload functions files
  */
-array_map( function( $file ) {
+array_map( function ( $file ) {
 	require_once( SF_PATH . "app/{$file}.php" );
 }, [
 	'functions-template',
@@ -54,16 +53,9 @@ array_map( function( $file ) {
 function activate_SimplyFilters() {
 	\SimplyFilters\Activator::activate();
 }
+
 register_activation_hook( __FILE__, 'activate_SimplyFilters' );
 
-
-/**
- * Run during plugin uninstallation
- */
-function uninstall_SimplyFilters() {
-	\SimplyFilters\Uninstaller::uninstall();
-}
-register_uninstall_hook( __FILE__, 'uninstall_SimplyFilters' );
 
 /**
  * Begin execution of the plugin.

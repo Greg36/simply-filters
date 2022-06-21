@@ -2,12 +2,20 @@
 
 namespace SimplyFilters\Admin\Controls;
 
+/**
+ * Select setting's control
+ *
+ * @since   1.0.0
+ */
 class SelectControl extends Control {
 
 	public function __construct( $params ) {
 		parent::__construct( $params );
 	}
 
+	/**
+	 * Render HTMl inputs for all options
+	 */
 	protected function render_setting_field() {
 
 		printf( '<select id="%s" name="%s">',

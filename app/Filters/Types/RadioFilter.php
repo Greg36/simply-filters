@@ -4,12 +4,15 @@ namespace SimplyFilters\Filters\Types;
 
 use SimplyFilters\TemplateLoader;
 
+/**
+ * Radio filter
+ *
+ * @since 1.0.0
+ */
 class RadioFilter extends Filter {
 
 	/**
-	 * Array of supported settings
-	 *
-	 * @var array
+	 * @var array Array of supported settings
 	 */
 	protected $supports = [
 		'label',
@@ -23,7 +26,7 @@ class RadioFilter extends Filter {
 	public function __construct() {
 		$this->type        = 'Radio';
 		$this->name        = __( 'Radio', $this->locale );
-		$this->description = __( 'Select onyly one option', $this->locale );
+		$this->description = __( 'Select only one option', $this->locale );
 	}
 
 	/**
@@ -32,9 +35,9 @@ class RadioFilter extends Filter {
 	public function render() {
 		$data = $this->get_render_data();
 
-		if( $data ) {
+		if ( $data ) {
 
-            // Add all items option
+			// Add all items option
 			array_unshift( $data['options'], [
 				'slug' => 'no-filter',
 				'name' => $this->get_data( 'all_option' )
@@ -44,6 +47,9 @@ class RadioFilter extends Filter {
 		}
 	}
 
+	/**
+	 * Render filter preview for new filter screen
+	 */
 	protected function filter_preview() {
 		?>
         <div class="sf-checkbox sf-radio">

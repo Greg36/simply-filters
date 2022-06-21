@@ -1,6 +1,10 @@
 <?php
 /**
+ * Info metabox about filter setup
+ *
  * @var $locale string
+ *
+ * @since 1.0.0
  */
 ?>
 
@@ -11,41 +15,41 @@
     <ul class="sf-place__list">
 
         <!-- Blocks -->
-	    <?php if( current_theme_supports( 'wp-block-styles' ) ){ ?>
+		<?php if ( current_theme_supports( 'wp-block-styles' ) ) { ?>
             <li>
                 <h4><?php _e( 'Block', $locale ); ?></h4>
                 <p>
-				    <?php
-				    $shopID = get_option( 'woocommerce_shop_page_id' );
-				    printf( 'Add new <strong>SF Filter Group</strong> block to the WooCommerce <a href="%s" target="_blank">shop page</a>.',
-					    admin_url( "post.php?post={$shopID}&action=edit" )
-				    );
-				    ?>
+					<?php
+					$shopID = get_option( 'woocommerce_shop_page_id' );
+					printf( 'Add new <strong>SF Filter Group</strong> block to the WooCommerce <a href="%s" target="_blank">shop page</a>.',
+						admin_url( "post.php?post={$shopID}&action=edit" )
+					);
+					?>
                 </p>
             </li>
-	    <?php } ?>
+		<?php } ?>
 
         <!-- Widgets -->
-        <?php if( current_theme_supports( 'widgets' ) ) { ?>
+		<?php if ( current_theme_supports( 'widgets' ) ) { ?>
             <li>
                 <h4><?php _e( 'Widget', $locale ); ?></h4>
                 <p>
-                    <?php printf( __( 'Add new <strong>SF Filter Group</strong> widget to shop sidebar in <a href="%s" target="_blank">widgets panel</a>.' ),
-		                admin_url( 'widgets.php' )
-                    ); ?>
+					<?php printf( __( 'Add new <strong>SF Filter Group</strong> widget to shop sidebar in <a href="%s" target="_blank">widgets panel</a>.' ),
+						admin_url( 'widgets.php' )
+					); ?>
                 </p>
             </li>
-        <?php } ?>
+		<?php } ?>
 
         <!-- Shortcode -->
         <li>
             <h4><?php _e( 'Shortcode', $locale ); ?></h4>
             <p><?php _e( 'Place this shortcode where you need filters to appear:', $locale ) ?></p>
-            <?php
-            printf( '<input type="text" readonly="readonly" onclick="this.select();" value="%s"/>',
-                esc_attr( '[' . \Hybrid\app( 'shortcode_tag' ) . ' group_id="' . get_the_ID() . '"]' )
-            )
-            ?>
+			<?php
+			printf( '<input type="text" readonly="readonly" onclick="this.select();" value="%s"/>',
+				esc_attr( '[' . \Hybrid\app( 'shortcode_tag' ) . ' group_id="' . get_the_ID() . '"]' )
+			)
+			?>
         </li>
 
     </ul>

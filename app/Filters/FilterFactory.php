@@ -2,10 +2,15 @@
 
 namespace SimplyFilters\Filters;
 
+/**
+ * Factory for filter objects instantiation
+ *
+ * @since 1.0.0
+ */
 class FilterFactory {
 
 	/**
-	 *  Instantiate new filter based on its type
+	 * Instantiate new filter based on given type
 	 *
 	 * @param \WP_Post $filter
 	 */

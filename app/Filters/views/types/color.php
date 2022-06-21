@@ -1,10 +1,14 @@
 <?php
 /**
+ * Color filter
+ *
  * @var $id int
  * @var $key string
  * @var $options array
  * @var $values array
  * @var $settings array
+ *
+ * @since 1.0.0
  */
 
 use function SimplyFilters\load_inline_svg;
@@ -36,13 +40,13 @@ use function SimplyFilters\load_inline_svg;
 				load_inline_svg( 'check.svg' )
 			);
 
-            // Label
+			// Label
 			$label = esc_html( $color['label'] );
 			$label .= \SimplyFilters\get_product_count( $settings['count'], $color );
-            printf( '<label class="sf-color__label" for="%s">%s</label>',
-	            esc_attr( $id . '_' . $color['slug'] ),
-	            $swatch . $label
-            );
+			printf( '<label class="sf-color__label" for="%s">%s</label>',
+				esc_attr( $id . '_' . $color['slug'] ),
+				$swatch . $label
+			);
 
 			echo '</li>';
 		}

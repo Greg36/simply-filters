@@ -2,11 +2,14 @@
 
 namespace SimplyFilters\Filters;
 
+/**
+ * Widget to render filter group
+ *
+ * @since 1.0.0
+ */
 class FilterWidget extends \WC_Widget {
 
-
 	public function __construct() {
-
 		$this->widget_id          = 'sf-filter-widget';
 		$this->widget_cssclass    = 'sf-filter-widget';
 		$this->widget_name        = __( 'SF Filter Group', \Hybrid\app( 'locale' ) );
@@ -15,6 +18,12 @@ class FilterWidget extends \WC_Widget {
 		parent::__construct();
 	}
 
+	/**
+	 * Render the widget
+	 *
+	 * @param array $args Display arguments
+	 * @param array $instance Settings for the particular instance of the widget
+	 */
 	public function widget( $args, $instance ) {
 
 		$title = apply_filters( 'widget_title', isset( $instance['title'] ) ? $instance['title'] : '', $instance, $this->id_base );
@@ -36,9 +45,11 @@ class FilterWidget extends \WC_Widget {
 
 			echo $attributes['after_html'];
 		}
-
 	}
 
+	/**
+	 * Load widget admin settings
+	 */
 	public function load_settings() {
 
 		$locale  = \Hybrid\app( 'locale' );
@@ -63,6 +74,11 @@ class FilterWidget extends \WC_Widget {
 		);
 	}
 
+	/**
+	 * Outputs the settings update form
+	 *
+	 * @param array $instance
+	 */
 	public function form( $instance ) {
 
 		$this->load_settings();
@@ -70,6 +86,14 @@ class FilterWidget extends \WC_Widget {
 		parent::form( $instance );
 	}
 
+	/**
+	 * Update instance of widget
+	 *
+	 * @param array $new_instance
+	 * @param array $old_instance
+	 *
+	 * @return array
+	 */
 	public function update( $new_instance, $old_instance ) {
 
 		$this->load_settings();

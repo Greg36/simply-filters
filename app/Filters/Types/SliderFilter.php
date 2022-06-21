@@ -2,15 +2,17 @@
 
 namespace SimplyFilters\Filters\Types;
 
-
 use SimplyFilters\TemplateLoader;
 
+/**
+ * Slider filter
+ *
+ * @since 1.0.0
+ */
 class SliderFilter extends Filter {
 
 	/**
-	 * Array of supported settings
-	 *
-	 * @var array
+	 * @var array Array of supported settings
 	 */
 	protected $supports = [
 		'label'
@@ -25,6 +27,9 @@ class SliderFilter extends Filter {
 		\Hybrid\app()->instance( 'enqueue-slider', true );
 	}
 
+	/**
+	 * Render the filter
+	 */
 	public function render() {
 		TemplateLoader::render( 'types/slider', [
 			'id'     => $this->get_id(),
@@ -69,10 +74,10 @@ class SliderFilter extends Filter {
         ";
 
 		$price = $wpdb->get_row( $sql, ARRAY_A );
-        $min = $price['min'];
-        $max = $price['max'];
+		$min   = $price['min'];
+		$max   = $price['max'];
 
-        // Adjust price range if taxes are enabled, price includes tax on front-end and product prices are entered without tax
+		// Adjust price range if taxes are enabled, price includes tax on front-end and product prices are entered without tax
 		if ( wc_tax_enabled() && 'incl' === get_option( 'woocommerce_tax_display_shop' ) && ! wc_prices_include_tax() ) {
 			$tax_class = apply_filters( 'woocommerce_price_filter_widget_tax_class', '' );
 			$tax_rates = \WC_Tax::get_rates( $tax_class );
@@ -89,10 +94,18 @@ class SliderFilter extends Filter {
 		];
 	}
 
+	/**
+	 * Override source taxonomy
+	 *
+	 * @return string
+	 */
 	protected function get_current_source_taxonomy() {
 		return '_price';
 	}
 
+	/**
+	 * Render filter preview for new filter screen
+	 */
 	protected function filter_preview() {
 		?>
         <div class="sf-slider">

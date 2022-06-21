@@ -2,14 +2,28 @@
 
 namespace SimplyFilters\Filters;
 
+/**
+ * Parse POST content to save filter data
+ *
+ * @since 1.0.0
+ */
 class DataParser {
 
+	/**
+	 * @var int Filter group post ID
+	 */
 	private $group_id;
 
 	public function __construct( $group_id ) {
 		$this->group_id = (int) $group_id;
 	}
 
+	/**
+	 * Clean and save filter data as post content
+	 *
+	 * @param int $id Filter post ID
+	 * @param array $data Unescaped filter data from POST request
+	 */
 	public function save_filter( $id, $data ) {
 
 		// Remove slashes
@@ -51,6 +65,11 @@ class DataParser {
 		}
 	}
 
+	/**
+	 * Save color values directly to term meta
+	 *
+	 * @param array $data Filter POST data
+	 */
 	private function save_color( $data ) {
 		$taxonomy = $data[ $data['sources'] ];
 		if ( taxonomy_exists( $taxonomy ) ) {
@@ -60,6 +79,11 @@ class DataParser {
 		}
 	}
 
+	/**
+	 * Remove filter post by ID
+	 *
+	 * @param int $id Filter post ID
+	 */
 	public function remove_filter( $id ) {
 
 		// Check if post is still available
@@ -68,6 +92,14 @@ class DataParser {
 		}
 	}
 
+	/**
+	 * Get value from post data by key
+	 *
+	 * @param array $arr Post data
+	 * @param string $key Key value
+	 *
+	 * @return mixed|null
+	 */
 	private function extract_key( array &$arr, $key ) {
 		if ( array_key_exists( $key, $arr ) ) {
 			$val = $arr[ $key ];

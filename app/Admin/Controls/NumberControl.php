@@ -2,6 +2,11 @@
 
 namespace SimplyFilters\Admin\Controls;
 
+/**
+ * Number setting's control
+ *
+ * @since   1.0.0
+ */
 class NumberControl extends Control {
 
 	/**
@@ -17,10 +22,13 @@ class NumberControl extends Control {
 	public function __construct( $params ) {
 		parent::__construct( $params );
 
-		$this->unique = isset( $params['unique'] ) ? (bool) $params['unique'] : false;
+		$this->unique   = isset( $params['unique'] ) ? (bool) $params['unique'] : false;
 		$this->required = isset( $params['required'] ) ? (bool) $params['required'] : false;
 	}
 
+	/**
+	 * Render HTMl input
+	 */
 	protected function render_setting_field() {
 		printf( '<input type="number" name="%s" id="%s" value="%s" %s %s>',
 			esc_attr( $this->key ),

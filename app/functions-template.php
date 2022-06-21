@@ -5,7 +5,7 @@ namespace SimplyFilters;
 /**
  * Load SVG file directly into the markup from theme's files
  *
- * @param $filename string Name of SVG file with .svg extension
+ * @param string $filename Name of SVG file with .svg extension
  *
  * @return string SVG file contents
  */
@@ -13,7 +13,9 @@ function load_inline_svg( $filename ) {
 
 	$svg_path = SF_PATH . 'assets/svg/';
 
-	if( substr( $filename, -4 ) !== '.svg' ) $filename .= '.svg';
+	if ( substr( $filename, - 4 ) !== '.svg' ) {
+		$filename .= '.svg';
+	}
 
 	if ( file_exists( $svg_path . $filename ) ) {
 
@@ -26,7 +28,7 @@ function load_inline_svg( $filename ) {
 /**
  * Returns SVG file from theme's directory
  *
- * @param $file string SVG filename
+ * @param string $file SVG filename
  *
  * @return string URL to theme's SVG file
  */
@@ -37,7 +39,7 @@ function get_svg( $file ) {
 /**
  * Returns URL to image file from theme's directory
  *
- * @param $file string filename
+ * @param string $file Filename
  *
  * @return string URL to theme's image file
  */
@@ -48,18 +50,19 @@ function get_image( $file ) {
 /**
  * Get stars rating with given highlighted stars
  *
- * @param $count
+ * @param int $count Start of count
+ * @param int $max End of count
  *
  * @return string
  */
 function get_stars( $count = 1, $max = 5 ) {
 	$stars = '';
 
-	for ( $i = 1; $i <= $count; $i++ ) {
+	for ( $i = 1; $i <= $count; $i ++ ) {
 		$stars .= '<span class="sf-star sf-star--full"></span>';
 	}
 
-	for ( $i = $count + 1; $i <= $max; $i++ ) {
+	for ( $i = $count + 1; $i <= $max; $i ++ ) {
 		$stars .= '<span class="sf-star"></span>';
 	}
 
@@ -67,18 +70,18 @@ function get_stars( $count = 1, $max = 5 ) {
 }
 
 /**
- * Return product count label
+ * Return product HTML count label
  *
- * @param $count
- * @param $id
+ * @param array $value
+ * @param array $option
  *
  * @return string
  */
-function get_product_count( $count, $option ) {
+function get_product_count( $value, $option ) {
 	$label = '';
-	if ( $count !== false && isset( $option['id'] ) ) {
+	if ( $value !== false && isset( $option['id'] ) ) {
 		$label .= '<span class="sf-label-count">';
-		$label .= isset( $count[ $option['id'] ] ) ? '&nbsp;(' . intval( $count[ $option['id'] ] ) . ')' : ' (0)';
+		$label .= isset( $value[ $option['id'] ] ) ? '&nbsp;(' . intval( $value[ $option['id'] ] ) . ')' : ' (0)';
 		$label .= '</span>';
 	}
 
@@ -86,10 +89,10 @@ function get_product_count( $count, $option ) {
 }
 
 /**
- * Return show more options button
+ * Return show more options HTML button
  *
- * @param $group_settings
- * @param $options_count
+ * @param array $group_settings
+ * @param int $options_count
  *
  * @return string
  */

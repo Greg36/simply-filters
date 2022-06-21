@@ -2,16 +2,20 @@
 
 namespace SimplyFilters;
 
+/**
+ * Collection of assets handling methods
+ *
+ * @since   1.0.0
+ */
 trait Assets {
 
 	/**
 	 * Helper function for outputting an asset URL in the plugin. This integrates
 	 * with Laravel Mix for handling cache busting.
 	 *
-	 * @since  1.0.0
-	 * @access private
-	 * @param  string  $path  A relative path/file to append to the `dist` folder.
-	 * @return string
+	 * @param string $path A relative path/file to append to the `dist` folder.
+	 *
+	 * @return  string
 	 */
 	public function getAssetPath( $path ) {
 		// Get the Laravel Mix manifest.
@@ -31,6 +35,8 @@ trait Assets {
 
 	/**
 	 * Include dynamic style variables
+	 *
+	 * @param string $handle Enqueued stylesheet handle
 	 */
 	public function enqueue_dynamic_styles( $handle ) {
 		$options = get_option( 'sf-settings' );
@@ -41,7 +47,7 @@ trait Assets {
 			return sanitize_hex_color( $option );
 		} );
 
-		$defaults              = [
+		$defaults = [
 			'accent'       => '#4F76A3',
 			'accent-dark'  => '',
 			'highlight'    => '#3987e1',
@@ -49,9 +55,12 @@ trait Assets {
 			'font_titles'  => '#404040',
 			'font_options' => '#445C78'
 		];
+
 		$colors                = wp_parse_args( $colors, $defaults );
 		$colors['accent-dark'] = adjustBrightness( $colors['accent'], - 20 );
-		$styles                = '';
+
+		// Create styles string
+		$styles = '';
 		foreach ( $colors as $key => $option ) {
 			if ( ! array_key_exists( $key, $defaults ) ) {
 				continue;

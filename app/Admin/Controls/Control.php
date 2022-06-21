@@ -2,35 +2,40 @@
 
 namespace SimplyFilters\Admin\Controls;
 
+/**
+ * Control used to display front-end form for admin settings
+ *
+ * @since   1.0.0
+ */
 abstract class Control {
 
 	/**
-	 * @var string Setting's unique key.
+	 * @var string Unique key
 	 */
 	protected $key;
 
 	/**
-	 * @var string Setting's label.
+	 * @var string
 	 */
 	protected $label;
 
 	/**
-	 * @var Setting's value.
+	 * @var mixed
 	 */
 	protected $value;
 
 	/**
-	 * @var string Setting's name.
+	 * @var string
 	 */
 	protected $name;
 
 	/**
-	 * @var string Setting's description.
+	 * @var string
 	 */
 	protected $description;
 
 	/**
-	 * @var array Setting's array options.
+	 * @var array
 	 */
 	protected $options = [];
 
@@ -44,9 +49,9 @@ abstract class Control {
 	}
 
 	/**
-	 * Render settings field
+	 * Render setting's field
 	 *
-	 * @param $key
+	 * @param array $data
 	 */
 	public function render( $data ) {
 		$this->key   = $data['key'];
@@ -60,8 +65,8 @@ abstract class Control {
 	}
 
 	/**
-     * Parse saved settings data
-     *
+	 * Parse saved setting's data
+	 *
 	 * @param $data
 	 */
 	public function parse_data( $data ) {
@@ -69,7 +74,7 @@ abstract class Control {
 	}
 
 	/**
-	 * Output admin setting's table row for the filter
+	 * Output admin setting's table row
 	 */
 	protected function render_settings_row() {
 		?>

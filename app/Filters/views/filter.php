@@ -1,8 +1,12 @@
 <?php
 /**
+ * Filter base
+ *
  * @var $filter \SimplyFilters\Filters\Types\Filter
  * @var $settings array
  * @var $locale string
+ *
+ * @since 1.0.0
  */
 ?>
 
@@ -12,19 +16,19 @@
 
         <span class="sf-filter__label"><?php esc_html_e( $filter->get_label() ); ?></span>
 
-        <?php if( $settings['collapse'] ) {
-            $collapsed = $filter->is_filter_collapsed();
-            printf( '<button class="sf-filter__collapse %s" aria-expanded="%s">%s<span class="screen-reader-text">%s</span></button>',
-	            $collapsed ? 'collapsed' : '',
-	            $collapsed ? 'true' : 'false',
-                \SimplyFilters\load_inline_svg( 'collapse' ),
-                __( 'Toggle filter visibility', $locale )
-            );
-        } ?>
+		<?php if ( $settings['collapse'] ) {
+			$collapsed = $filter->is_filter_collapsed();
+			printf( '<button class="sf-filter__collapse %s" aria-expanded="%s">%s<span class="screen-reader-text">%s</span></button>',
+				$collapsed ? 'collapsed' : '',
+				$collapsed ? 'true' : 'false',
+				\SimplyFilters\load_inline_svg( 'collapse' ),
+				__( 'Toggle filter visibility', $locale )
+			);
+		} ?>
 
     </div>
 
-	<div class="sf-filter__filter <?php echo $settings['collapse'] && $filter->is_filter_collapsed() ? 'sf-filter--collapsed' : ''; ?>">
+    <div class="sf-filter__filter <?php echo $settings['collapse'] && $filter->is_filter_collapsed() ? 'sf-filter--collapsed' : ''; ?>">
 
 		<?php $filter->render(); ?>
 

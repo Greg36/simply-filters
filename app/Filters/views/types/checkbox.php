@@ -1,12 +1,17 @@
 <?php
 /**
+ * Checkbox filter
+ *
  * @var $id int
  * @var $key string
  * @var $options array
  * @var $values array
  * @var $settings array
+ *
+ * @since 1.0.0
  */
 ?>
+
 <div class="sf-checkbox">
     <ul class="sf-checkbox__list sf-option-list">
 		<?php
@@ -40,6 +45,6 @@
 
 	<?php
 	// Button to show more options
-    echo \SimplyFilters\get_more_options_button( $settings['group'], count( $options ) );
+	echo \SimplyFilters\get_more_options_button( $settings['group'], count( $options ) );
 	?>
 </div>

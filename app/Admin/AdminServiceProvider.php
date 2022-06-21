@@ -8,33 +8,40 @@ use SimplyFilters\Filters\Types\Filter;
 use SimplyFilters\TemplateLoader;
 
 /**
- * The admin-specific functionality of the plugin.
+ * The admin-specific functionality of the plugin
  *
- * @package    SimplyFilters
- * @subpackage SimplyFilters/Admin
- * @author     Grzegorz Niedzielski <admin@gregn.pl>
+ * @since 1.0.0
  */
 class AdminServiceProvider extends ServiceProvider {
 
 	use \SimplyFilters\Assets;
 
+	/**
+	 * Hook all admin specific actions and filters
+	 */
 	public function boot() {
 
+		// Load content
 		add_action( 'current_screen', [ $this, 'current_screen' ] );
 
+		// Style and script enqueue
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_styles' ] );
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
 
+		// Filter group screen management
 		add_filter( "manage_{$this->app->get( 'group_post_type' )}_posts_columns", [ $this, 'group_table_columns' ] );
 		add_filter( "manage_{$this->app->get( 'group_post_type' )}_posts_custom_column", [ $this, 'group_table_column_shortcode' ], 10, 2 );
 		add_filter( 'post_updated_messages', [ $this, 'post_updated_message' ] );
-		add_filter( 'post_row_actions', [ $this, 'post_row_actions' ], 10, 2 );
+		add_filter( 'post_row_actions', [ $this, 'post_row_actions' ], 10, 1 );
 
+		// Init metaboxes and settings
 		add_action( 'admin_head', [ $this, 'init_metaboxes' ] );
 		add_action( 'admin_menu', [ $this, 'init_settings' ] );
 
+		// Custom filter notices
 		add_action( 'sf_admin_before_filter_options', [ $this, 'display_rating_disabled_notice' ] );
 
+		// Save data
 		add_action( 'save_post', [ $this, 'save_filters' ], 10, 2 );
 		add_filter( 'wp_insert_post_data', [ $this, 'save_group_settings' ], 90, 2 );
 		add_action( 'delete_post', [ $this, 'remove_group' ], 90, 2 );
@@ -44,7 +51,7 @@ class AdminServiceProvider extends ServiceProvider {
 	/**
 	 * Load content for the current screen
 	 *
-	 * @since   1.0.0
+	 * @param \WP_Screen $screen Current WP_Screen object
 	 */
 	public function current_screen( $screen ) {
 
@@ -60,7 +67,7 @@ class AdminServiceProvider extends ServiceProvider {
 	/**
 	 * Detect attributes of a current admin page
 	 *
-	 * @param $screen \WP_Screen Admin screen API instance
+	 * @param \WP_Screen $screen Admin screen API instance
 	 */
 	private function get_current_page( $screen ) {
 
@@ -116,9 +123,7 @@ class AdminServiceProvider extends ServiceProvider {
 	}
 
 	/**
-	 * Register the stylesheets for the admin area.
-	 *
-	 * @since    1.0.0
+	 * Register stylesheets for the admin area
 	 */
 	public function enqueue_styles() {
 		wp_enqueue_style( 'simply-filters_admin', $this->getAssetPath( 'css/admin.css' ), null, null, 'all' );
@@ -128,9 +133,7 @@ class AdminServiceProvider extends ServiceProvider {
 	}
 
 	/**
-	 * Register the JavaScript for the admin area.
-	 *
-	 * @since    1.0.0
+	 * Register the JavaScript for the admin area
 	 */
 	public function enqueue_scripts() {
 		wp_enqueue_script( 'simply-filters_admin', $this->getAssetPath( 'js/admin.js' ), [ 'wp-color-picker', 'wp-i18n' ], null, false );
@@ -148,12 +151,10 @@ class AdminServiceProvider extends ServiceProvider {
 
 
 	/**
-	 * Print admin header section
-	 *
-	 * @since   1.0.0
+	 * Render admin header section
 	 */
 	public function admin_header_section() {
-		require_once __DIR__ . '/views/admin-toolbar.php';
+		TemplateLoader::render( 'admin-toolbar' );
 	}
 
 	/**
@@ -161,6 +162,7 @@ class AdminServiceProvider extends ServiceProvider {
 	 */
 	public function init_metaboxes() {
 
+		// Init only for filter group page
 		if ( ! $this->app->get( 'is-page-post' ) ) {
 			return;
 		}
@@ -170,11 +172,11 @@ class AdminServiceProvider extends ServiceProvider {
 	}
 
 	/**
-	 * Add settings page to WooCommerce menu
-	 *
-	 * @since   1.0.0
+	 * Initialize general settings page
 	 */
 	public function init_settings() {
+
+		$settings = $this->setup_general_settings();
 
 		add_submenu_page(
 			'options-general.php',
@@ -182,121 +184,120 @@ class AdminServiceProvider extends ServiceProvider {
 			esc_html__( 'Simply Filters', $this->app->get( 'locale' ) ),
 			'manage_options',
 			$this->app->get( 'plugin_name' ),
-			[ $this, 'settings_screen' ]
+			function () use ( $settings ) {
+				TemplateLoader::render( 'settings-page', [
+					'settings' => $settings,
+				] );
+			}
 		);
 	}
 
 	/**
-	 * Callback to render content of settings page
+	 * Setup plugin's general settings
 	 *
-	 * @since   1.0.0
+	 * @return Settings
 	 */
-	public function settings_screen() {
-
-		$locale = \Hybrid\app( 'locale' );
+	private function setup_general_settings() {
+		$locale   = \Hybrid\app( 'locale' );
 		$settings = new Settings( 'options', get_option( 'sf-settings' ) );
 
 		$settings->add( 'colors', 'color', [
-			'name' => __( 'Filter colors', $locale ),
+			'name'        => __( 'Filter colors', $locale ),
 			'description' => __( 'Customize how filters look on the site. Changing colors here will affect all filters.', $locale ),
-			'options' => [
+			'options'     => [
 				[
-					'id' => 'accent',
-					'slug' => 'accent',
-					'name' => __( 'Accent', $locale ),
+					'id'      => 'accent',
+					'slug'    => 'accent',
+					'name'    => __( 'Accent', $locale ),
 					'default' => '#4F76A3'
 				],
 				[
-					'id' => 'highlight',
-					'slug' => 'highlight',
-					'name' => __( 'Highlight', $locale ),
+					'id'      => 'highlight',
+					'slug'    => 'highlight',
+					'name'    => __( 'Highlight', $locale ),
 					'default' => '#3987e1'
 				],
 				[
-					'id' => 'background',
-					'slug' => 'background',
-					'name' => __( 'Background', $locale ),
+					'id'      => 'background',
+					'slug'    => 'background',
+					'name'    => __( 'Background', $locale ),
 					'default' => '#ffffff'
 				],
 				[
-					'id' => 'font_options',
-					'slug' => 'font_options',
-					'name' => __( 'Option text', $locale ),
+					'id'      => 'font_options',
+					'slug'    => 'font_options',
+					'name'    => __( 'Option text', $locale ),
 					'default' => '#445C78'
 				],
 				[
-					'id' => 'font_titles',
-					'slug' => 'font_titles',
-					'name' => __( 'Title text', $locale ),
+					'id'      => 'font_titles',
+					'slug'    => 'font_titles',
+					'name'    => __( 'Title text', $locale ),
 					'default' => '#404040'
 				]
 			]
 		] );
 
 		$settings->add( 'style', 'select', [
-			'name' => __( 'Elements style', $locale ),
+			'name'        => __( 'Elements style', $locale ),
 			'description' => __( 'Overall style of filter elements', $locale ),
-			'options' => [
+			'options'     => [
 				'rounded' => __( 'Rounded', $locale ),
 				'squared' => __( 'Squared', $locale )
 			]
 		] );
 
 		$settings->add( 'change_selectors', 'toggle', [
-			'name' => __( 'Enable custom selectors', $locale ),
+			'name'        => __( 'Enable custom selectors', $locale ),
 			'description' => __( 'If your theme does not refresh products after filtering it might be due to non-standard CSS selectors. Enable this option to enter custom selector values.', $locale )
 		] );
 
 		$settings->add( 'selectors', 'text', [
-			'name' => __( 'Selectors', $locale ),
+			'name'        => __( 'Selectors', $locale ),
 			'description' => __( 'Enter CSS selector for each part of the page - it will be replaced with new content on page reload.<br><br>If you don\'t know what values to enter contact your theme\'s support.', $locale ),
-			'options' => [
+			'options'     => [
 				[
-					'key' => 'product',
-					'label' => __( 'Products selector', $locale ),
+					'key'     => 'product',
+					'label'   => __( 'Products selector', $locale ),
 					'default' => '.products'
 				],
 				[
-					'key' => 'pagination',
-					'label' => __( 'Pagination selector', $locale ),
+					'key'     => 'pagination',
+					'label'   => __( 'Pagination selector', $locale ),
 					'default' => '.woocommerce-pagination'
 				],
 				[
-					'key' => 'breadcrumbs',
-					'label' => __( 'Breadcrumbs selector', $locale ),
+					'key'     => 'breadcrumbs',
+					'label'   => __( 'Breadcrumbs selector', $locale ),
 					'default' => '.woocommerce-breadcrumb'
 				],
 				[
-					'key' => 'count',
-					'label' => __( 'Result count selector', $locale ),
+					'key'     => 'count',
+					'label'   => __( 'Result count selector', $locale ),
 					'default' => '.woocommerce-result-count'
 				],
 				[
-					'key' => 'sorting',
-					'label' => __( 'Sorting selector', $locale ),
+					'key'     => 'sorting',
+					'label'   => __( 'Sorting selector', $locale ),
 					'default' => '.woocommerce-ordering'
 				],
 				[
-					'key' => 'title',
-					'label' => __( 'Page title selector', $locale ),
+					'key'     => 'title',
+					'label'   => __( 'Page title selector', $locale ),
 					'default' => '.woocommerce-products-header__title'
 				],
 			]
-		]);
-
-		TemplateLoader::render( 'settings-page', [
-			'settings' => $settings,
 		] );
+
+		return $settings;
 	}
 
 	/**
 	 * Add shortcode column to filter group post type table
 	 *
-	 * @param $columns
-	 *
 	 * @return array
 	 */
-	public function group_table_columns( $columns ) {
+	public function group_table_columns() {
 		return array(
 			'cb'           => '<input type="checkbox" />',
 			'title'        => __( 'Title' ),
@@ -308,10 +309,8 @@ class AdminServiceProvider extends ServiceProvider {
 	/**
 	 * Fill shortcode column with read-only input filed to copy shortcode easily
 	 *
-	 * @param $column
-	 * @param $post_id
-	 *
-	 * @return void
+	 * @param string $column The name of the column to display.
+	 * @param int $post_id The post ID
 	 */
 	public function group_table_column_shortcode( $column, $post_id ) {
 		if ( 'sf_shortcode' === $column ) {
@@ -324,7 +323,7 @@ class AdminServiceProvider extends ServiceProvider {
 	/**
 	 * Change the post updated messages for filter group post type
 	 *
-	 * @param $messages
+	 * @param array $messages Post updated messages
 	 *
 	 * @return array
 	 */
@@ -351,23 +350,24 @@ class AdminServiceProvider extends ServiceProvider {
 	/**
 	 * Remove quick edit option from filter group row actions
 	 *
-	 * @param $actions
-	 * @param $post
+	 * @param array $actions An array of row action links
 	 *
 	 * @return mixed
 	 */
-	public function post_row_actions( $actions, $post ) {
-		if( ! $this->app->get( 'is-page-list' ) ) return $actions;
-
+	public function post_row_actions( $actions ) {
+		if ( ! $this->app->get( 'is-page-list' ) ) {
+			return $actions;
+		}
 		unset( $actions['inline hide-if-no-js'] );
+
 		return $actions;
 	}
 
 	/**
-	 * Save filters settings when saving the group
+	 * Save filter's settings when saving the group
 	 *
-	 * @param $post_id
-	 * @param $post
+	 * @param int $post_id Post ID
+	 * @param \WP_Post $post The post object
 	 *
 	 * @return mixed
 	 */
@@ -423,7 +423,8 @@ class AdminServiceProvider extends ServiceProvider {
 	/**
 	 * When deleting filter group, remove all filters from database
 	 *
-	 * @param $group_id
+	 * @param int $group_id Group post ID
+	 * @param \WP_Post $post Group post object
 	 *
 	 * @return bool|void
 	 */
@@ -454,8 +455,8 @@ class AdminServiceProvider extends ServiceProvider {
 	/**
 	 * On filter group save update post_content with settings data
 	 *
-	 * @param $data
-	 * @param $postarr
+	 * @param array $data An array of slashed, sanitized, and processed post data
+	 * @param array $postarr An array of sanitized (and slashed) but otherwise unmodified post data
 	 *
 	 * @return mixed
 	 */
@@ -477,13 +478,21 @@ class AdminServiceProvider extends ServiceProvider {
 		return $data;
 	}
 
+	/**
+	 * Save general settings to option
+	 */
 	public function save_general_settings() {
 
 		// Check for general settings nonce
-		if( isset( $_POST['sf-setting'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['sf-general-settings'] ) ), 'sf-general-settings' ) ) {
+		if ( isset( $_POST['sf-setting'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['sf-general-settings'] ) ), 'sf-general-settings' ) ) {
+
+			// Check user capabilities
+			if ( ! current_user_can( 'manage_options' ) ) {
+				return;
+			}
 
 			$options = [];
-			if( ! empty( $_POST['sf-setting']['options'] ) ) {
+			if ( ! empty( $_POST['sf-setting']['options'] ) ) {
 				foreach ( $_POST['sf-setting']['options'] as $key => $option ) {
 					$options[ sanitize_text_field( $key ) ] = wc_clean( $option );
 				}

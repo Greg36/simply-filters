@@ -5,6 +5,11 @@ namespace SimplyFilters\Filters;
 use SimplyFilters\Admin\Settings;
 use SimplyFilters\TemplateLoader;
 
+/**
+ * Handle group related settings and query filters
+ *
+ * @since 1.0.0
+ */
 class FilterGroup {
 
 	/**
@@ -78,7 +83,7 @@ class FilterGroup {
 	}
 
 	/**
-	 * Get all group settings
+	 * Getter for group settings
 	 *
 	 * @return Settings
 	 */
@@ -88,8 +93,6 @@ class FilterGroup {
 
 	/**
 	 * Query all filters in current group
-	 *
-	 * @return void
 	 */
 	private function query_filters_data() {
 
@@ -105,7 +108,7 @@ class FilterGroup {
 					'order'            => 'ASC',
 					'suppress_filters' => true,
 					'post_parent'      => $this->group_id,
-					'post_status'      => array( 'publish', 'trash' ),
+					'post_status'      => array( 'publish' ),
 				)
 			);
 
@@ -114,7 +117,7 @@ class FilterGroup {
 	}
 
 	/**
-	 * Build all filters
+	 * Get all filters
 	 *
 	 * @return array
 	 */
@@ -135,8 +138,6 @@ class FilterGroup {
 
 	/**
 	 * Render front-end markup of filter group
-	 *
-	 * @return void
 	 */
 	public function render() {
 

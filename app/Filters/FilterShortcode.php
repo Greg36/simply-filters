@@ -2,9 +2,16 @@
 
 namespace SimplyFilters\Filters;
 
+/**
+ * Shortcode to render filter group
+ *
+ * @since 1.0.0
+ */
 class FilterShortcode {
 
-
+	/**
+	 * @var int Filter group post ID
+	 */
 	private $group_id;
 
 	public function __construct( $group_id ) {
@@ -12,6 +19,8 @@ class FilterShortcode {
 	}
 
 	/**
+	 * Instantiate new filter group and render it
+	 *
 	 * @return string
 	 */
 	public function getShortcode() {

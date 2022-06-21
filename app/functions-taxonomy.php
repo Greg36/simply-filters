@@ -44,6 +44,8 @@ function get_product_categories( $args = [] ) {
 /**
  * Get array of terms
  *
+ * @param array $args Additional query arguments
+ *
  * @return array
  */
 function get_terms_list( $args = [] ) {

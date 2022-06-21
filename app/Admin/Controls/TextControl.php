@@ -2,6 +2,11 @@
 
 namespace SimplyFilters\Admin\Controls;
 
+/**
+ * Text setting's control
+ *
+ * @since   1.0.0
+ */
 class TextControl extends Control {
 
 	/**
@@ -17,18 +22,24 @@ class TextControl extends Control {
 	public function __construct( $params ) {
 		parent::__construct( $params );
 
-		$this->unique = isset( $params['unique'] ) ? (bool) $params['unique'] : false;
+		$this->unique   = isset( $params['unique'] ) ? (bool) $params['unique'] : false;
 		$this->required = isset( $params['required'] ) ? (bool) $params['required'] : false;
 	}
 
+	/**
+	 * Render HTMl input
+	 */
 	protected function render_setting_field() {
 
 		if ( ! empty( $this->options ) ) {
 
-			if( ! is_array( $this->value ) ) $this->value = [];
+			if ( ! is_array( $this->value ) ) {
+				$this->value = [];
+			}
 
 			echo '<ul class="sf-text-list">';
 
+			// Render group of text fields
 			foreach ( $this->options as $option ) {
 
 				printf( '<li><input type="text" id="%1$s" name="%2$s" value="%3$s" %4$s %5$s><label for="%1$s">%6$s</label></li>',
@@ -45,6 +56,7 @@ class TextControl extends Control {
 
 		} else {
 
+			// Render single text field
 			printf( '<input type="text" id="%s" name="%s" value="%s" %s %s>',
 				esc_attr( $this->id ),
 				esc_attr( $this->key ),
@@ -59,17 +71,22 @@ class TextControl extends Control {
 	/**
 	 * Parse saved settings data as either string or array with options
 	 *
-	 * @param $data
+	 * @param array|string $data
 	 *
 	 * @return array|string
 	 */
 	public function parse_data( $data ) {
-		if( ! is_array( $data ) && $data ) return $data;
-		if( $data === false ) $data = [];
+		if ( ! is_array( $data ) && $data ) {
+			return $data;
+		}
+		if ( $data === false ) {
+			$data = [];
+		}
 
 		foreach ( $this->options as $key => $option ) {
 			$data[ $key ] = isset( $data[ $key ] );
 		}
+
 		return $data;
 	}
 }

@@ -5,10 +5,7 @@ namespace SimplyFilters;
 /**
  * Fired during plugin activation.
  *
- * @since      1.0.0
- * @package    SimplyFilters
- * @subpackage SimplyFilters/includes
- * @author     Grzegorz Niedzielski <admin@gregn.pl>
+ * @since   1.0.0
  */
 class Activator {
 

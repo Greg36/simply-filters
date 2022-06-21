@@ -2,7 +2,6 @@
  * Laravel Mix configuration file.
  *
  * @since     1.0.0
- * @package   SimplyFilters
  */
 
 // Import required packages.
@@ -79,11 +78,11 @@ mix.webpackConfig( {
 		new CopyWebpackPlugin(
 			{
 				patterns: [
-					{ from: 'resources/img',        to: './img', noErrorOnMissing: true },
-					{ from: 'resources/svg',        to: './svg', noErrorOnMissing: true },
-					{ from: 'resources/fonts',      to: './fonts', noErrorOnMissing: true },
+					{ from: 'resources/img', to: './img', noErrorOnMissing: true },
+					{ from: 'resources/svg', to: './svg', noErrorOnMissing: true },
+					{ from: 'resources/fonts', to: './fonts', noErrorOnMissing: true },
 					{ from: 'resources/css/vendor', to: './css/vendor', noErrorOnMissing: true },
-					{ from: 'resources/js/vendor',  to: './js/vendor', noErrorOnMissing: true },
+					{ from: 'resources/js/vendor', to: './js/vendor', noErrorOnMissing: true },
 				],
 			}
 		),

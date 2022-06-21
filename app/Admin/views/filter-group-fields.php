@@ -1,16 +1,11 @@
 <?php
-
 /**
+ * Main admin table for filter group
+ *
  * @var $filters array
  * @var $locale string
  *
- * @todo add info
- *
- * @link       https://gregn.pl
- * @since      1.0.0
- *
- * @package    SimplyFilters
- * @subpackage SimplyFilters/public/views
+ * @since   1.0.0
  */
 
 ?>
@@ -36,7 +31,7 @@
 			?>
 
             <div class="sf-filters__no-items" style="<?php echo $filters ? 'display:none;' : ''; ?>">
-		        <?php _e( 'No filters. Click <strong>Add new filter</strong> button to add first one.', $locale ); ?>
+				<?php _e( 'No filters. Click <strong>Add new filter</strong> button to add first one.', $locale ); ?>
             </div>
 
         </div>

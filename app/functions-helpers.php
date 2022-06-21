@@ -7,8 +7,9 @@ namespace SimplyFilters;
  *
  * @link https://www.w3.org/WAI/GL/wiki/Relative_luminance
  *
- * @param $color string Hex value of a color or converted color object
- * @returns {number} Relative luminance value
+ * @param string $color Hex value of a color or converted color object
+ *
+ * @returns float Relative luminance value
  */
 function calculateLuminance( $color ) {
 
@@ -35,9 +36,9 @@ function calculateLuminance( $color ) {
 /**
  * Limit the value to not be outside set min-max range
  *
- * @param $value
- * @param $min
- * @param $max
+ * @param int $value
+ * @param int $min
+ * @param int $max
  *
  * @return int
  */
@@ -55,8 +56,8 @@ function limit_value_to_range( $value, $min, $max ) {
 /**
  * Adjust hex color brightness
  *
- * @param $hex
- * @param $steps
+ * @param string $hex
+ * @param int $steps
  *
  * @return string
  */

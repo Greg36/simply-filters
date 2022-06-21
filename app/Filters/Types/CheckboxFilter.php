@@ -4,12 +4,15 @@ namespace SimplyFilters\Filters\Types;
 
 use SimplyFilters\TemplateLoader;
 
+/**
+ * Checkbox filter
+ *
+ * @since 1.0.0
+ */
 class CheckboxFilter extends Filter {
 
 	/**
-	 * Array of supported settings
-	 *
-	 * @var array
+	 * @var array Array of supported settings
 	 */
 	protected $supports = [
 		'label',
@@ -30,13 +33,16 @@ class CheckboxFilter extends Filter {
 	 * Render the filter
 	 */
 	public function render() {
-        $data = $this->get_render_data();
+		$data = $this->get_render_data();
 
-        if( $data ) {
-	        TemplateLoader::render( 'types/checkbox', $data, 'Filters' );
-        }
+		if ( $data ) {
+			TemplateLoader::render( 'types/checkbox', $data, 'Filters' );
+		}
 	}
 
+	/**
+	 * Render filter preview for new filter screen
+	 */
 	protected function filter_preview() {
 		?>
         <div class="sf-checkbox">

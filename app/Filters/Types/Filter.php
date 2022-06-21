@@ -5,68 +5,70 @@ namespace SimplyFilters\Filters\Types;
 use SimplyFilters\Admin\Settings;
 use SimplyFilters\Filters\FilterGroup;
 
+/**
+ * Main filter class, it handles configuration of settings,
+ * retrieving of option's data and front-end rendering
+ *
+ * It does not handle actual filtering of product's data
+ * all of filtering is based on GET data and handled
+ * by FilterQuery class
+ *
+ * @since 1.0.0
+ */
 abstract class Filter {
 
 	/**
-	 * @var string Filter's post ID
+	 * @var string Filter post object ID
 	 */
 	protected $id;
 
 	/**
-	 * @var array Filter's data from unserialized post content
+	 * @var array Unserialized filter post content data
 	 */
 	protected $data;
 
 	/**
-	 * Type of the filter
-	 *
 	 * @var string
 	 */
 	protected $type;
 
 	/**
-	 * Name of the filter
-	 *
 	 * @var string
 	 */
 	protected $name;
 
 	/**
-	 * Description of the filter
-	 *
 	 * @var string
 	 */
 	protected $description;
 
 	/**
-	 * Is the filter enabled
-	 *
-	 * @var bool
+	 * @var bool Is the filter enabled
 	 */
 	protected $enabled;
 
 	/**
-	 * @var Settings Settings handler
+	 * @var Settings
 	 */
 	protected $settings;
 
 	/**
-	 * @var $group Filter's current group
+	 * @var FilterGroup Group filter is part of
 	 */
 	protected $group;
 
 	/**
-	 * @var array Supported settings
+	 * @var string[] Supported settings
 	 */
 	protected $supports = [];
 
 	/**
-	 * @var array Sources for current filter
+	 * @var array
 	 */
 	protected $sources = [];
 
 	/**
-	 * @var string Text domain locale
+	 * @var string
 	 */
 	protected $locale;
 
@@ -84,13 +86,14 @@ abstract class Filter {
 		$this->locale  = \Hybrid\app( 'locale' );
 
 		$this->set_sources();
+
 		if ( is_admin() ) {
-			$this->load_settings();
+			$this->init_settings();
 		}
 	}
 
 	/**
-	 * Set group filter belongs to
+	 * Set group filter is part of
 	 *
 	 * @param FilterGroup $group
 	 */
@@ -170,9 +173,10 @@ abstract class Filter {
 	}
 
 	/**
-	 * Return filter's data value
+	 * Return filter data value
 	 *
-	 * @param $key
+	 * @param string $key Data key
+	 * @param string $default Optional default value
 	 *
 	 * @return mixed|string
 	 */
@@ -181,17 +185,15 @@ abstract class Filter {
 	}
 
 	/**
-	 * Load filter's settings
-	 *
-	 * @return void
+	 * Initialize filter settings
 	 */
-	protected function load_settings() {
+	protected function init_settings() {
 		$this->settings = new Settings( $this->get_id(), $this->data );
 		$this->load_supported_settings();
 	}
 
 	/**
-	 * Load filter's supported settings
+	 * Load supported settings
 	 */
 	protected function load_supported_settings() {
 
@@ -289,9 +291,7 @@ abstract class Filter {
 	}
 
 	/**
-	 * Render filter's settings
-	 *
-	 * @return void
+	 * Render settings
 	 */
 	public function render_setting_fields() {
 		$this->settings->render();
@@ -397,7 +397,10 @@ abstract class Filter {
 	}
 
 	/**
-	 * Get order options from filter's settings
+	 * Order options according to settings value
+	 *
+	 * @param array $options Options list
+	 * @param array $count Count of values in options
 	 *
 	 * @return array
 	 */
@@ -406,7 +409,7 @@ abstract class Filter {
 		$orderby = $this->data['order_by'];
 		$order   = $this->data['order_type'];
 
-		// Keep all setting at the top
+		// Keep 'all setting' option at the top
 		$first = $options[0]['slug'] === 'no-filter' ? [ array_shift( $options ) ] : [];
 
 		if ( $orderby === 'name' ) {
@@ -432,7 +435,7 @@ abstract class Filter {
 	}
 
 	/**
-	 * Return source key to be used as a URL slug
+	 * Return source key
 	 *
 	 * @return string
 	 */
@@ -478,13 +481,13 @@ abstract class Filter {
 	}
 
 	/**
-	 * Get filter's data required to render
+	 * Get data required for render
 	 *
 	 * @return array|false
 	 */
 	protected function get_render_data() {
 		$options = $this->get_current_source_options();
-        $key = $this->get_current_source_key();
+		$key     = $this->get_current_source_key();
 		if ( empty( $options ) ) {
 			return false;
 		}
@@ -504,6 +507,9 @@ abstract class Filter {
 		];
 	}
 
+	/**
+	 * Render preview for new filter screen
+	 */
 	public function render_new_filter_preview() {
 		?>
         <div class="sf-preview">
@@ -523,12 +529,15 @@ abstract class Filter {
 
 
 	/**
-	 * Return selected values in the filter taken from URL params
+	 * Return selected values based on parsed URL params
 	 *
 	 * @return array
 	 */
 	protected function get_selected_values() {
+
+		// Parsed URL params
 		$params = \Hybrid\app( 'filter-values' );
+
 		if ( empty( $params ) ) {
 			return [];
 		}
@@ -544,6 +553,9 @@ abstract class Filter {
 		return [];
 	}
 
+	/**
+	 * Render all hidden meta fields
+	 */
 	public function render_meta_fields() {
 
 		// Filter type field
@@ -553,17 +565,28 @@ abstract class Filter {
 		echo $this->meta_field( 'menu_order', $this->get_data( 'menu_order' ) );
 	}
 
-	private function meta_field( $label, $value = '' ) {
+	/**
+	 * Return hidden input field
+	 *
+	 * @param string $name Name of input field
+	 * @param mixed $value Value of input field
+	 *
+	 * @return string
+	 */
+	private function meta_field( $name, $value = '' ) {
 
 		$prefix = \Hybrid\app( 'prefix' );
 
 		return sprintf( '<input type="hidden" id="%s" name="%s" %s>',
-			esc_attr( sprintf( '%s-%s-%s', $prefix, $this->get_id(), $label ) ),
-			esc_attr( sprintf( '%s[%s][%s]', $prefix, $this->get_id(), $label ) ),
+			esc_attr( sprintf( '%s-%s-%s', $prefix, $this->get_id(), $name ) ),
+			esc_attr( sprintf( '%s[%s][%s]', $prefix, $this->get_id(), $name ) ),
 			$value !== '' ? sprintf( ' value="%s" ', esc_attr( $value ) ) : ''
 		);
 	}
 
+	/**
+	 * Render input for enable switch
+	 */
 	public function enabled_switch() {
 
 		$prefix = \Hybrid\app( 'prefix' );
@@ -578,9 +601,10 @@ abstract class Filter {
 	}
 
 	/**
-	 * Performs a query to count how many times given term ids appear in filtered products
+	 * Performs a query to count how many times given term IDs appear in filtered products
 	 *
-	 * @param $terms
+	 * @param array $terms An array of term IDs
+	 * @param string $key Taxonomy key
 	 *
 	 * @return array|false
 	 */
@@ -588,6 +612,7 @@ abstract class Filter {
 		global $wpdb;
 		$product_count = false;
 
+		// Only if count setting is enabled
 		if ( $this->get_data( 'count' ) ) {
 
 			// Get JOIN and WHERE args from main product query to limit results to only filtered products
@@ -609,16 +634,17 @@ abstract class Filter {
                 GROUP BY term_taxonomy.term_id
             ";
 
-            $sql_hash = md5( $sql );
+			// Use query hash as cache identifier
+			$sql_hash       = md5( $sql );
 			$cached_queries = (array) get_transient( 'sf_products_in_' . urlencode( $key ) );
 
 			// Query products and save query to daily cache
-			if( ! isset( $cached_queries[ $sql_hash ] ) ) {
-	            $results = $wpdb->get_results( $sql, ARRAY_A );
-                $cached_queries[ $sql_hash ] = wp_list_pluck( $results, 'post_count', 'term_id' );
+			if ( ! isset( $cached_queries[ $sql_hash ] ) ) {
+				$results                     = $wpdb->get_results( $sql, ARRAY_A );
+				$cached_queries[ $sql_hash ] = wp_list_pluck( $results, 'post_count', 'term_id' );
 
-                set_transient( 'sf_products_in_' . urlencode( $key ), $cached_queries, DAY_IN_SECONDS );
-            }
+				set_transient( 'sf_products_in_' . urlencode( $key ), $cached_queries, DAY_IN_SECONDS );
+			}
 
 			$product_count = $cached_queries[ $sql_hash ];
 		}
@@ -627,9 +653,9 @@ abstract class Filter {
 	}
 
 	/**
-	 * Extract only term ids from terms array
+	 * Parse terms array to contain only term IDs
 	 *
-	 * @param $terms
+	 * @param array $terms An assoc array containing term IDs or array of IDs
 	 *
 	 * @return array
 	 */
@@ -650,7 +676,7 @@ abstract class Filter {
 	}
 
 	/**
-	 * Get settings from filter's group
+	 * Get setting from filter's group
 	 *
 	 * @return array
 	 */

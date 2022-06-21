@@ -1,8 +1,11 @@
 <?php
-
 /**
+ * Form for general settings page
+ *
  * @var $settings \SimplyFilters\Admin\Settings
  * @var $locale string
+ *
+ * @since 1.0.0
  */
 ?>
 
@@ -15,7 +18,7 @@
                 <table class="sf-options">
 
                     <tbody>
-				    <?php $settings->render(); ?>
+					<?php $settings->render(); ?>
                     </tbody>
 
                 </table>
@@ -24,7 +27,7 @@
             </div>
         </div>
 
-	    <?php wp_nonce_field( 'sf-general-settings', 'sf-general-settings' ); ?>
+		<?php wp_nonce_field( 'sf-general-settings', 'sf-general-settings' ); ?>
 
     </form>
 

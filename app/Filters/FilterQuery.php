@@ -6,27 +6,27 @@ class FilterQuery {
 
 
 	/**
-	 * @var \WP_Query
+	 * @var \WP_Query Main query to filter
 	 */
 	private $query;
 
 	/**
-	 * @var array
-	 */
-	private $taxonomies;
-
-	/**
-	 * @var array
+	 * @var array Parameters from parsed URL
 	 */
 	private $params;
 
 	/**
-	 * @var string
+	 * @var array WooCommerce product taxonomies
+	 */
+	private $taxonomies;
+
+	/**
+	 * @var string  WooCommerce product category slug
 	 */
 	private $cat_slug;
 
 	/**
-	 * @var string
+	 * @var string WooCommerce product tag slug
 	 */
 	private $tag_slug;
 
@@ -35,13 +35,19 @@ class FilterQuery {
 	 */
 	private $attribute_lookup_enabled;
 
+	/**
+	 * @var string
+	 */
+	private $lookup_table_name;
+
 	public function __construct( \WP_Query $query ) {
 		global $wpdb;
 
-		$this->query                    = $query;
-		$this->taxonomies               = get_object_taxonomies( 'product' );
+		$this->query      = $query;
+		$this->taxonomies = get_object_taxonomies( 'product' );
+
 		$this->attribute_lookup_enabled = 'yes' === get_option( 'woocommerce_attribute_lookup_enabled' );
-		$this->lookup_table_name = $wpdb->prefix . 'wc_product_attributes_lookup';
+		$this->lookup_table_name        = $wpdb->prefix . 'wc_product_attributes_lookup';
 	}
 
 	/**
@@ -66,6 +72,7 @@ class FilterQuery {
 		// Save filtered post clauses
 		add_filter( 'posts_clauses_request', [ $this, 'save_post_clauses' ], 10, 2 );
 
+		// Mark query as filtered
 		$this->query->set( 'sf-filters-applied', true );
 	}
 
@@ -101,9 +108,9 @@ class FilterQuery {
 	}
 
 	/**
-	 * Verify param from GET request and assign its type
+	 * Verify param from GET request
 	 *
-	 * @param $slug
+	 * @param string $slug Parameter from request
 	 *
 	 * @return false|string[]
 	 */
@@ -160,15 +167,14 @@ class FilterQuery {
 	/**
 	 * Get the values and operator from URL param value
 	 *
-	 * @param $value string
-	 * @param $type string
+	 * @param string $value Request value from GET param
+	 * @param string $type Verified parameter type
 	 *
 	 * @return array|false
 	 */
 	private function parse_value( $value, $type ) {
 
-		// Handle price range, only here underscore is used as an operator
-		// otherwise underscore is allowed on WP slugs
+		// Handle price range
 		if ( $type === 'price' ) {
 			$data = explode( '_', $value );
 			if ( count( $data ) === 2 && is_numeric( $data[0] ) && is_numeric( $data[1] ) ) {
@@ -182,7 +188,6 @@ class FilterQuery {
 			}
 		}
 
-		// Match values and the delimiter
 		preg_match_all( '/([\w\-_]+)|([ |])/', $value, $matches );
 
 		// Get values array
@@ -191,8 +196,8 @@ class FilterQuery {
 			return false;
 		}
 
-		// Get the operator based on delimiter in the URL
-		// | in the URL is IN, encoded it's a space
+		// Get the query operator based on delimiter in the URL
+		// | in the URL is IN, encoded as a space
 		// + in the URL is AND operator
 		if ( isset( $matches[2] ) && ! empty( array_filter( $matches[2] ) ) ) {
 			switch ( current( array_filter( $matches[2] ) ) ) {
@@ -221,18 +226,20 @@ class FilterQuery {
 	 * Apply price and attribute params to query on later hook
 	 * where there is direct access to post clauses
 	 *
-	 * @param $args
-	 * @param $wp_query
+	 * @param array $clauses Associative array of the clauses for the query
+	 * @param \WP_Query $wp_query The WP_Query instance reference
 	 *
 	 * @return array
 	 */
-	public function query_post_clauses( $args, $wp_query ) {
-		if( $wp_query->get( 'sf-filters-clauses-applied' ) ) return $args;
+	public function query_post_clauses( $clauses, $wp_query ) {
+		if ( $wp_query->get( 'sf-filters-clauses-applied' ) ) {
+			return $clauses;
+		}
 
-		$args = $this->get_price_query( $args );
-		$args = $this->get_attributes_query( $args );
+		$clauses = $this->get_price_query( $clauses );
+		$clauses = $this->get_attributes_query( $clauses );
 
-		return $args;
+		return $clauses;
 	}
 
 	/**
@@ -289,8 +296,6 @@ class FilterQuery {
 	/**
 	 * Get rating query based on product_visibility taxonomy
 	 *
-	 * @param $param
-	 *
 	 * @return array|false
 	 */
 	private function get_rating_query() {
@@ -324,24 +329,23 @@ class FilterQuery {
 	/**
 	 * Add price query via meta lookup table
 	 *
-	 * @param $args
-	 * @param $wp_query
+	 * @param array $clauses Associative array of the clauses for the query
 	 *
 	 * @return mixed|void
 	 */
-	private function get_price_query( $args ) {
+	private function get_price_query( $clauses ) {
 		global $wpdb;
 
 		$param = current( $this->get_params_by_type( 'price' ) );
 		if ( ! $param ) {
-			return $args;
+			return $clauses;
 		}
 		$min = $param['data']['min'];
 		$max = $param['data']['max'];
 
 		// Add meta lookup table to join clauses if it is not already present
-		if ( strpos( $args['join'], 'wc_product_meta_lookup' ) === false ) {
-			$args['join'] .= " LEFT JOIN {$wpdb->wc_product_meta_lookup} wc_product_meta_lookup ON $wpdb->posts.ID = wc_product_meta_lookup.product_id ";
+		if ( strpos( $clauses['join'], 'wc_product_meta_lookup' ) === false ) {
+			$clauses['join'] .= " LEFT JOIN {$wpdb->wc_product_meta_lookup} wc_product_meta_lookup ON $wpdb->posts.ID = wc_product_meta_lookup.product_id ";
 		}
 
 		/**
@@ -363,19 +367,20 @@ class FilterQuery {
 			$max,
 			$min
 		);
-		$args['where'] .= $price_query;
+
+		$clauses['where'] .= $price_query;
 
 		// Save price query
 		\Hybrid\app()->instance( 'filtered-query-price', $price_query );
 
-		return $args;
+		return $clauses;
 	}
 
 	/**
 	 * When the attribute lookup table is enabled use to it query
 	 * attributes in more performant way
 	 *
-	 * @param $args
+	 * @param array $args Associative array of the clauses for the query
 	 *
 	 * @return array
 	 */
@@ -383,6 +388,7 @@ class FilterQuery {
 
 		global $wpdb;
 
+		// If there are no params or attribute lookup table is not enabled bail early
 		$params = $this->get_params_by_type( 'attribute' );
 		if ( empty( $params ) || ! $this->attribute_lookup_enabled ) {
 			return $args;
@@ -395,8 +401,8 @@ class FilterQuery {
 		}
 
 		$clause_root = " {$wpdb->posts}.ID IN ( SELECT product_or_parent_id FROM (";
-		$filter_ids = [];
-		$clauses    = [];
+		$filter_ids  = [];
+		$clauses     = [];
 
 		foreach ( $params as $param ) {
 			$term_ids = get_terms( [
@@ -422,8 +428,8 @@ class FilterQuery {
 			}
 		}
 
-		// Compound query when filtering by more than one attribute
-		// with a AND parameter
+		// Compound query for filtering by more than one
+		// attribute with an AND parameter
 		if ( ! empty( $filter_ids ) ) {
 			$count     = count( $filter_ids );
 			$term_list = '(' . join( ',', $filter_ids ) . ')';
@@ -455,19 +461,31 @@ class FilterQuery {
 		return $args;
 	}
 
-	public function save_post_clauses( $args, $wp_query ) {
-		if( $wp_query->get( 'sf-filters-clauses-applied' ) ) return $args;
+	/**
+	 * Save final query clauses to be used later with additional
+	 * filter specific queries
+	 *
+	 * @param array $clauses Associative array of the clauses for the query
+	 * @param \WP_Query $wp_query The WP_Query instance reference
+	 *
+	 * @return array
+	 */
+	public function save_post_clauses( $clauses, $wp_query ) {
+		if ( $wp_query->get( 'sf-filters-clauses-applied' ) ) {
+			return $clauses;
+		}
 
-		\Hybrid\app()->instance( 'filtered-query-args', $args );
+		\Hybrid\app()->instance( 'filtered-query-args', $clauses );
 
 		$wp_query->set( 'sf-filters-clauses-applied', true );
-		return $args;
+
+		return $clauses;
 	}
 
 	/**
 	 * Return all params matching type
 	 *
-	 * @param $type
+	 * @param string $type Parameter type
 	 *
 	 * @return array
 	 */
@@ -502,6 +520,5 @@ class FilterQuery {
 
 		return $this->tag_slug = get_option( 'woocommerce_product_tag_slug' ) ? get_option( 'woocommerce_product_tag_slug' ) : _x( 'product-tag', 'slug', \Hybrid\app( 'locale' ) );
 	}
-
 
 }

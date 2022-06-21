@@ -1,11 +1,14 @@
 <?php
 /**
+ * Admin filter settings row
+ *
  * @var $filter \SimplyFilters\Filters\Types\Filter
  * @var $order string
  * @var $locale string
+ *
+ * @since 1.0.0
  */
 ?>
-
 
 <div class="sf-filter"
      data-filter_id="<?php esc_attr_e( \Hybrid\app( 'prefix' ) . '-' . $filter->get_id() ); ?>"
@@ -19,7 +22,7 @@
         </div>
 
         <div class="sf-row__enabled">
-	        <?php $filter->enabled_switch(); ?>
+			<?php $filter->enabled_switch(); ?>
         </div>
 
         <div class="sf-row__label">
@@ -40,10 +43,9 @@
 
     <div class="sf-filter__options">
 
-	    <?php do_action( 'sf_admin_before_filter_options', $filter ); ?>
-        
-        <table class="sf-options">
+		<?php do_action( 'sf_admin_before_filter_options', $filter ); ?>
 
+        <table class="sf-options">
             <tbody>
 
 			<?php $filter->render_setting_fields(); ?>
@@ -55,10 +57,9 @@
             </tr>
 
             </tbody>
-
         </table>
 
-	    <?php do_action( 'sf_admin_after_filter_options', $filter ); ?>
+		<?php do_action( 'sf_admin_after_filter_options', $filter ); ?>
 
     </div>
 

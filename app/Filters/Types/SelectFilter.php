@@ -4,12 +4,15 @@ namespace SimplyFilters\Filters\Types;
 
 use SimplyFilters\TemplateLoader;
 
+/**
+ * Select filter
+ *
+ * @since 1.0.0
+ */
 class SelectFilter extends Filter {
 
 	/**
-	 * Array of supported settings
-	 *
-	 * @var array
+	 * @var array Array of supported settings
 	 */
 	protected $supports = [
 		'label',
@@ -32,7 +35,7 @@ class SelectFilter extends Filter {
 	public function render() {
 		$data = $this->get_render_data();
 
-		if( $data ) {
+		if ( $data ) {
 
 			// Add all items option
 			array_unshift( $data['options'], [
@@ -44,6 +47,9 @@ class SelectFilter extends Filter {
 		}
 	}
 
+	/**
+	 * Render filter preview for new filter screen
+	 */
 	protected function filter_preview() {
 		?>
         <div class="sf-select">
