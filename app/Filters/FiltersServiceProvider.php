@@ -252,12 +252,12 @@ class FiltersServiceProvider extends ServiceProvider {
 			die();
 		}
 
-		$id       = filter_var( $_POST['filter_id'], FILTER_SANITIZE_NUMBER_INT );
-		$taxonomy = filter_var( $_POST['taxonomy'], FILTER_SANITIZE_STRING );
-		$term_id  = filter_var( $_POST['term_id'], FILTER_SANITIZE_NUMBER_INT );
+		$id        = filter_var( $_POST['filter_id'], FILTER_SANITIZE_NUMBER_INT );
+		$taxonomy  = filter_var( $_POST['taxonomy'], FILTER_SANITIZE_STRING );
+		$term_slug = filter_var( $_POST['term_id'], FILTER_SANITIZE_STRING );
 
 		// Bail if there is no key or term ID
-		if ( ! $taxonomy || ! $term_id || ! $id ) {
+		if ( ! $taxonomy || ! $term_slug || ! $id ) {
 			die();
 		}
 
@@ -265,7 +265,7 @@ class FiltersServiceProvider extends ServiceProvider {
 		$filter->initialize( [
 			'id'      => $id,
 			'sources' => sanitize_text_field( $taxonomy ),
-			$taxonomy => $term_id
+			$taxonomy => $term_slug
 		] );
 
 		// Render the filter settings
@@ -279,9 +279,10 @@ class FiltersServiceProvider extends ServiceProvider {
 	 */
 	private function get_custom_selectors() {
 		$options = get_option( 'sf-settings' );
-		if( isset( $options['change_selectors'] ) && $options['change_selectors'] ) {
+		if ( isset( $options['change_selectors'] ) && $options['change_selectors'] ) {
 			return $options['selectors'];
 		}
+
 		return false;
 	}
 }
