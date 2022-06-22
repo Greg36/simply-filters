@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Simply Filters for WooCommerce 1.0.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/simply-filters\n"
-"POT-Creation-Date: 2022-06-22T18:12:44+00:00\n"
-"PO-Revision-Date: 2022-06-22 20:14+0200\n"
+"POT-Creation-Date: 2022-06-22T18:20:18+00:00\n"
+"PO-Revision-Date: 2022-06-22 20:21+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: pl_PL\n"
@@ -279,6 +279,11 @@ msgstr ""
 #: app/Admin/views/filter-group-fields.php:40
 msgid "Add new filter"
 msgstr "Dodaj nowy filtr"
+
+#: app/Admin/views/filter-group-settings.php:26
+msgid "To change filter appearance go to <a href=\"%s\">global settings</a>"
+msgstr ""
+"Aby zmienić wygląd filtra, przejdź do <a href=\"%s\">ustawień globalnych</a>"
 
 #: app/Admin/views/filter-info.php:12
 msgid "Setup filters in the shop:"

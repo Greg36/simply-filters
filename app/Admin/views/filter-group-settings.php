@@ -3,6 +3,7 @@
  * Admin setting fields for filter group
  *
  * @var $settings \SimplyFilters\Admin\Settings
+ * @var $locale string
  *
  * @since 1.0.0
  */
@@ -21,7 +22,11 @@
         </table>
 
         <div class="sf-settings__notice">
-            To change filter appearance go to <a href="<?php echo esc_url( add_query_arg( 'page', Hybrid\app( 'plugin_name' ), get_admin_url() . 'options-general.php' ) ) ?>">global settings</a>
+            <?php
+            printf( __( 'To change filter appearance go to <a href="%s">global settings</a>', $locale ),
+	            esc_url( add_query_arg( 'page', Hybrid\app( 'plugin_name' ), get_admin_url() . 'options-general.php' ) )
+            );
+            ?>
         </div>
     </div>
 </div>
