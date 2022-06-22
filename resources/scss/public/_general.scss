@@ -9,24 +9,36 @@
 	right: 0;
 	bottom: 0;
 	z-index: 10000;
-	opacity: 0;
-	transition: opacity 0.3s ease-in-out;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background: var( --sf-background );
-	border-radius: 10px;
+
+	&::after {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		transition: opacity 0.3s ease-in-out;
+		opacity: 0;
+		background: var( --sf-background );
+		border-radius: 10px;
+		content: "";
+		z-index: 10001;
+	}
 
 	img {
 		width: 51px;
 		height: 51px;
 		background: none;
 		position: relative;
-		z-index: 10001;
+		z-index: 10002;
 	}
 
 	&.fade-in {
-		opacity: 0.5;
+		&::after {
+			opacity: 0.5;
+		}
 	}
 }
 
