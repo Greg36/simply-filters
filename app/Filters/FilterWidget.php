@@ -13,7 +13,7 @@ class FilterWidget extends \WC_Widget {
 		$this->widget_id          = 'sf-filter-widget';
 		$this->widget_cssclass    = 'sf-filter-widget';
 		$this->widget_name        = __( 'SF Filter Group', \Hybrid\app( 'locale' ) );
-		$this->widget_description = __( 'lorem ipsum dolor sit amet', \Hybrid\app( 'locale' ) );
+		$this->widget_description = __( 'Simply add product\'s price, category and attribute filters to WooCommerce.', \Hybrid\app( 'locale' ) );
 
 		parent::__construct();
 	}

@@ -54,10 +54,10 @@ class SelectFilter extends Filter {
 		?>
         <div class="sf-select">
             <ul>
-                <li><?php _e( 'Same day delivery', $this->locale ); ?></li>
-                <li class="sf-select__selected"><?php _e( 'Same day delivery', $this->locale ); ?></li>
-                <li><?php _e( 'Premium shipping', $this->locale ); ?></li>
-                <li><?php _e( 'Standard shipping', $this->locale ); ?></li>
+                <li><?php _e( 'Show all products', $this->locale ); ?></li>
+                <li class="sf-select__selected"><?php _e( 'Available', $this->locale ); ?></li>
+                <li><?php _e( 'Sold out', $this->locale ); ?></li>
+                <li><?php _e( 'On preorder', $this->locale ); ?></li>
             </ul>
         </div>
 		<?php
