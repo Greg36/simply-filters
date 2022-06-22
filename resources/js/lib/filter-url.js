@@ -1,9 +1,14 @@
+/**
+ * Handle URL parameters changes
+ *
+ * @since 1.0.0
+ */
 export default class FilterUrl {
 
 	constructor( url = '' ) {
 		if ( !url ) url = location.href;
 
-		if( window.hasOwnProperty( 'sf_filter_url' ) ) {
+		if ( window.hasOwnProperty( 'sf_filter_url' ) ) {
 			this.url = sf_filter_url;
 		} else {
 			this.url = new URL( url );
@@ -13,9 +18,6 @@ export default class FilterUrl {
 
 	/**
 	 * Perform action on URL parameters
-	 *
-	 * @param action
-	 * @param param
 	 */
 	update( action, param ) {
 		const href = this.url.href;
@@ -52,8 +54,6 @@ export default class FilterUrl {
 
 	/**
 	 * Replace param in URL
-	 *
-	 * @param param
 	 */
 	replace( param ) {
 		this.url.searchParams.set( param.key, param.value );
@@ -61,8 +61,6 @@ export default class FilterUrl {
 
 	/**
 	 * Remove param by key in URL
-	 *
-	 * @param param
 	 */
 	clear( param ) {
 		this.url.searchParams.delete( param.key );
@@ -70,8 +68,6 @@ export default class FilterUrl {
 
 	/**
 	 * Remove param from URL
-	 *
-	 * @param param
 	 */
 	remove( param ) {
 		if ( this.url.searchParams.has( param.key ) ) {
@@ -97,8 +93,6 @@ export default class FilterUrl {
 
 	/**
 	 * Add param to URL
-	 *
-	 * @param param
 	 */
 	add( param ) {
 		if ( this.url.searchParams.has( param.key ) ) {
@@ -116,8 +110,6 @@ export default class FilterUrl {
 
 	/**
 	 * Change price range in the URL
-	 *
-	 * @param param
 	 */
 	price( param ) {
 
@@ -137,8 +129,6 @@ export default class FilterUrl {
 
 	/**
 	 * Get full URL with params
-	 *
-	 * @returns {string}
 	 */
 	getUpdatedURL() {
 		return this.url.origin + this.url.pathname + decodeURIComponent( this.url.search )

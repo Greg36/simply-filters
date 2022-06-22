@@ -1,19 +1,18 @@
-/**
- * Filters edit screen
- *
- * @package   SimplyFilters
- */
-
 import { __ } from '@wordpress/i18n';
 import AdminFilter from "./admin-filter";
 import AdminNewFilter from "./admin-new-filter";
-import { invalidInputNotice, addFormNotice } from "../lib/helpers";
+import { invalidInputNotice, addAdminFormNotice } from "../lib/helpers";
 
 export { initFiltersGroup, updateOrderNumbers, checkNoFilterLabel };
 
+/**
+ * Initialize group filter and settings
+ *
+ * @since 1.0.0
+ */
 function initFiltersGroup() {
 
-	// Setup all filters
+	// Initialize all filters
 	document.querySelectorAll( '.sf-filter' ).forEach( ( current ) => {
 		new AdminFilter( current );
 	} );
@@ -22,20 +21,51 @@ function initFiltersGroup() {
 	setupGroupSettings();
 
 	// Setup color inputs for group settings
-	jQuery( '.sf-settings .sf-color__field' ).wpColorPicker({
+	setupColorInputs();
+
+	// Make filter rows sortable
+	makeRowsSortable();
+
+	// Verify inputs before form submit
+	document.querySelector( '#post' ).addEventListener( 'submit', prepareSubmitData );
+
+	// Setup new filter popup
+	const new_filter_popup = new AdminNewFilter();
+	new_filter_popup.init();
+}
+
+/**
+ * Setup events related to filter group settings
+ */
+function setupGroupSettings() {
+
+	const group_settings = document.querySelector( '.sf-settings' );
+
+	if ( group_settings ) {
+		const group_id = group_settings.dataset.filter_group_id,
+			more_toggle = group_settings.querySelector( '#' + group_id + '-' +
+				'more_show' ),
+			more_count = group_settings.querySelector( '#' + group_id + '-more_count' ).closest( '.sf-option' );
+
+		// Hide more count setting initially
+		if ( !more_toggle.checked ) more_count.style.display = 'none';
+
+		more_toggle.addEventListener( 'change', ( e ) => {
+			more_count.style.display = e.target.checked ? '' : 'none';
+		} );
+	}
+}
+
+/**
+ * Setup WP Color Picker for all color inputs
+ */
+function setupColorInputs() {
+	jQuery( '.sf-settings .sf-color__field' ).wpColorPicker( {
 		defaultColor: false,
 		hide: true,
 		palettes: true,
 	} );
 
-	// Make filter rows sortable
-	makeRowsSortable();
-
-	// Before form submit
-	document.querySelector( '#post' ).addEventListener( 'submit', prepareSubmitData );
-
-	// Setup new filter popup
-	new AdminNewFilter().init();
 }
 
 /**
@@ -67,7 +97,7 @@ function updateOrderNumbers() {
 function checkNoFilterLabel() {
 	const noFilter = document.querySelector( '.sf-filters__no-items' );
 
-	if( document.querySelectorAll( '.sf-filter' ).length ) {
+	if ( document.querySelectorAll( '.sf-filter' ).length ) {
 		noFilter.style.display = 'none';
 	} else {
 		noFilter.style.display = 'block';
@@ -78,12 +108,12 @@ function checkNoFilterLabel() {
  * Prepare data before submitting
  */
 function prepareSubmitData( e ) {
-
-	// Invalidate submit if required values are not unique
 	const duplicates = findDuplicatedValues();
-	if( duplicates ) {
+
+	if ( duplicates ) {
+		// Invalidate submit if required values are not unique
 		e.preventDefault();
-		addFormNotice( duplicates + ' ' + __( 'values are not unique.', 'simply-filters' ), 'error' );
+		addAdminFormNotice( duplicates + ' ' + __( 'values are not unique.', 'simply-filters' ), 'error' );
 		return;
 	}
 
@@ -91,7 +121,9 @@ function prepareSubmitData( e ) {
 }
 
 /**
- * Check if all values labeled as unique are so between all filters
+ * Check if all values labeled as unique are unique between all filters settings
+ *
+ * @returns {number}
  */
 function findDuplicatedValues() {
 	const inputs = document.getElementById( 'post' ).querySelectorAll( '[data-unique]' );
@@ -107,8 +139,8 @@ function findDuplicatedValues() {
 	// Check if values in group are all unique
 	Object.keys( uniques ).forEach( ( key ) => {
 
-		const values = uniques[key].map(el => el.value);
-		const duplicates = uniques[key].filter(el => values.filter(val => val === el.value).length > 1);
+		const values = uniques[key].map( el => el.value );
+		const duplicates = uniques[key].filter( el => values.filter( val => val === el.value ).length > 1 );
 
 		// If there are duplicates display notice
 		duplicates.forEach( ( input ) => {
@@ -116,7 +148,7 @@ function findDuplicatedValues() {
 			invalidInputNotice( __( 'Value must be unique across all filters in the group', 'simply-filters' ), input );
 
 			// Open settings
-			if( ! input.closest( '.sf-filter' ).classList.contains( 'open' ) ) {
+			if ( !input.closest( '.sf-filter' ).classList.contains( 'open' ) ) {
 				input.closest( '.sf-filter' ).querySelector( 'a.edit-filter' ).click();
 			}
 		} );
@@ -132,14 +164,14 @@ function removeUnmodifiedFilters() {
 	document.querySelectorAll( '.sf-filter' ).forEach( ( current ) => {
 
 		// Skip open filters
-		if( current.classList.contains( 'open' ) ) return;
+		if ( current.classList.contains( 'open' ) ) return;
 
 		// Remove all fields that have not been changed
 		if ( !current.hasAttribute( 'data-save' ) || current.dataset.save !== 'true' ) {
 
 			// Save checked toggle
 			const enabled = current.querySelector( '[name$="[enabled]"]' );
-			if( enabled.checked ) enabled.parentElement.classList.add( 'checked' );
+			if ( enabled.checked ) enabled.parentElement.classList.add( 'checked' );
 
 			current.querySelectorAll( `[name^="${sf_admin.prefix}"]` ).forEach( input => {
 				input.remove();
@@ -148,24 +180,3 @@ function removeUnmodifiedFilters() {
 	} );
 }
 
-/**
- * Setup events related to filter group settings
- */
-function setupGroupSettings() {
-
-	const group_settings = document.querySelector( '.sf-settings' );
-
-	if( group_settings ) {
-		const group_id = group_settings.dataset.filter_group_id,
-			more_toggle = group_settings.querySelector( '#' + group_id + '-' +
-				'more_show' ),
-			more_count =  group_settings.querySelector( '#' + group_id + '-more_count' ).closest( '.sf-option' );
-
-		// Hide more count setting initially
-		if( ! more_toggle.checked ) more_count.style.display = 'none';
-
-		more_toggle.addEventListener( 'change', ( e ) => {
-			more_count.style.display = e.target.checked ? '' : 'none';
-		} );
-	}
-}

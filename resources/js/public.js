@@ -1,14 +1,12 @@
-/**
- * Primary front-end script.
- *
- * @package   SimplyFilters
- */
-
-
 import FilterActions from "./lib/filter-actions";
 
+/**
+ * Primary front-end script
+ *
+ * @since 1.0.0
+ */
 document.addEventListener( 'DOMContentLoaded', () => {
 
-	const filterActions = new FilterActions();
+	new FilterActions();
 
-});
+} );

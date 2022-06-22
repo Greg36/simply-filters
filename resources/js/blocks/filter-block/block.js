@@ -16,6 +16,11 @@ import {
 import { withSelect } from '@wordpress/data';
 import { compose } from '@wordpress/compose';
 
+/**
+ * Filter group WordPress Block implementation
+ *
+ * @since 1.0.0
+ */
 class FilterBlock extends Component {
 
 	renderGroupSelection() {
@@ -69,7 +74,6 @@ class FilterBlock extends Component {
 
 			</Placeholder>
 		);
-
 	}
 
 	render() {

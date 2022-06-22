@@ -2,6 +2,11 @@ import { addLoader, removeLoader } from "../lib/helpers";
 import { checkNoFilterLabel, updateOrderNumbers } from "./admin-filters-group";
 import AdminFilter from "./admin-filter";
 
+/**
+ * Handle adding new filter via AJAX
+ *
+ * @since 1.0.0
+ */
 export default class AdminNewFilter {
 
 	constructor() {
@@ -13,6 +18,7 @@ export default class AdminNewFilter {
 	 * Setup events for new filter popup
 	 */
 	init() {
+
 		// Open and close popup buttons
 		document.querySelectorAll( '.sf-button__new-filter, .sf-new__close' ).forEach( button => {
 			button.addEventListener( 'click', ( e ) => {
@@ -67,7 +73,7 @@ export default class AdminNewFilter {
 	}
 
 	/**
-	 * Insert new filter and set it up
+	 * Insert new filter and initialize it
 	 */
 	addNewFilter( text ) {
 

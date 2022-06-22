@@ -1,15 +1,18 @@
+/**
+ * Color settings field
+ *
+ * @since 1.0.0
+ */
 export default class ColorControl {
 
-	/**
-	 * Initiate color control settings
-	 *
-	 * @param adminFilter
-	 */
 	constructor( adminFilter ) {
 		this.filter = adminFilter;
 		this.$selector = jQuery( adminFilter.filter.querySelectorAll( '.sf-color__field' ) );
 	}
 
+	/**
+	 * Initialize color picker and events
+	 */
 	init() {
 		this.$selector.wpColorPicker( {
 			defaultColor: false,
@@ -21,23 +24,20 @@ export default class ColorControl {
 
 		this.$selector.each( ( num, ele ) => {
 			const ev = { target: ele };
-			this.updateColor( this.filter , ev );
+			this.updateColor( this.filter, ev );
 		} );
 
 	}
 
 	/**
 	 * Update color of all elements related to color picker
-	 *
-	 * @param event
-	 * @param filter
 	 */
 	updateColor( filter, event ) {
 		let colorInput = jQuery( event.target ),
 			color = colorInput.hasClass( 'wp-picker-clear' ) ? '' : colorInput.val(),
 			swatches = colorInput.parents( '.sf-color__row' ).find( '.sf-color__swatch' );
 
-		swatches.each( (i, swatch) => {
+		swatches.each( ( i, swatch ) => {
 			this.updateSwatch( jQuery( swatch ), color );
 		} );
 
@@ -46,15 +46,12 @@ export default class ColorControl {
 
 	/**
 	 * Update color swatch and checkmark
-	 *
-	 * @param $ele
-	 * @param color
 	 */
 	updateSwatch( $ele, color ) {
 		$ele.css( 'backgroundColor', color );
 
 		// For selected swatch update the checkmark color
-		if( $ele.hasClass( 'sf-color__swatch--selected' ) ) {
+		if ( $ele.hasClass( 'sf-color__swatch--selected' ) ) {
 			this.changeColorWithContrast( $ele.find( 'svg path' ), color, 'fill' );
 		}
 	}
@@ -62,10 +59,6 @@ export default class ColorControl {
 	/**
 	 * Change property of an element to either black or white based on base
 	 * color luminance
-	 *
-	 * @param $ele Target element
-	 * @param color Base color to calculate luminance of
-	 * @param param CSS parameter to change
 	 */
 	changeColorWithContrast( $ele, color, param ) {
 		let L = this.calculateLuminance( color ),
@@ -81,7 +74,6 @@ export default class ColorControl {
 	 * Calculate relative luminance of color based on WCAG definition
 	 *
 	 * @link https://www.w3.org/WAI/GL/wiki/Relative_luminance
-	 * @param color Hex value of a color or converted color object
 	 * @returns {number} Relative luminance value
 	 */
 	calculateLuminance( color ) {

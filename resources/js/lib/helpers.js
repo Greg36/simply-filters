@@ -1,7 +1,10 @@
-export { uniqid, addLoader, removeLoader, addFormNotice, invalidInputNotice, debounce, setCookie, getCookie };
+export { uniqid, addLoader, removeLoader, addAdminFormNotice, invalidInputNotice, debounce, setCookie, getCookie };
 
 import { __ } from '@wordpress/i18n';
 
+/**
+ * Generate unique ID
+ */
 function uniqid( prefix, moreEntropy ) {
 	//  discuss at: https://locutus.io/php/uniqid/
 	// original by: Kevin van Zonneveld (https://kvz.io)
@@ -53,11 +56,14 @@ function uniqid( prefix, moreEntropy ) {
 	return retId
 }
 
+/**
+ * Add loader animation to given node
+ */
 function addLoader( node ) {
 	let src = '';
 
-	if( window.hasOwnProperty( 'sf_admin' ) ) src = sf_admin.loader_src;
-	if( window.hasOwnProperty( 'sf_filters' ) )	src = sf_filters.loader_src;
+	if ( window.hasOwnProperty( 'sf_admin' ) ) src = sf_admin.loader_src;
+	if ( window.hasOwnProperty( 'sf_filters' ) ) src = sf_filters.loader_src;
 
 	let loader = '<div id="sf-ajax-loader"><img src="' + src + '" aria-hidden="true" alt=""></div>';
 	node.insertAdjacentHTML( 'beforeend', loader );
@@ -67,11 +73,17 @@ function addLoader( node ) {
 	}, 0 );
 }
 
+/**
+ * Remove loader animation
+ */
 function removeLoader() {
 	document.getElementById( 'sf-ajax-loader' ).remove();
 }
 
-function addFormNotice( message, type = 'info' ) {
+/**
+ * Add new admin notice at the top of the page
+ */
+function addAdminFormNotice( message, type = 'info' ) {
 	const container = document.getElementById( 'post' );
 
 	// Remove any previous notices
@@ -95,16 +107,22 @@ function addFormNotice( message, type = 'info' ) {
 	} );
 }
 
+/**
+ * Remove all custom admin notices
+ */
 function removeFormNotices() {
 	document.querySelectorAll( '#post > .sf-notice' ).forEach( ( notice ) => {
 		notice.remove();
 	} );
 }
 
+/**
+ * Add error notice to an input field
+ */
 function invalidInputNotice( message, input ) {
 
 	// If there is notice already, remove it
-	if( input.previousElementSibling !== null && input.previousElementSibling.classList.contains( 'sf-notice' ) ) {
+	if ( input.previousElementSibling !== null && input.previousElementSibling.classList.contains( 'sf-notice' ) ) {
 		input.previousElementSibling.remove();
 	}
 
@@ -125,6 +143,9 @@ function invalidInputNotice( message, input ) {
 	} );
 }
 
+/**
+ * Debounce callback by a given time
+ */
 function debounce( callback, wait ) {
 	let timeoutId = null;
 	return ( ...args ) => {
@@ -137,31 +158,24 @@ function debounce( callback, wait ) {
 
 /**
  * Set a cookie
- *
- * @param cName
- * @param cValue
- * @param expDays
  */
-function setCookie(cName, cValue, expDays) {
+function setCookie( cName, cValue, expDays ) {
 	let date = new Date();
-	date.setTime(date.getTime() + (expDays * 24 * 60 * 60 * 1000));
+	date.setTime( date.getTime() + (expDays * 24 * 60 * 60 * 1000) );
 	const expires = "expires=" + date.toUTCString();
 	document.cookie = cName + "=" + cValue + "; " + expires + "; path=/";
 }
 
 /**
  * Get a cookie by name
- *
- * @param cName
- * @returns {*}
  */
-function getCookie(cName) {
+function getCookie( cName ) {
 	const name = cName + "=";
-	const cDecoded = decodeURIComponent(document.cookie);
-	const cArr = cDecoded .split('; ');
+	const cDecoded = decodeURIComponent( document.cookie );
+	const cArr = cDecoded.split( '; ' );
 	let res;
-	cArr.forEach(val => {
-		if (val.indexOf(name) === 0) res = val.substring(name.length);
-	})
+	cArr.forEach( val => {
+		if ( val.indexOf( name ) === 0 ) res = val.substring( name.length );
+	} )
 	return res;
 }

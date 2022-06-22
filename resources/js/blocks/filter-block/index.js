@@ -9,10 +9,15 @@ import { registerBlockType } from '@wordpress/blocks';
  */
 import Block from './block';
 
+/**
+ * Filter group WordPress Block definition
+ *
+ * @since 1.0.0
+ */
 registerBlockType( 'simply-filters/filter-group', {
 	title: __( 'SF Filter Group', 'simply-filters' ),
-	description: __( 'Description', 'simply-filters' ),
-	icon: 'format-image',
+	description: __( 'Simply add product\'s price, category and attribute filters to WooCommerce.', 'simply-filters' ),
+	icon: 'filter',
 	category: 'widgets',
 
 	example: {

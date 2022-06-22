@@ -2,7 +2,7 @@ import FilterUrl from "./lib/filter-url";
 import { debounce } from "./lib/helpers";
 
 /**
- * Debounce price change and change the URL
+ * Update price and the URL with debounce
  */
 const updatePrice = debounce( ( data ) => {
 	const url = new FilterUrl();
@@ -15,9 +15,6 @@ const updatePrice = debounce( ( data ) => {
 
 /**
  * Update jQuery slider with values from input field and call update
- *
- * @param ev
- * @param data
  */
 const updateSlider = ( ev, data ) => {
 	jQuery( data.slider ).slider( 'values', [data.min, data.max] );
@@ -27,9 +24,6 @@ const updateSlider = ( ev, data ) => {
 
 /**
  * Check if value is in range and correct it if needed
- * @param input
- * @param min
- * @param max
  */
 const validateRange = ( input, min, max ) => {
 	if ( parseInt( input.value ) > parseInt( input.max ) ) {
@@ -38,19 +32,17 @@ const validateRange = ( input, min, max ) => {
 		input.value = input.min;
 	}
 
-	if( parseInt( min.value ) > parseInt( max.value ) ) {
+	if ( parseInt( min.value ) > parseInt( max.value ) ) {
 		min.value = max.value;
 	}
 
-	if( parseInt( max.value ) < parseInt( min.value ) ) {
+	if ( parseInt( max.value ) < parseInt( min.value ) ) {
 		max.value = min.value;
 	}
 }
 
 /**
  * Format price based on site's currency settings
- *
- * @param price
  */
 const formatPrice = ( price ) => {
 	const symbol = sf_filters.currency;
@@ -67,6 +59,11 @@ const formatPrice = ( price ) => {
 	return price;
 }
 
+/**
+ * Setup price sliders
+ *
+ * @since 1.0.0
+ */
 export const setupSliders = () => {
 	let sliders = document.querySelectorAll( '.sf-slider' );
 	sliders.forEach( ( slider ) => {
@@ -85,7 +82,7 @@ export const setupSliders = () => {
 			max: parseInt( max.dataset.max ),
 			values: [min.value, max.value],
 			slide: function ( event, ui ) {
-				if( ui.values[1] - ui.values[0] < 1 ) return false;
+				if ( ui.values[1] - ui.values[0] < 1 ) return false;
 
 				let inputs = event.target.nextElementSibling.children;
 				inputs[0].value = ui.values[0];
@@ -112,7 +109,6 @@ export const setupSliders = () => {
 						max: max.value
 					} );
 				}, 500 )();
-
 			} );
 		} );
 

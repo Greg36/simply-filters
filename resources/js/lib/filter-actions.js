@@ -3,6 +3,11 @@ import { addLoader, getCookie, removeLoader, setCookie } from "./helpers";
 import { setupSliders } from "../range-slider";
 import { __ } from '@wordpress/i18n';
 
+/**
+ * Initialize front-end functionality
+ *
+ * @since 1.0.0
+ */
 export default class FilterActions {
 
 	constructor() {
@@ -19,9 +24,11 @@ export default class FilterActions {
 		window.addEventListener( 'sf-filter-products', () => {
 			this.filterProducts();
 		} );
-
 	}
 
+	/**
+	 * Initialize filters
+	 */
 	initFilters() {
 		const filters = document.querySelectorAll( '.sf-filter' );
 		if ( filters ) {
@@ -31,6 +38,9 @@ export default class FilterActions {
 		}
 	}
 
+	/**
+	 * Initialize filter events
+	 */
 	initFilter( filter ) {
 		let data = {};
 		data.type = filter.dataset.type;
@@ -42,9 +52,7 @@ export default class FilterActions {
 	}
 
 	/**
-	 * Setup events for input fields in filter
-	 *
-	 * @param filter
+	 * Setup events for input fields in the filter
 	 */
 	setupFilterEvents( filter ) {
 
@@ -77,9 +85,13 @@ export default class FilterActions {
 			} );
 		} );
 
-
 	}
 
+	/**
+	 * Make AJAX GET request with filtered URL
+	 * replace page elements with updated content
+	 * and re-initiate necessary events
+	 */
 	filterProducts() {
 
 		fetch( location.href, {
@@ -93,14 +105,17 @@ export default class FilterActions {
 			content.documentElement.innerHTML = html;
 
 			this.updatePageFragments( content );
-			this.updateOptionCounters( content );
-			this.updateFilterLists( content );
+			// this.updateOptionCounters( content );
+			this.updateFilterOptions( content );
 			this.updateRangeSliders( content );
 		} );
 
 		addLoader( document.body );
 	}
 
+	/**
+	 * Replace page fragments with new content
+	 */
 	updatePageFragments( content ) {
 
 		let selectors = [
@@ -113,7 +128,7 @@ export default class FilterActions {
 		];
 
 		// Get user entered selectors if they have been change
-		if( sf_filters.selectors ) {
+		if ( sf_filters.selectors ) {
 			selectors = sf_filters.selectors;
 		}
 
@@ -132,6 +147,9 @@ export default class FilterActions {
 			// Content is present only on new version
 			if ( home.length === 0 && ext.length > 0 ) {
 				ext.forEach( ( ele ) => {
+
+					// Find relative path of the content in current document
+					// to place it in correct location
 					let location = this.getRelativeDOMPosition( ext, ele );
 					if ( location.selector ) {
 						let root = document.querySelector( location.selector );
@@ -159,24 +177,27 @@ export default class FilterActions {
 		removeLoader();
 	}
 
-	updateFilterLists( content ) {
+	/**
+	 * Update list of options in filters
+	 */
+	updateFilterOptions( content ) {
 
 		// Get new filters
 		let update = {};
 		content.querySelectorAll( '.sf-filter' ).forEach( ( filter ) => {
-			update[ filter.dataset.id ] = filter;
+			update[filter.dataset.id] = filter;
 		} );
 
 		document.querySelectorAll( '.sf-filter' ).forEach( ( filter ) => {
-			if( update.hasOwnProperty( filter.dataset.id ) ) {
+			if ( update.hasOwnProperty( filter.dataset.id ) ) {
 				let list = filter.querySelector( '.sf-option-list' );
-				let content = update[ filter.dataset.id ].querySelector( '.sf-option-list' );
-				if( list && content ) {
+				let content = update[filter.dataset.id].querySelector( '.sf-option-list' );
+				if ( list && content ) {
 					list = list.closest( 'div' );
 					content = content.closest( 'div' );
 
 					// Keep list opened if it was open
-					if( list.querySelector( '.sf-more-btn--open' ) ) {
+					if ( list.querySelector( '.sf-more-btn--open' ) ) {
 						content.querySelector( '.sf-more-btn' ).classList.add( 'sf-more-btn--open' );
 					}
 
@@ -193,8 +214,6 @@ export default class FilterActions {
 
 	/**
 	 * Find option count values in filters and replace them with data from new content
-	 *
-	 * @param content
 	 */
 	updateOptionCounters( content ) {
 		const options = document.querySelectorAll( '.sf-filter .sf-label-count' );
@@ -211,6 +230,9 @@ export default class FilterActions {
 		} );
 	}
 
+	/**
+	 * Replace and re-initiate range slider filter
+	 */
 	updateRangeSliders( content ) {
 		const sliders = document.querySelectorAll( '.sf-filter .sf-slider' );
 		let updated = false;
@@ -229,12 +251,8 @@ export default class FilterActions {
 	}
 
 	/**
-	 * Step up te DOM tree and find the closest element with unique ID
-	 * saving children index on the path
-	 *
-	 * @param doc
-	 * @param ele
-	 * @param location
+	 * Traverse DOM tree up from given element finding node with unique ID
+	 * saving relative path to initial element
 	 */
 	getRelativeDOMPosition( doc, ele, location = [] ) {
 		location.push( Array.from( ele.parentNode.children ).indexOf( ele ) )
@@ -251,7 +269,7 @@ export default class FilterActions {
 	}
 
 	/**
-	 * Set events for show more options button
+	 * Setup events for show more options button
 	 */
 	setupMoreButtons() {
 		document.querySelectorAll( '.sf-filter .sf-more-btn' ).forEach( ( button ) => {
@@ -282,6 +300,7 @@ export default class FilterActions {
 					}, 200 );
 
 				} else {
+
 					// Open list
 					button.innerHTML = __( 'Show less', 'simply-filters' );
 					button.ariaExpanded = true;
@@ -298,13 +317,14 @@ export default class FilterActions {
 					setTimeout( () => {
 						list.style.height = '';
 					}, 200 );
+
 				}
 
 				button.classList.toggle( 'sf-more-btn--open' );
 			} );
 
 			// Open list initially
-			if( button.classList.contains( 'sf-more-btn--open' ) ) {
+			if ( button.classList.contains( 'sf-more-btn--open' ) ) {
 				button.innerHTML = __( 'Show less', 'simply-filters' );
 				button.ariaExpanded = true;
 				options.forEach( ( option ) => {
@@ -316,6 +336,9 @@ export default class FilterActions {
 		} );
 	}
 
+	/**
+	 * Setup events for collapse filter button
+	 */
 	setupCollapseButtons() {
 		document.querySelectorAll( '.sf-filter .sf-filter__collapse' ).forEach( ( button ) => {
 			const filter = button.closest( '.sf-filter' );
@@ -362,9 +385,6 @@ export default class FilterActions {
 
 	/**
 	 * Update filter collapse cookie
-	 *
-	 * @param id
-	 * @param value
 	 */
 	updateCollapseCookie( id, value ) {
 		const cookie_name = 'sf-filters-collapsed';
@@ -374,12 +394,12 @@ export default class FilterActions {
 			if ( value ) setCookie( cookie_name, id, 7 );
 		} else {
 			let cookies = cookie.split( '|' );
-			if( ! cookies.includes( id ) && value ) {
+			if ( !cookies.includes( id ) && value ) {
 
 				// Add id to cookie
 				cookies.push( id );
 				setCookie( cookie_name, cookies.join( '|' ), 7 );
-			} else if( cookies.includes( id ) && ! value ) {
+			} else if ( cookies.includes( id ) && !value ) {
 
 				// Remove id from cookie
 				cookies = cookies.filter( item => item !== id );
@@ -393,7 +413,7 @@ export default class FilterActions {
 	 */
 	setupSubmitButtons() {
 		document.querySelectorAll( '.sf-filter-group__submit' ).forEach( ( submit ) => {
-			submit.addEventListener( 'click', (e) => {
+			submit.addEventListener( 'click', ( e ) => {
 				const url = this.url.getUpdatedURL();
 				const event = new Event( 'sf-filter-products' );
 				window.dispatchEvent( event );
@@ -409,7 +429,7 @@ export default class FilterActions {
 
 		// Clear filters on click
 		document.querySelectorAll( '.sf-filter-group__clear' ).forEach( ( clear ) => {
-			clear.addEventListener( 'click', (e) => {
+			clear.addEventListener( 'click', ( e ) => {
 				// Checkbox
 				document.querySelectorAll( '.sf-filter input[type="checkbox"]' ).forEach( input => input.checked = false );
 

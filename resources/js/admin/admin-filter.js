@@ -1,14 +1,13 @@
-/**
- * Filters edit screen
- *
- * @package   SimplyFilters
- */
-
 import { __ } from '@wordpress/i18n';
 import ColorControl from './admin-color';
-import { addLoader, addFormNotice, invalidInputNotice, removeLoader, uniqid } from "../lib/helpers";
+import { addLoader, addAdminFormNotice, invalidInputNotice, removeLoader, uniqid } from "../lib/helpers";
 import { checkNoFilterLabel, updateOrderNumbers } from "./admin-filters-group";
 
+/**
+ * Filters admin settings
+ *
+ * @since 1.0.0
+ */
 export default class AdminFilter {
 
 	constructor( filter ) {
@@ -34,7 +33,7 @@ export default class AdminFilter {
 	}
 
 	/**
-	 * Get filter's input field by its label with query cache
+	 * Get filter's input field by its label using cache
 	 */
 	getInput( label ) {
 		if ( !this.nodes.hasOwnProperty( label ) ) {
@@ -81,9 +80,9 @@ export default class AdminFilter {
 			input.addEventListener( 'invalid', ( e ) => {
 				e.preventDefault();
 				invalidInputNotice( __( 'This field is required.', 'simply-filters' ), input );
-				addFormNotice( __( 'Fill in all required fields.', 'simply-filters' ), 'error' )
+				addAdminFormNotice( __( 'Fill in all required fields.', 'simply-filters' ), 'error' )
 
-				if( ! this.filter.classList.contains( 'open' ) ) {
+				if ( !this.filter.classList.contains( 'open' ) ) {
 					this.toggleOptions();
 				}
 			} );
@@ -95,8 +94,8 @@ export default class AdminFilter {
 			const menu_order = this.getInput( 'menu_order' );
 
 			// If order value changed, dispatch change event to save file in POST
-			if( parseInt( menu_order.value ) !== parseInt( e.detail )  ) {
-				menu_order.dispatchEvent( new Event('change') );
+			if ( parseInt( menu_order.value ) !== parseInt( e.detail ) ) {
+				menu_order.dispatchEvent( new Event( 'change' ) );
 			}
 			menu_order.value = e.detail;
 		} );
@@ -116,17 +115,17 @@ export default class AdminFilter {
 	}
 
 	/**
-	 * If either source or one of the options was changed check
-	 * selected source and option and pass it to get color
+	 * If either source or one of the options was changed check selected
+	 * source and option then pass it to get colors via AJAX
 	 */
 	setupColorControl() {
-
 		const options = [
 			'sources',
 			'attributes',
 			'product_cat',
 			'product_tag'
 		]
+
 		options.forEach( key => {
 			const input = this.getInput( key );
 
@@ -176,8 +175,7 @@ export default class AdminFilter {
 	}
 
 	/**
-	 * Toggle visibility of fitter's options
-	 *
+	 * Toggle visibility of fitter options
 	 */
 	toggleOptions( speed = 300 ) {
 		const options = this.filter.querySelector( '.sf-filter__options' );
@@ -300,7 +298,6 @@ export default class AdminFilter {
 
 			this.removeTooltips();
 			this.saveRemovedID();
-
 
 			setTimeout( () => {
 				this.filter.remove();
