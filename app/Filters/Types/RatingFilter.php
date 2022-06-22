@@ -31,16 +31,23 @@ class RatingFilter extends Filter {
 	 */
 	public function render() {
 		if ( wc_review_ratings_enabled() ) {
-			$options = $this->get_selected_values();
 
-			TemplateLoader::render( 'types/rating', [
-				'id'     => $this->get_id(),
-				'key'    => _x( 'rating', 'slug', $this->locale ),
-				'values' => $options,
-				'count'  => $this->get_product_counts_by_rating()
-			],
-				'Filters'
-			);
+            $options = $this->get_selected_values();
+            $data = [
+	            'id'     => $this->get_id(),
+	            'key'    => _x( 'rating', 'slug', $this->locale ),
+	            'values' => $options,
+	            'count'  => $this->get_product_counts_by_rating()
+            ];
+
+			/**
+			 * Rating filter data before render
+			 *
+			 * @param array $data Filter options, settings and values
+			 */
+			$data = apply_filters( 'sf-rating-render-data', $data );
+
+			TemplateLoader::render( 'types/rating', $data, 'Filters' );
 		}
 	}
 

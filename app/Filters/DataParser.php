@@ -36,6 +36,14 @@ class DataParser {
 			$data['enabled'] = true;
 		}
 
+		/**
+		 * Filter settings before save
+		 *
+		 * @param array $data Filter settings
+		 * @param int $id Filter's post ID
+		 */
+		$data = apply_filters( 'sf-filter-data-before-save', $data, $id );
+
 		// Prepare post data to be saved
 		$post = [
 			'ID'           => $id,

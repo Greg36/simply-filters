@@ -144,10 +144,17 @@ class FilterGroup {
 		// Render filters only on a page with WooCommerce query or block preview
 		if ( \Hybrid\app( 'is-woocommerce-page' ) || \Hybrid\app( 'is-block-preview' ) ) {
 
+			/**
+			 * Filters group settings
+			 *
+			 * @param array $settings
+			 */
+			$settings = apply_filters( 'sf-group-settings', $this->get_settings()->get_data() );
+
 			TemplateLoader::render( 'filter-group', [
 				'group_id' => $this->group_id,
 				'filters'  => $this->get_filters(),
-				'settings' => $this->get_settings()->get_data(),
+				'settings' => $settings,
 			],
 				'Filters'
 			);

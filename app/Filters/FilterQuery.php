@@ -61,7 +61,14 @@ class FilterQuery {
 		}
 
 		// Get filtering parameters from the URL
-		$this->params = $this->parse_url();
+		$params = $this->parse_url();
+
+		/**
+		 * Filters parameters parsed from URL
+		 *
+		 * @param array $params Array of params include key, type, data and operator
+		 */
+		$this->params = apply_filters( 'sf-url-parameters', $params );
 
 		// Apply tax query
 		$this->query->set( 'tax_query', $this->get_tax_query() );
@@ -290,6 +297,13 @@ class FilterQuery {
 			$tax_query[] = $rating_query;
 		}
 
+		/**
+		 * Taxonomy query before being applied
+		 *
+		 * @param array $tax_query Taxonomy query clauses
+		 */
+		$tax_query = apply_filters( 'sf-taxonomy-query', $tax_query );
+
 		return $tax_query;
 	}
 
@@ -367,6 +381,13 @@ class FilterQuery {
 			$max,
 			$min
 		);
+
+		/**
+		 * Price query before being applied
+		 *
+		 * @param string $params Escaped price query string
+		 */
+		$price_query = apply_filters( 'sf-price-query', $price_query );
 
 		$clauses['where'] .= $price_query;
 
@@ -451,10 +472,17 @@ class FilterQuery {
 			)";
 		}
 
+		/**
+		 * Attributes clauses before being applied
+		 *
+		 * @param array $clauses Attribute query clauses
+		 */
+		$clauses = apply_filters( 'sf-attributes-query', $clauses );
+
 		// Apply clauses to the query
 		if ( ! empty( $clauses ) ) {
 			$args['where'] .= ' AND (' . join( ' temp ) AND ', $clauses ) . ' temp ))';
-		} elseif ( ! empty( $params ) ) {
+		} else if ( ! empty( $params ) ) {
 			$args['where'] .= ' AND 1=0';
 		}
 

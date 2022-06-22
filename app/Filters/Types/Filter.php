@@ -649,6 +649,14 @@ abstract class Filter {
 			$product_count = $cached_queries[ $sql_hash ];
 		}
 
+		/**
+		 * Products in terms counted
+		 *
+		 * @param array $product_count Array of term IDs and counted products from that term
+         * @param array $terms         Array of all terms before counting
+		 */
+		$product_count = apply_filters( 'sf-product-count', $product_count, $terms );
+
 		return $product_count;
 	}
 

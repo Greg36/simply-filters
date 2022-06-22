@@ -43,7 +43,14 @@
 
     <div class="sf-filter__options">
 
-		<?php do_action( 'sf_admin_before_filter_options', $filter ); ?>
+		<?php
+		/**
+		 * Fires before admin filter options are rendered
+		 *
+		 * @param \SimplyFilters\Filters\Types\Filter  $filter Filter object
+		 */
+        do_action( 'sf_admin_before_filter_options', $filter );
+        ?>
 
         <table class="sf-options">
             <tbody>
@@ -59,7 +66,14 @@
             </tbody>
         </table>
 
-		<?php do_action( 'sf_admin_after_filter_options', $filter ); ?>
+		<?php
+		/**
+		 * Fires after admin filter options are rendered
+		 *
+		 * @param \SimplyFilters\Filters\Types\Filter  $filter Filter object
+		 */
+        do_action( 'sf_admin_after_filter_options', $filter );
+        ?>
 
     </div>
 

@@ -43,6 +43,13 @@ class RadioFilter extends Filter {
 				'name' => $this->get_data( 'all_option' )
 			] );
 
+			/**
+			 * Radio filter data before render
+			 *
+			 * @param array $data Filter options, settings and values
+			 */
+			$data = apply_filters( 'sf-radio-render-data', $data );
+
 			TemplateLoader::render( 'types/radio', $data, 'Filters' );
 		}
 	}

@@ -43,6 +43,13 @@ class SelectFilter extends Filter {
 				'name' => $this->get_data( 'all_option' )
 			] );
 
+			/**
+			 * Select filter data before render
+			 *
+			 * @param array $data Filter options, settings and values
+			 */
+			$data = apply_filters( 'sf-select-render-data', $data );
+
 			TemplateLoader::render( 'types/select', $data, 'Filters' );
 		}
 	}

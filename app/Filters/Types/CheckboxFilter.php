@@ -33,7 +33,15 @@ class CheckboxFilter extends Filter {
 	 * Render the filter
 	 */
 	public function render() {
-		$data = $this->get_render_data();
+
+        $data = $this->get_render_data();
+
+		/**
+		 * Checkbox filter data before render
+		 *
+		 * @param array $data Filter options, settings and values
+		 */
+		$data = apply_filters( 'sf-checkbox-render-data', $data );
 
 		if ( $data ) {
 			TemplateLoader::render( 'types/checkbox', $data, 'Filters' );

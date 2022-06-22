@@ -471,7 +471,16 @@ class AdminServiceProvider extends ServiceProvider {
 		$settings = isset( $_POST[ $prefix ][ $postarr['ID'] ] ) ? $_POST[ $prefix ][ $postarr['ID'] ] : [];
 
 		if ( ! empty( $settings ) ) {
-			$settings             = wp_unslash( wc_clean( $settings ) );
+			$settings = wp_unslash( wc_clean( $settings ) );
+
+			/**
+			 * Group settings before save
+			 *
+			 * @param array $data Group settings
+			 * @param int $id Group post ID
+			 */
+			$settings = apply_filters( 'sf-group-data-before-save', $settings, $postarr['post_ID'] );
+
 			$data['post_content'] = wp_slash( maybe_serialize( $settings ) );
 		}
 
@@ -497,6 +506,13 @@ class AdminServiceProvider extends ServiceProvider {
 					$options[ sanitize_text_field( $key ) ] = wc_clean( $option );
 				}
 			}
+
+			/**
+			 * General settings before save
+			 *
+			 * @param array $data General settings
+			 */
+			$options = apply_filters( 'sf-options-data-before-save', $options );
 
 			update_option( 'sf-settings', $options );
 		}

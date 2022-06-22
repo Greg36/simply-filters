@@ -10,6 +10,15 @@
  */
 ?>
 
+<?php
+/**
+ * Fires before filter base is rendered
+ *
+ * @param \SimplyFilters\Filters\Types\Filter  $filter Filter object
+ */
+do_action( 'sf-before-filter-render', $filter );
+?>
+
 <div class="sf-filter" data-type="<?php esc_attr_e( $filter->get_type() ); ?>" data-id="<?php esc_attr_e( $filter->get_id() ); ?>">
 
     <div class="sf-filter__heading">

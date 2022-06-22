@@ -61,6 +61,14 @@ class ColorFilter extends Filter {
 
 		if ( $data ) {
 			$data['options'] = $this->prepare_colors_data( $data['options'] );
+
+			/**
+			 * Color filter data before render
+			 *
+			 * @param array $data Filter options, settings and values
+			 */
+			$data = apply_filters( 'sf-color-render-data', $data );
+
 			TemplateLoader::render( 'types/color', $data, 'Filters' );
 		}
 	}

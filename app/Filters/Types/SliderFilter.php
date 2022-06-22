@@ -31,14 +31,22 @@ class SliderFilter extends Filter {
 	 * Render the filter
 	 */
 	public function render() {
-		TemplateLoader::render( 'types/slider', [
+
+		$data = [
 			'id'     => $this->get_id(),
 			'key'    => _x( 'price', 'slug', $this->locale ),
 			'range'  => $this->get_price_range(),
 			'values' => $this->get_selected_values(),
-		],
-			'Filters'
-		);
+		];
+
+		/**
+		 * Slider filter data before render
+		 *
+		 * @param array $data Filter options, settings and values
+		 */
+		$data = apply_filters( 'sf-slider-render-data', $data );
+
+		TemplateLoader::render( 'types/slider', $data, 'Filters' );
 	}
 
 	/**
