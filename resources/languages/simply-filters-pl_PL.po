@@ -4,769 +4,857 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Simply Filters for WooCommerce 1.0.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/simply-filters\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"POT-Creation-Date: 2022-06-22T18:12:44+00:00\n"
+"PO-Revision-Date: 2022-06-22 20:14+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: pl_PL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-06-22T18:12:44+00:00\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.6.0\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 "
+"|| n%100>14) ? 1 : 2);\n"
+"X-Generator: Poedit 3.1\n"
 
 #. Plugin Name of the plugin
 #: app/Admin/views/admin-toolbar.php:59
 msgid "Simply Filters for WooCommerce"
-msgstr ""
+msgstr "Simply Filters for WooCommerce"
 
 #. Plugin URI of the plugin
 msgid "https://gregn.pl/simply-filters"
-msgstr ""
+msgstr "https://gregn.pl/simply-filters"
 
 #. Description of the plugin
-#: app/Filters/FilterWidget.php:16
-#: resources/js/blocks/filter-block/index.js:19
-msgid "Simply add product's price, category and attribute filters to WooCommerce."
+#: app/Filters/FilterWidget.php:16 resources/js/blocks/filter-block/index.js:19
+msgid ""
+"Simply add product's price, category and attribute filters to WooCommerce."
 msgstr ""
+"Z łatwością dodaj filtry ceny, kategorii i atrybutów produktów WooCommerce."
 
 #. Author of the plugin
 msgid "Grzegorz Niedzielski"
-msgstr ""
+msgstr "Grzegorz Niedzielski"
 
 #. Author URI of the plugin
 msgid "https://gregn.pl"
-msgstr ""
+msgstr "https://gregn.pl"
 
 #: app/Admin/AdminServiceProvider.php:183
 #: app/Admin/AdminServiceProvider.php:184
 msgid "Simply Filters"
-msgstr ""
+msgstr "Simply Filters"
 
 #: app/Admin/AdminServiceProvider.php:205
 msgid "Filter colors"
-msgstr ""
+msgstr "Kolory filtrów"
 
 #: app/Admin/AdminServiceProvider.php:206
-msgid "Customize how filters look on the site. Changing colors here will affect all filters."
+msgid ""
+"Customize how filters look on the site. Changing colors here will affect all "
+"filters."
 msgstr ""
+"Dostosuj wygląd filtrów na stronie. Zmiana kolorów wpłynie na wszystkie "
+"filtry."
 
 #: app/Admin/AdminServiceProvider.php:211
 msgid "Accent"
-msgstr ""
+msgstr "Akcent"
 
 #: app/Admin/AdminServiceProvider.php:217
 msgid "Highlight"
-msgstr ""
+msgstr "Wyróżnienie"
 
 #: app/Admin/AdminServiceProvider.php:223
 msgid "Background"
-msgstr ""
+msgstr "Tło"
 
 #: app/Admin/AdminServiceProvider.php:229
 msgid "Option text"
-msgstr ""
+msgstr "Tekst opcji"
 
 #: app/Admin/AdminServiceProvider.php:235
 msgid "Title text"
-msgstr ""
+msgstr "Tekst nagłówków"
 
 #: app/Admin/AdminServiceProvider.php:242
 msgid "Elements style"
-msgstr ""
+msgstr "Styl elementów"
 
 #: app/Admin/AdminServiceProvider.php:243
 msgid "Overall style of filter elements"
-msgstr ""
+msgstr "Ogólny styl elementów filtrów"
 
 #: app/Admin/AdminServiceProvider.php:245
 msgid "Rounded"
-msgstr ""
+msgstr "Zaokrąglone"
 
 #: app/Admin/AdminServiceProvider.php:246
 msgid "Squared"
-msgstr ""
+msgstr "Kwadratowe"
 
 #: app/Admin/AdminServiceProvider.php:251
 msgid "Enable custom selectors"
-msgstr ""
+msgstr "Włącz niestandardowe selektory"
 
 #: app/Admin/AdminServiceProvider.php:252
-msgid "If your theme does not refresh products after filtering it might be due to non-standard CSS selectors. Enable this option to enter custom selector values."
+msgid ""
+"If your theme does not refresh products after filtering it might be due to "
+"non-standard CSS selectors. Enable this option to enter custom selector "
+"values."
 msgstr ""
+"Jeśli Twój motyw nie odświeża produktów po przefiltrowaniu, może to być "
+"spowodowane niestandardowymi selektorami CSS. Włącz tę opcję, aby wprowadzić "
+"niestandardowe wartości dla selektorów."
 
 #: app/Admin/AdminServiceProvider.php:256
 msgid "Selectors"
-msgstr ""
+msgstr "Selektory"
 
 #: app/Admin/AdminServiceProvider.php:257
-msgid "Enter CSS selector for each part of the page - it will be replaced with new content on page reload.<br><br>If you don't know what values to enter contact your theme's support."
+msgid ""
+"Enter CSS selector for each part of the page - it will be replaced with new "
+"content on page reload.<br><br>If you don't know what values to enter "
+"contact your theme's support."
 msgstr ""
+"Wprowadź selektor CSS dla każdej części strony - zostanie on zastąpiony nową "
+"zawartością po ponownym załadowaniu strony.<br><br>Jeśli nie wiesz, jakie "
+"wartości wpisać, skontaktuj się z twórcą Twojego motywu."
 
 #: app/Admin/AdminServiceProvider.php:261
 msgid "Products selector"
-msgstr ""
+msgstr "Selektor produktów"
 
 #: app/Admin/AdminServiceProvider.php:266
 msgid "Pagination selector"
-msgstr ""
+msgstr "Selektor paginacji"
 
 #: app/Admin/AdminServiceProvider.php:271
 msgid "Breadcrumbs selector"
-msgstr ""
+msgstr "Selektor breadcrumbs"
 
 #: app/Admin/AdminServiceProvider.php:276
 msgid "Result count selector"
-msgstr ""
+msgstr "Selektor licznika wyszukiwania"
 
 #: app/Admin/AdminServiceProvider.php:281
 msgid "Sorting selector"
-msgstr ""
+msgstr "Selektor sortowania"
 
 #: app/Admin/AdminServiceProvider.php:286
 msgid "Page title selector"
-msgstr ""
+msgstr "Selektor tytułu strony"
 
 #: app/Admin/AdminServiceProvider.php:303
 msgid "Title"
-msgstr ""
+msgstr "Tytuł"
 
-#: app/Admin/AdminServiceProvider.php:304
-#: app/Admin/views/filter-info.php:46
+#: app/Admin/AdminServiceProvider.php:304 app/Admin/views/filter-info.php:46
 msgid "Shortcode"
-msgstr ""
+msgstr "Shortcode"
 
 #: app/Admin/AdminServiceProvider.php:305
 msgid "Date"
-msgstr ""
+msgstr "Data"
 
 #: app/Admin/AdminServiceProvider.php:335
 #: app/Admin/AdminServiceProvider.php:336
 #: app/Admin/AdminServiceProvider.php:338
 msgid "Filter group updated."
-msgstr ""
+msgstr "Grupa filtrów zaktualizowana."
 
 #: app/Admin/AdminServiceProvider.php:337
 msgid "Filter group deleted."
-msgstr ""
+msgstr "Grupa filtrów usunięta."
 
 #: app/Admin/AdminServiceProvider.php:340
 msgid "Filter group published."
-msgstr ""
+msgstr "Grupa filtrów opublikowana."
 
 #: app/Admin/AdminServiceProvider.php:341
 msgid "Filter group saved."
-msgstr ""
+msgstr "Grupa filtrów zapisana."
 
 #: app/Admin/AdminServiceProvider.php:342
 msgid "Filter group submitted."
-msgstr ""
+msgstr "Grupa filtrów przesłana."
 
 #: app/Admin/AdminServiceProvider.php:343
 msgid "Filter group scheduled for."
-msgstr ""
+msgstr "Grupa filtrów zaplanowana."
 
 #: app/Admin/AdminServiceProvider.php:344
 msgid "Filter group draft updated."
-msgstr ""
+msgstr "Szkic grupy filtrów zapisany."
 
 #: app/Admin/AdminServiceProvider.php:514
-msgid "Product rating is currently disabled in WooCommerce, for this filter to work enable star rating in <a href=\"%s\" target=\"_blank\" >settings</a>."
+msgid ""
+"Product rating is currently disabled in WooCommerce, for this filter to work "
+"enable star rating in <a href=\"%s\" target=\"_blank\" >settings</a>."
 msgstr ""
+"Ocena produktów jest obecnie wyłączona w WooCommerce. Aby ten filtr działał, "
+"włącz ocenę przy opiniach w <a href=\"%s\" target=\"_blank\" >ustawieniach</"
+"a>."
 
 #: app/Admin/Controls/ColorControl.php:70
 msgid "There are no options for selected source"
-msgstr ""
+msgstr "Brak opcji dla wybranego źródła"
 
 #: app/Admin/Controls/ToggleControl.php:32
 msgid "On"
-msgstr ""
+msgstr "On"
 
 #: app/Admin/Controls/ToggleControl.php:33
 msgid "Off"
-msgstr ""
+msgstr "Off"
 
 #: app/Admin/Metaboxes.php:28
 msgid "Edit Filters"
-msgstr ""
+msgstr "Edytuj filtry"
 
 #: app/Admin/Metaboxes.php:37
 msgid "Setup filters"
-msgstr ""
+msgstr "Skonfiguruj filtry"
 
 #: app/Admin/views/admin-toolbar.php:20
 #: app/Filters/FiltersServiceProvider.php:123
 msgid "Filters"
-msgstr ""
+msgstr "Filtry"
 
 #: app/Admin/views/admin-toolbar.php:30
 msgid "Add new"
-msgstr ""
+msgstr "Dodaj nowy"
 
 #: app/Admin/views/admin-toolbar.php:40
 msgid "Settings"
-msgstr ""
+msgstr "Ustawienia"
 
 #: app/Admin/views/filter-field.php:37
 msgid "Edit filter"
-msgstr ""
+msgstr "Edytuj filtr"
 
 #: app/Admin/views/filter-field.php:37
 msgid "Edit"
-msgstr ""
+msgstr "Edytuj"
 
 #: app/Admin/views/filter-field.php:38
 msgid "Duplicate filter"
-msgstr ""
+msgstr "Duplikuj filtr"
 
 #: app/Admin/views/filter-field.php:38
 msgid "Duplicate"
-msgstr ""
+msgstr "Duplikuj"
 
 #: app/Admin/views/filter-field.php:39
 msgid "Remove filter"
-msgstr ""
+msgstr "Usuń filtr"
 
 #: app/Admin/views/filter-field.php:39
 msgid "Remove"
-msgstr ""
+msgstr "Usuń"
 
 #: app/Admin/views/filter-field.php:55
 msgid "Close filter"
-msgstr ""
+msgstr "Zamknij filtr"
 
 #: app/Admin/views/filter-group-fields.php:17
 msgid "Enabled"
-msgstr ""
+msgstr "Włączony"
 
 #: app/Admin/views/filter-group-fields.php:18
 msgid "Label"
-msgstr ""
+msgstr "Etykieta"
 
 #: app/Admin/views/filter-group-fields.php:19
 msgid "Type"
-msgstr ""
+msgstr "Typ"
 
 #: app/Admin/views/filter-group-fields.php:34
-msgid "No filters. Click <strong>Add new filter</strong> button to add first one."
+msgid ""
+"No filters. Click <strong>Add new filter</strong> button to add first one."
 msgstr ""
+"Braj filtrów. Kliknij przycisk <strong>Dodaj nowy filtr</strong>, aby dodać "
+"pierwszy."
 
 #: app/Admin/views/filter-group-fields.php:40
 msgid "Add new filter"
-msgstr ""
+msgstr "Dodaj nowy filtr"
 
 #: app/Admin/views/filter-info.php:12
 msgid "Setup filters in the shop:"
-msgstr ""
+msgstr "Skonfiguruj filtry w sklepie:"
 
 #: app/Admin/views/filter-info.php:13
-msgid "After you prepare filters group it <strong>will not</strong> be automatically visible in your shop, you need to place this group somewhere."
+msgid ""
+"After you prepare filters group it <strong>will not</strong> be "
+"automatically visible in your shop, you need to place this group somewhere."
 msgstr ""
+"Po dodaniu grupy filtrów, <strong>nie będzie</strong> ona automatycznie "
+"widoczna w Twoim sklepie, musisz gdzieś umieścić tę grupę."
 
 #: app/Admin/views/filter-info.php:20
 msgid "Block"
-msgstr ""
+msgstr "Blok"
 
 #: app/Admin/views/filter-info.php:35
 msgid "Widget"
-msgstr ""
+msgstr "Widżet"
 
 #: app/Admin/views/filter-info.php:37
-msgid "Add new <strong>SF Filter Group</strong> widget to shop sidebar in <a href=\"%s\" target=\"_blank\">widgets panel</a>."
+msgid ""
+"Add new <strong>SF Filter Group</strong> widget to shop sidebar in <a href="
+"\"%s\" target=\"_blank\">widgets panel</a>."
 msgstr ""
+"Dodaj nowy widżet <strong>SF Grupa Filtrów</strong> do paska bocznego sklepu "
+"w <a href=\"%s\" target=\"_blank\">panelu widżetów</a>."
 
 #: app/Admin/views/filter-info.php:47
 msgid "Place this shortcode where you need filters to appear:"
-msgstr ""
+msgstr "Umieść ten shortcode tam, gdzie chcesz, aby pojawiły się filtry:"
 
 #: app/Admin/views/filter-new-popup.php:18
 msgid "Select filter type"
-msgstr ""
+msgstr "Wybierz typ filtra"
 
 #: app/Admin/views/filter-new-popup.php:19
 msgid "Close popup"
-msgstr ""
+msgstr "Zamknij okno"
 
 #: app/Admin/views/filter-tabs.php:14
 msgid "Edit filters"
-msgstr ""
+msgstr "Edytuj filtry"
 
 #: app/Admin/views/filter-tabs.php:20
 msgid "Group settings"
-msgstr ""
+msgstr "Ustawienia grupy"
 
 #: app/Admin/views/settings-page.php:26
 msgid "Save settings"
-msgstr ""
+msgstr "Zapisz ustawienia"
 
 #: app/Filters/FilterGroup.php:51
 msgid "Enable elements"
-msgstr ""
+msgstr "Włącz elementy"
 
 #: app/Filters/FilterGroup.php:52
 msgid "Elements that should be visible in this filter group"
-msgstr ""
+msgstr "Elementy, które powinny być widoczne w tej grupie filtrów"
 
 #: app/Filters/FilterGroup.php:54
 msgid "<strong>Group title</strong> - show group title above filters"
-msgstr ""
+msgstr "<strong>Tytuł grupy</strong> — pokaż tytuł grupy nad filtrami"
 
 #: app/Filters/FilterGroup.php:55
-msgid "<strong>Clear all button</strong> - reset options button to clear all selected values"
+msgid ""
+"<strong>Clear all button</strong> - reset options button to clear all "
+"selected values"
 msgstr ""
+"<strong>Przycisk wyczyść wszystko</strong> – przycisk resetowania opcji, aby "
+"wyczyścić wszystkie wybrane wartości"
 
 #: app/Filters/FilterGroup.php:60
 msgid "Filtering start"
-msgstr ""
+msgstr "Rozpoczęcie filtrowania"
 
 #: app/Filters/FilterGroup.php:61
 msgid "When should filtering of products start"
-msgstr ""
+msgstr "Kiedy powinno rozpocząć się filtrowanie produktów"
 
 #: app/Filters/FilterGroup.php:63
 msgid "<strong>Automatically</strong> - when any of the filters are changed"
-msgstr ""
+msgstr "<strong>Automatycznie</strong> — po zmianie któregokolwiek z filtrów"
 
 #: app/Filters/FilterGroup.php:64
 msgid "<strong>On submit</strong> - when user presses the Filter button"
-msgstr ""
+msgstr "<strong>Manualnie</strong> – gdy użytkownik naciśnie przycisk Filtruj"
 
 #: app/Filters/FilterGroup.php:69
 msgid "More options button"
-msgstr ""
+msgstr "Przycisk więcej opcji"
 
 #: app/Filters/FilterGroup.php:70
-msgid "Enable to limit how many options are shown at once before \"Show more\" button appears"
+msgid ""
+"Enable to limit how many options are shown at once before \"Show more\" "
+"button appears"
 msgstr ""
+"Włącz, aby ograniczyć liczbę opcji wyświetlanych jednocześnie, zanim pojawi "
+"się przycisk „Pokaż więcej”"
 
 #: app/Filters/FilterGroup.php:74
 msgid "Number of options to show"
-msgstr ""
+msgstr "Liczba opcji do wyświetlenia"
 
 #: app/Filters/FilterGroup.php:75
 msgid "How many options should be displayed initially"
-msgstr ""
+msgstr "Ile opcji powinno być wyświetlanych na początku"
 
 #: app/Filters/FilterGroup.php:80
 msgid "Collapse filter button"
-msgstr ""
+msgstr "Przycisk zwijania filtra"
 
 #: app/Filters/FilterGroup.php:81
-msgid "Display arrow that will allow to collapse filter to only its title. <strong style=\"color: #b15252;\">NOTICE:</strong> this will save a cookie to remember collapsed filters."
+msgid ""
+"Display arrow that will allow to collapse filter to only its title. <strong "
+"style=\"color: #b15252;\">NOTICE:</strong> this will save a cookie to "
+"remember collapsed filters."
 msgstr ""
+"Wyświetl strzałkę, która pozwoli zwinąć filtr tak że pozostanie jedynie jego "
+"tytuł. <strong style=\"color: #b15252;\">UWAGA:</strong> zapisze to wartość "
+"w plikach cookie w celu zapamiętania zwiniętych filtrów."
 
-#: app/Filters/FilterQuery.php:143
-#: app/Filters/Types/Filter.php:459
+#: app/Filters/FilterQuery.php:143 app/Filters/Types/Filter.php:459
 msgctxt "slug"
 msgid "stock-status"
-msgstr ""
+msgstr "stan-magazynowy"
 
-#: app/Filters/FilterQuery.php:150
-#: app/Filters/Types/RatingFilter.php:38
+#: app/Filters/FilterQuery.php:150 app/Filters/Types/RatingFilter.php:38
 msgctxt "slug"
 msgid "rating"
-msgstr ""
+msgstr "ocena"
 
-#: app/Filters/FilterQuery.php:157
-#: app/Filters/Types/SliderFilter.php:36
+#: app/Filters/FilterQuery.php:157 app/Filters/Types/SliderFilter.php:36
 msgctxt "slug"
 msgid "price"
-msgstr ""
+msgstr "cena"
 
-#: app/Filters/FilterQuery.php:508
-#: app/Filters/Types/Filter.php:453
+#: app/Filters/FilterQuery.php:508 app/Filters/Types/Filter.php:453
 msgctxt "slug"
 msgid "product-category"
-msgstr ""
+msgstr "kategoria-produktu"
 
-#: app/Filters/FilterQuery.php:521
-#: app/Filters/Types/Filter.php:456
+#: app/Filters/FilterQuery.php:521 app/Filters/Types/Filter.php:456
 msgctxt "slug"
 msgid "product-tag"
-msgstr ""
+msgstr "tag-produktu"
 
 #: app/Filters/FiltersServiceProvider.php:124
 msgid "Filter"
-msgstr ""
+msgstr "Filter"
 
 #: app/Filters/FiltersServiceProvider.php:125
 msgid "Add New Filter Group"
-msgstr ""
+msgstr "Dodaj nową grupę filtrów"
 
 #: app/Filters/FiltersServiceProvider.php:126
 msgid "Edit Filter Group"
-msgstr ""
+msgstr "Edytuj grupę filtrów"
 
 #: app/Filters/FiltersServiceProvider.php:127
 msgid "New Filter Group"
-msgstr ""
+msgstr "Nowa grupa filtrów"
 
 #: app/Filters/FiltersServiceProvider.php:128
 msgid "View Filter Group"
-msgstr ""
+msgstr "Wyświetl grupę filtrów"
 
 #: app/Filters/FiltersServiceProvider.php:129
 msgid "Search Filter Groups"
-msgstr ""
+msgstr "Wyszukaj grupy filtrów"
 
 #: app/Filters/FiltersServiceProvider.php:130
 msgid "No Filter Groups found"
-msgstr ""
+msgstr "Nie znaleziono grup filtrów"
 
 #: app/Filters/FiltersServiceProvider.php:131
 msgid "No Filter Groups found in Trash"
-msgstr ""
+msgstr "Nie znaleziono grup filtrów w koszu"
 
 #: app/Filters/FiltersServiceProvider.php:149
 msgid "Filter Item"
-msgstr ""
+msgstr "Filtr"
 
 #: app/Filters/FiltersServiceProvider.php:215
 msgid "(no label)"
-msgstr ""
+msgstr "(brak etykiety)"
 
-#: app/Filters/FilterWidget.php:15
-#: resources/js/blocks/filter-block/block.js:57
+#: app/Filters/FilterWidget.php:15 resources/js/blocks/filter-block/block.js:57
 #: resources/js/blocks/filter-block/index.js:18
 msgid "SF Filter Group"
-msgstr ""
+msgstr "SF Grupa Filtrów"
 
 #: app/Filters/FilterWidget.php:56
 msgid "Not selected"
-msgstr ""
+msgstr "Nie zaznaczone"
 
 #: app/Filters/FilterWidget.php:71
 msgid "Filter group"
-msgstr ""
+msgstr "Grupa filtrów"
 
 #: app/Filters/Types/CheckboxFilter.php:28
 msgid "Checkbox"
-msgstr ""
+msgstr "Checkbox"
 
 #: app/Filters/Types/CheckboxFilter.php:29
 msgid "Choose one or many options"
-msgstr ""
+msgstr "Wybierz jedną lub wiele opcji"
 
 #: app/Filters/Types/CheckboxFilter.php:52
 msgid "Synthetic"
-msgstr ""
+msgstr "Syntetyczny"
 
 #: app/Filters/Types/CheckboxFilter.php:56
 msgid "Linen"
-msgstr ""
+msgstr "Len"
 
 #: app/Filters/Types/CheckboxFilter.php:60
 msgid "Wool"
-msgstr ""
+msgstr "Wełna"
 
 #: app/Filters/Types/CheckboxFilter.php:64
 msgid "Cotton"
-msgstr ""
+msgstr "Bawełna"
 
 #: app/Filters/Types/ColorFilter.php:28
 msgid "Color"
-msgstr ""
+msgstr "Kolor"
 
 #: app/Filters/Types/ColorFilter.php:29
 msgid "Choose one or many colors"
-msgstr ""
+msgstr "Wybierz jeden lub wiele kolorów"
 
 #: app/Filters/Types/ColorFilter.php:50
 msgid "Select color"
-msgstr ""
+msgstr "Wybierz kolor"
 
 #: app/Filters/Types/ColorFilter.php:51
 msgid "For each term assign color from the color pallet"
-msgstr ""
+msgstr "Dla każdego terminu przypisz kolor z palety kolorów"
 
 #: app/Filters/Types/ColorFilter.php:77
 msgid "Black"
-msgstr ""
+msgstr "Czarny"
 
 #: app/Filters/Types/ColorFilter.php:81
 msgid "Maroon"
-msgstr ""
+msgstr "Bordowy"
 
 #: app/Filters/Types/ColorFilter.php:85
 msgid "Green"
-msgstr ""
+msgstr "Zielony"
 
 #: app/Filters/Types/Filter.php:203
 msgid "Filter label"
-msgstr ""
+msgstr "Etykieta filtra"
 
 #: app/Filters/Types/Filter.php:204
 msgid "Name of the filter that will be displayed above it"
-msgstr ""
+msgstr "Nazwa filtra, który będzie wyświetlana nad nim"
 
 #: app/Filters/Types/Filter.php:212
 msgid "URL label"
-msgstr ""
+msgstr "Etykieta adresu URL"
 
 #: app/Filters/Types/Filter.php:213
-msgid "This label will be used in URL when filter is applied. <br>Use only lowercase letters, numbers and hyphens."
+msgid ""
+"This label will be used in URL when filter is applied. <br>Use only "
+"lowercase letters, numbers and hyphens."
 msgstr ""
+"Ta etykieta będzie używana w adresie URL po zastosowaniu filtra. <br>Używaj "
+"tylko małych liter, cyfr i myślników."
 
 #: app/Filters/Types/Filter.php:221
 msgid "Search relation"
-msgstr ""
+msgstr "Relacja filtrowania"
 
 #: app/Filters/Types/Filter.php:222
 msgid "How to display results when selecting more than 1 option"
-msgstr ""
+msgstr "Jak wyświetlić wyniki po wybraniu więcej niż 1 opcji"
 
 #: app/Filters/Types/Filter.php:224
 msgid "OR - Product needs to match any of selected options to be shown "
 msgstr ""
+"LUB — aby produkt był wyświetlany, musi pasować do dowolnej z wybranych opcji"
 
 #: app/Filters/Types/Filter.php:225
 msgid "AND - Product needs to match all selected options to be shown"
 msgstr ""
+"ORAZ — aby produkt był wyświetlany, musi pasować do wszystkich wybranych "
+"opcji"
 
 #: app/Filters/Types/Filter.php:235
 msgid "Sources"
-msgstr ""
+msgstr "Źródła"
 
 #: app/Filters/Types/Filter.php:237
-msgid "Categories, tags and attributes created for products. If you want to filter by i.e. clothing size you need to create an attribute first - <a href=\"%s\" target=\"_blank\">learn more</a>."
+msgid ""
+"Categories, tags and attributes created for products. If you want to filter "
+"by i.e. clothing size you need to create an attribute first - <a href=\"%s\" "
+"target=\"_blank\">learn more</a>."
 msgstr ""
+"Kategorie, tagi i atrybuty przypisane do produktów. Jeśli chcesz filtrować "
+"np. według rozmiaru odzieży, musisz najpierw utworzyć odpowiedni atrybut – "
+"<a href=\"%s\" target=\"_blank\">dowiedz się więcej</a>."
 
 #: app/Filters/Types/Filter.php:250
 msgid "All elements label"
-msgstr ""
+msgstr "Etykieta wszystkich elementów"
 
 #: app/Filters/Types/Filter.php:251
-msgid "First option selected by default have all elements show, what should be its label i.e. \"All brands\""
+msgid ""
+"First option selected by default have all elements show, what should be its "
+"label i.e. \"All brands\""
 msgstr ""
+"Pierwsza opcja zaznaczona domyślnie, która ma wyświetlać wszystkie elementy, "
+"wprowadź jej etykietę, np. \"Wszystkie marki\""
 
 #: app/Filters/Types/Filter.php:259
 msgid "Display product count"
-msgstr ""
+msgstr "Wyświetl liczbę produktów"
 
 #: app/Filters/Types/Filter.php:260
 msgid "Show/hide product count next to options"
-msgstr ""
+msgstr "Pokaż/ukryj liczbę produktów obok opcji"
 
 #: app/Filters/Types/Filter.php:268
 msgid "Order by"
-msgstr ""
+msgstr "Sortowanie"
 
 #: app/Filters/Types/Filter.php:269
-msgid "Select how options should be ordered. By default you can go to category or attribute and manually change order."
+msgid ""
+"Select how options should be ordered. By default you can go to category or "
+"attribute and manually change order."
 msgstr ""
+"Wybierz sposób uporządkowania opcji. Domyślnie możesz przejść do kategorii "
+"lub atrybutu i ręcznie zmienić ich kolejność."
 
 #: app/Filters/Types/Filter.php:271
 msgid "Default"
-msgstr ""
+msgstr "Domyślny"
 
 #: app/Filters/Types/Filter.php:272
 msgid "Name"
-msgstr ""
+msgstr "Nazwa"
 
 #: app/Filters/Types/Filter.php:273
 msgid "Count"
-msgstr ""
+msgstr "Ilość"
 
 #: app/Filters/Types/Filter.php:282
 msgid "Order type"
-msgstr ""
+msgstr "Kolejność"
 
 #: app/Filters/Types/Filter.php:283
 msgid "Type by which options are ordered"
-msgstr ""
+msgstr "Kolejność według którego opcje są sortowane"
 
 #: app/Filters/Types/Filter.php:285
 msgid "ASC"
-msgstr ""
+msgstr "Rosnąco"
 
 #: app/Filters/Types/Filter.php:286
 msgid "DESC"
-msgstr ""
+msgstr "Malejąco"
 
 #: app/Filters/Types/Filter.php:314
 msgid "Attributes"
-msgstr ""
+msgstr "Atrybuty"
 
-#: app/Filters/Types/Filter.php:315
-#: app/Filters/Types/Filter.php:341
+#: app/Filters/Types/Filter.php:315 app/Filters/Types/Filter.php:341
 msgid "Product category"
-msgstr ""
+msgstr "Kategorie produktu"
 
 #: app/Filters/Types/Filter.php:316
 msgid "Product tags"
-msgstr ""
+msgstr "Tagi produktu"
 
 #: app/Filters/Types/Filter.php:317
 msgid "Stock status"
-msgstr ""
+msgstr "Stan magazynowy"
 
 #: app/Filters/Types/Filter.php:329
 msgid "Attribute"
-msgstr ""
+msgstr "Atrybut"
 
 #: app/Filters/Types/Filter.php:331
-msgid "Select one of the attributes <br> You can edit and add new in <a href=\"%s\" target=\"_blank\" >attributes panel</a>"
+msgid ""
+"Select one of the attributes <br> You can edit and add new in <a href=\"%s\" "
+"target=\"_blank\" >attributes panel</a>"
 msgstr ""
+"Wybierz jeden z atrybutów <br> Możesz edytować i dodawać nowe w <a href=\"%s"
+"\" target=\"_blank\">panelu atrybutów</a>"
 
 #: app/Filters/Types/Filter.php:343
-msgid "Select all categories or one to show it's children <br> You can edit and add new in <a href=\"%s\" target=\"_blank\">categories panel</a>"
+msgid ""
+"Select all categories or one to show it's children <br> You can edit and add "
+"new in <a href=\"%s\" target=\"_blank\">categories panel</a>"
 msgstr ""
+"Wybierz wszystkie kategorie lub jedną, aby pokazać podległe jej "
+"kategorie<br> Możesz edytować i dodawać nowe w <a href=\"%s\" target=\"_blank"
+"\">panelu kategorii</a>"
 
 #: app/Filters/Types/Filter.php:524
 msgid "Select filter"
-msgstr ""
+msgstr "Wybierz filter"
 
 #: app/Filters/Types/RadioFilter.php:28
 msgid "Radio"
-msgstr ""
+msgstr "Radio"
 
 #: app/Filters/Types/RadioFilter.php:29
 msgid "Select only one option"
-msgstr ""
+msgstr "Wybierz tylko jedną opcję"
 
 #: app/Filters/Types/RadioFilter.php:59
 msgid "Brand new"
-msgstr ""
+msgstr "Nowy"
 
 #: app/Filters/Types/RadioFilter.php:63
 msgid "Used"
-msgstr ""
+msgstr "Używany"
 
 #: app/Filters/Types/RadioFilter.php:67
 msgid "Damaged"
-msgstr ""
+msgstr "Uszkodzony"
 
 #: app/Filters/Types/RatingFilter.php:25
 msgid "Rating"
-msgstr ""
+msgstr "Ocena"
 
 #: app/Filters/Types/RatingFilter.php:26
 msgid "Choose product rating"
-msgstr ""
+msgstr "Wybierz ocenę produktu"
 
 #: app/Filters/Types/SelectFilter.php:28
 msgid "Select"
-msgstr ""
+msgstr "Select"
 
 #: app/Filters/Types/SelectFilter.php:29
 msgid "Select only one from list"
-msgstr ""
+msgstr "Wybierz tylko jeden z listy"
 
 #: app/Filters/Types/SelectFilter.php:57
 msgid "Show all products"
-msgstr ""
+msgstr "Pokaż wszystkie produkty"
 
 #: app/Filters/Types/SelectFilter.php:58
 msgid "Available"
-msgstr ""
+msgstr "Dostępne"
 
 #: app/Filters/Types/SelectFilter.php:59
 msgid "Sold out"
-msgstr ""
+msgstr "Wyprzedane"
 
 #: app/Filters/Types/SelectFilter.php:60
 msgid "On preorder"
-msgstr ""
+msgstr "Na zamówienie"
 
 #: app/Filters/Types/SliderFilter.php:23
 msgid "Slider"
-msgstr ""
+msgstr "Slider"
 
 #: app/Filters/Types/SliderFilter.php:24
 msgid "Choose price range"
-msgstr ""
+msgstr "Wybierz przedział cenowy"
 
 #: app/Filters/views/filter-group.php:20
 msgid "Clear filters"
-msgstr ""
+msgstr "Wyczyść filtry"
 
 #: app/Filters/views/filter-group.php:47
 msgid "Apply filters"
-msgstr ""
+msgstr "Zastosuj filtry"
 
 #: app/Filters/views/filter.php:25
 msgid "Toggle filter visibility"
-msgstr ""
+msgstr "Przełącz widoczność filtra"
 
 #: app/Filters/views/types/rating.php:39
 msgid "Rating:"
-msgstr ""
+msgstr "Ocena:"
 
 #: app/Filters/views/types/slider.php:33
 msgid "Min price"
-msgstr ""
+msgstr "Cena od"
 
 #: app/Filters/views/types/slider.php:43
 msgid "Max price"
-msgstr ""
+msgstr "Cena do"
 
 #: app/functions-taxonomy.php:27
 msgid "All categories"
-msgstr ""
+msgstr "Wszystkie kategorie"
 
 #: app/functions-template.php:103
 msgid "Show more"
-msgstr ""
+msgstr "Pokaż więcej"
 
 #: app/SimplyFilters.php:89
-msgid "Simply Filters for WooCommerce plugin is enabled but it requires WooCommerce in order to work."
+msgid ""
+"Simply Filters for WooCommerce plugin is enabled but it requires WooCommerce "
+"in order to work."
 msgstr ""
+"Wtyczka Simply Filters włączona, ale do działania wymaga aktywnego "
+"WooCommerce."
 
 #: resources/js/admin/admin-filter.js:82
 msgid "This field is required."
-msgstr ""
+msgstr "To pole jest wymagane."
 
 #: resources/js/admin/admin-filter.js:83
 msgid "Fill in all required fields."
-msgstr ""
+msgstr "Wypełnij wszystkie wymagane pola."
 
 #: resources/js/admin/admin-filter.js:246
 msgid "(copy)"
-msgstr ""
+msgstr "(kopiuj)"
 
 #: resources/js/admin/admin-filter.js:324
 msgid "Are you sure?"
-msgstr ""
+msgstr "Jesteś pewny?"
 
 #: resources/js/admin/admin-filter.js:324
 msgid "Delete"
-msgstr ""
+msgstr "Usuń"
 
 #: resources/js/admin/admin-filter.js:324
 msgid "Cancel"
-msgstr ""
+msgstr "Anuluj"
 
 #: resources/js/admin/admin-filters-group.js:116
 msgid "values are not unique."
-msgstr ""
+msgstr "wartości nie są unikalne."
 
 #: resources/js/admin/admin-filters-group.js:148
 msgid "Value must be unique across all filters in the group"
-msgstr ""
+msgstr "Wartość musi być unikalne we wszystkich filtrach w grupie"
 
 #: resources/js/blocks/filter-block/block.js:30
 msgid "Choose group"
-msgstr ""
+msgstr "Wybierz grupę"
 
 #: resources/js/blocks/filter-block/block.js:47
 msgid "Showing filter group preview."
-msgstr ""
+msgstr "Wyświetl podgląd grupy filtrów."
 
 #: resources/js/blocks/filter-block/block.js:61
 msgid "Select a filters group:"
-msgstr ""
+msgstr "Wybierz grupę filtrów:"
 
 #: resources/js/blocks/filter-block/block.js:72
 msgid "Done"
-msgstr ""
+msgstr "Gotowe"
 
 #: resources/js/blocks/filter-block/block.js:92
 msgid "Change filter group"
-msgstr ""
+msgstr "Zmień grupę filtrów"
 
 #: resources/js/lib/filter-actions.js:305
 #: resources/js/lib/filter-actions.js:328
 msgid "Show less"
-msgstr ""
+msgstr "Pokaż mniej"
 
 #: resources/js/lib/helpers.js:95
 msgid "Close notice"
-msgstr ""
+msgstr "Zamknij powiadomienie"
+
+#~ msgid "lorem ipsum dolor sit amet"
+#~ msgstr "lorem ipsum dolor sit amet"
+
+#~ msgid "Same day delivery"
+#~ msgstr "Dostawa tego samego dnia"
+
+#~ msgid "Premium shipping"
+#~ msgstr "Wysyłka premium"
+
+#~ msgid "Standard shipping"
+#~ msgstr "Standardowa wysyłka"
