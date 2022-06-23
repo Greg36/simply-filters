@@ -487,16 +487,16 @@ abstract class Filter {
 	 */
 	protected function get_render_data() {
 		$options = $this->get_current_source_options();
-		$key     = $this->get_current_source_key();
+
 		if ( empty( $options ) ) {
 			return false;
 		}
 
-		$count = $this->get_product_counts_in_terms( $options, $key );
+		$count = $this->get_product_counts_in_terms( $options );
 
 		return [
 			'id'       => $this->get_id(),
-			'key'      => $key,
+			'key'      => $this->get_current_source_key(),
 			'options'  => $this->order_options( $options, $count ),
 			'values'   => $this->get_selected_values(),
 			'settings' => [
@@ -604,11 +604,10 @@ abstract class Filter {
 	 * Performs a query to count how many times given term IDs appear in filtered products
 	 *
 	 * @param array $terms An array of term IDs
-	 * @param string $key Taxonomy key
 	 *
 	 * @return array|false
 	 */
-	protected function get_product_counts_in_terms( $terms, $key = 'term' ) {
+	protected function get_product_counts_in_terms( $terms ) {
 		global $wpdb;
 		$product_count = false;
 
@@ -619,8 +618,10 @@ abstract class Filter {
 			$query_args = \Hybrid\app( 'filtered-query-args' );
 			$join       = $query_args['join'];
 			$where      = $query_args['where'];
+            $taxonomy   = $this->get_current_source_taxonomy();
 
 			$term_ids = $this->parse_term_ids( $terms );
+            if( empty( $term_ids ) ) return [];
 
 			$sql = "
                 SELECT term_taxonomy.term_id AS term_id, COUNT( DISTINCT {$wpdb->posts}.ID) AS post_count
@@ -636,14 +637,14 @@ abstract class Filter {
 
 			// Use query hash as cache identifier
 			$sql_hash       = md5( $sql );
-			$cached_queries = (array) get_transient( 'sf_products_in_' . urlencode( $key ) );
+			$cached_queries = (array) get_transient( 'sf_products_in_' . $taxonomy );
 
 			// Query products and save query to daily cache
-			if ( ! isset( $cached_queries[ $sql_hash ] ) ) {
+			if ( ! isset( $cached_queries[ $sql_hash ] ) || true) {
 				$results                     = $wpdb->get_results( $sql, ARRAY_A );
-				$cached_queries[ $sql_hash ] = wp_list_pluck( $results, 'post_count', 'term_id' );
+				$cached_queries[ $sql_hash ] = $this->count_product_ids( $results, $taxonomy );
 
-				set_transient( 'sf_products_in_' . urlencode( $key ), $cached_queries, DAY_IN_SECONDS );
+				set_transient( 'sf_products_in_' . $taxonomy, $cached_queries, DAY_IN_SECONDS );
 			}
 
 			$product_count = $cached_queries[ $sql_hash ];
@@ -659,6 +660,43 @@ abstract class Filter {
 
 		return $product_count;
 	}
+
+	/**
+	 * Count products in each terms including aggregating products from term hierarchy
+	 *
+	 * @param array $results Result of DB query with product IDs for terms
+	 * @param string $taxonomy Product taxonomy
+	 *
+	 * @return array
+	 */
+    private function count_product_ids( $results, $taxonomy ) {
+
+	    $product_count = wp_list_pluck( $results, 'post_count', 'term_id' );
+
+        if( $taxonomy === 'rating' ) return $product_count;
+
+	    // Get term IDs hierarchy
+	    $term_hierarchy = [];
+        $term_ids = array_keys( $product_count );
+	    foreach ( $term_ids as $term_id ) {
+		    $term_hierarchy[ $term_id ] = get_term_children( $term_id, $taxonomy );
+
+		    if ( isset( $term_hierarchy[ $term_id ] ) && count( $term_hierarchy[ $term_id ] ) ) {
+			    $term_ids = array_merge( $term_ids, $term_hierarchy[ $term_id ] );
+		    }
+	    }
+
+        // Add term children count to the parent
+	    foreach ( $product_count as $term_id => $count ) {
+            if( array_key_exists( $term_id, $term_hierarchy ) ) {
+	            foreach ( $term_hierarchy[ $term_id ] as $child ) {
+		            $product_count[ $term_id ] += $product_count[ $child ];
+                }
+            }
+        }
+
+        return $product_count;
+    }
 
 	/**
 	 * Parse terms array to contain only term IDs
