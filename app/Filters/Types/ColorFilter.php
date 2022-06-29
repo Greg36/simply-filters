@@ -34,7 +34,6 @@ class ColorFilter extends Filter {
 	 */
 	protected function set_sources() {
 		$sources = $this->get_default_sources();
-		unset( $sources['stock_status'] );
 
 		$this->sources = $sources;
 	}

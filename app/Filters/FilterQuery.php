@@ -146,13 +146,6 @@ class FilterQuery {
 					'type' => 'taxonomy'
 				];
 
-			// Stock status
-			case _x( 'stock-status', 'slug', \Hybrid\app( 'locale' ) ) :
-				return [
-					'key'  => 'stock_status',
-					'type' => 'stock'
-				];
-
 			// Rating
 			case _x( 'rating', 'slug', \Hybrid\app( 'locale' ) ) :
 				return [

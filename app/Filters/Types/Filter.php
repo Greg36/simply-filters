@@ -313,8 +313,7 @@ abstract class Filter {
 		return [
 			'attributes'   => __( 'Attributes', $this->locale ),
 			'product_cat'  => __( 'Product category', $this->locale ),
-			'product_tag'  => __( 'Product tags', $this->locale ),
-			'stock_status' => __( 'Stock status', $this->locale )
+			'product_tag'  => __( 'Product tags', $this->locale )
 		];
 	}
 
@@ -454,9 +453,6 @@ abstract class Filter {
 
 			case 'product_tag' :
 				return get_option( 'woocommerce_product_tag_slug' ) ? get_option( 'woocommerce_product_tag_slug' ) : _x( 'product-tag', 'slug', $this->locale );
-
-			case 'stock_status' :
-				return _x( 'stock-status', 'slug', $this->locale );
 		}
 
 		return '';
