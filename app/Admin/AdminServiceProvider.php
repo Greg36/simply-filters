@@ -45,7 +45,7 @@ class AdminServiceProvider extends ServiceProvider {
 		add_action( 'save_post', [ $this, 'save_filters' ], 10, 2 );
 		add_filter( 'wp_insert_post_data', [ $this, 'save_group_settings' ], 90, 2 );
 		add_action( 'delete_post', [ $this, 'remove_group' ], 90, 2 );
-		add_action( 'admin_init', [ $this, 'save_general_settings' ], 95 );
+		add_action( 'admin_menu', [ $this, 'save_general_settings' ], 9 );
 	}
 
 	/**
