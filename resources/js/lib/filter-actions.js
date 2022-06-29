@@ -350,6 +350,7 @@ export default class FilterActions {
 					// Open options
 					button.classList.remove( 'collapsed' );
 					options.classList.remove( 'sf-filter--collapsed' );
+					options.style.overflow = 'hidden';
 
 					const target_height = options.offsetHeight;
 					options.style.height = '0px';
@@ -359,6 +360,7 @@ export default class FilterActions {
 					}, 0 );
 					setTimeout( () => {
 						options.style.height = '';
+						options.style.overflow = '';
 					}, 200 );
 
 					this.updateCollapseCookie( filter.dataset.id, false );
@@ -368,6 +370,7 @@ export default class FilterActions {
 					// Close options
 					button.classList.add( 'collapsed' );
 					options.style.height = options.offsetHeight + 'px';
+					options.style.overflow = 'hidden';
 
 					setTimeout( () => {
 						options.style.height = '0px';
@@ -375,6 +378,7 @@ export default class FilterActions {
 					setTimeout( () => {
 						options.style.height = '';
 						options.classList.add( 'sf-filter--collapsed' );
+						options.style.overflow = '';
 					}, 200 );
 
 					this.updateCollapseCookie( filter.dataset.id, true );
