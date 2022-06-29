@@ -60,11 +60,11 @@ class DataParser {
 		$post = wp_slash( $post );
 
 		// Create new post or update
-		if ( false === get_post_status( $id ) ) {
+		if ( is_numeric( $id ) && true === get_post_status( (int) $id ) ) {
+			$save = wp_update_post( $post );
+		} else {
 			$post['ID'] = false;
 			$save       = wp_insert_post( $post );
-		} else {
-			$save = wp_update_post( $post );
 		}
 
 		// Save color values to term meta
