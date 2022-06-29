@@ -107,6 +107,7 @@ export default class FilterActions {
 			this.updatePageFragments( content );
 			// this.updateOptionCounters( content );
 			this.updateFilterOptions( content );
+			this.updateSelectOptions( content );
 			this.updateRangeSliders( content );
 		} );
 
@@ -210,6 +211,22 @@ export default class FilterActions {
 
 		// Reinstate more buttons
 		this.setupMoreButtons();
+	}
+
+	updateSelectOptions( content ) {
+		const select = document.querySelectorAll( '.sf-filter .sf-select__input' );
+		const replace = content.querySelectorAll( '.sf-filter .sf-select__input' );
+
+		let values = {};
+		replace.forEach( ( ele ) => {
+			values[ele.getAttribute( 'id' )] = ele.innerHTML;
+		} );
+
+		select.forEach( ( ele ) => {
+			if( values.hasOwnProperty( ele.getAttribute( 'id' ) ) ) {
+				ele.innerHTML = values[ ele.getAttribute( 'id' ) ];
+			}
+		} );
 	}
 
 	/**

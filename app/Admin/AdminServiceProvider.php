@@ -413,7 +413,9 @@ class AdminServiceProvider extends ServiceProvider {
 			$remove = array_map( 'intval', $remove );
 
 			foreach ( $remove as $id ) {
-				$parser->remove_filter( $id );
+				if( $id ) {
+					$parser->remove_filter( $id );
+				}
 			}
 		}
 

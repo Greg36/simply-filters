@@ -95,7 +95,7 @@ class DataParser {
 	public function remove_filter( $id ) {
 
 		// Check if post is still available
-		if ( false !== get_post_status( $id ) ) {
+		if ( is_numeric( $id ) && false !== get_post_status( (int) $id ) ) {
 			wp_delete_post( $id, true );
 		}
 	}
