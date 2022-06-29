@@ -269,7 +269,12 @@ class FiltersServiceProvider extends ServiceProvider {
 	private function get_custom_selectors() {
 		$options = get_option( 'sf-settings' );
 		if ( isset( $options['change_selectors'] ) && $options['change_selectors'] ) {
-			return $options['selectors'];
+
+			// Move product selector to the first element of array
+			$product = $options['selectors']['product'];
+			unset( $options['selectors']['product'] );
+
+			return [ 'product' => $product ] + $options['selectors'];
 		}
 
 		return false;

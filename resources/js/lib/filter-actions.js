@@ -120,17 +120,17 @@ export default class FilterActions {
 	updatePageFragments( content ) {
 
 		let selectors = [
+			'.products',
 			'.woocommerce-pagination',
 			'.woocommerce-breadcrumb',
-			'.products',
 			'.woocommerce-result-count',
 			'.woocommerce-ordering',
-			'.woocommerce-products-header__title',
+			'.woocommerce-products-header__title'
 		];
 
 		// Get user entered selectors if they have been change
 		if ( sf_filters.selectors ) {
-			selectors = sf_filters.selectors;
+			selectors =  Object.values( sf_filters.selectors ).filter( selector => selector !== '' );
 		}
 
 		selectors.forEach( ( selector ) => {
@@ -151,13 +151,16 @@ export default class FilterActions {
 
 					// Find relative path of the content in current document
 					// to place it in correct location
+					// debugger;
+
 					let location = this.getRelativeDOMPosition( ext, ele );
 					if ( location.selector ) {
 						let root = document.querySelector( location.selector );
 
 						// Traverse children according to queried order
 						while ( location.index.length > 1 ) {
-							root = root.children[location.index.shift()];
+							let move = root.children[location.index.shift()];
+							if( move ) root = move;
 						}
 
 						// Insert on specified index
@@ -167,7 +170,7 @@ export default class FilterActions {
 				return;
 			}
 
-			// Content is present only on present content
+			// Content is present only on current content
 			if ( home.length > 0 && ext.length === 0 ) {
 				home.forEach( ( ele ) => {
 					ele.remove();
@@ -272,7 +275,7 @@ export default class FilterActions {
 	 * saving relative path to initial element
 	 */
 	getRelativeDOMPosition( doc, ele, location = [] ) {
-		location.push( Array.from( ele.parentNode.children ).indexOf( ele ) )
+		location.push( Array.from( ele.parentNode.children ).indexOf( ele ) );
 
 		if ( ele.parentElement.id ) {
 			let parent = document.querySelectorAll( '#' + ele.parentNode.id );
