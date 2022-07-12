@@ -24,7 +24,7 @@ function get_attributes() {
  */
 function get_product_categories( $args = [] ) {
 	$categories = [
-		'all' => __( 'All categories', \Hybrid\app( 'locale' ) ),
+		'all' => esc_html__( 'All categories', \Hybrid\app( 'locale' ) ),
 	];
 
 	foreach (

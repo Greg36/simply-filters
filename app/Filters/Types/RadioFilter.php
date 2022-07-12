@@ -25,8 +25,8 @@ class RadioFilter extends Filter {
 
 	public function __construct() {
 		$this->type        = 'Radio';
-		$this->name        = __( 'Radio', $this->locale );
-		$this->description = __( 'Select only one option', $this->locale );
+		$this->name        = esc_html__( 'Radio', $this->locale );
+		$this->description = esc_html__( 'Select only one option', $this->locale );
 	}
 
 	/**
@@ -63,15 +63,15 @@ class RadioFilter extends Filter {
             <ul>
                 <li>
                     <div class="sf-checkbox__check"></div>
-                    <div class="sf-checkbox__label"><?php _e( 'Brand new', $this->locale ) ?></div>
+                    <div class="sf-checkbox__label"><?php esc_html_e( 'Brand new', $this->locale ) ?></div>
                 </li>
                 <li>
                     <div class="sf-checkbox__check sf-checkbox__check--checked"></div>
-                    <div class="sf-checkbox__label"><?php _e( 'Used', $this->locale ) ?></div>
+                    <div class="sf-checkbox__label"><?php esc_html_e( 'Used', $this->locale ) ?></div>
                 </li>
                 <li>
                     <div class="sf-checkbox__check"></div>
-                    <div class="sf-checkbox__label"><?php _e( 'Damaged', $this->locale ) ?></div>
+                    <div class="sf-checkbox__label"><?php esc_html_e( 'Damaged', $this->locale ) ?></div>
                 </li>
             </ul>
         </div>

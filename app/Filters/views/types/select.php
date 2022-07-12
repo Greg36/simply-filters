@@ -12,7 +12,7 @@
 ?>
 <div class="sf-select">
 
-    <select class="sf-select__input" id="<?php esc_attr_e( $id ); ?>" name="<?php esc_attr_e( $key ); ?>">
+    <select class="sf-select__input" id="<?php echo esc_attr( $id ); ?>" name="<?php echo esc_attr( $key ); ?>">
 
 		<?php
 		if ( empty( $values ) ) {

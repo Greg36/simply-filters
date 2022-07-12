@@ -11,14 +11,14 @@
 ?>
 
 <div class="sf-filter"
-     data-filter_id="<?php esc_attr_e( \Hybrid\app( 'prefix' ) . '-' . $filter->get_id() ); ?>"
-     data-filter_type="<?php esc_attr_e( $filter->get_type() ); ?>"
+     data-filter_id="<?php echo esc_attr( \Hybrid\app( 'prefix' ) . '-' . $filter->get_id() ); ?>"
+     data-filter_type="<?php echo esc_attr( $filter->get_type() ); ?>"
 >
 
     <div class="sf-filter__row sf-row">
 
         <div class="sf-row__order">
-			<?php esc_html_e( $order ); ?>
+			<?php echo esc_html( $order ); ?>
         </div>
 
         <div class="sf-row__enabled">
@@ -26,17 +26,17 @@
         </div>
 
         <div class="sf-row__label">
-			<?php esc_html_e( $filter->get_label() ); ?>
+			<?php echo wp_kses_post( $filter->get_label() ); ?>
         </div>
 
         <div class="sf-row__type">
-			<?php esc_html_e( $filter->get_name() ); ?>
+			<?php echo wp_kses_post( $filter->get_name() ); ?>
         </div>
 
         <ul class="sf-row__actions">
-            <li><a href="#" class="edit-filter" title="<?php _e( 'Edit filter', $locale ) ?>"><?php _e( 'Edit', $locale ); ?></a></li>
-            <li><a href="#" class="duplicate-filter" title="<?php _e( 'Duplicate filter', $locale ) ?>"><?php _e( 'Duplicate', $locale ); ?></a></li>
-            <li><a href="#" class="remove-filter" title="<?php _e( 'Remove filter', $locale ) ?>"><?php _e( 'Remove', $locale ); ?></a></li>
+            <li><a href="#" class="edit-filter" title="<?php esc_attr_e( 'Edit filter', $locale ) ?>"><?php esc_html_e( 'Edit', $locale ); ?></a></li>
+            <li><a href="#" class="duplicate-filter" title="<?php esc_attr_e( 'Duplicate filter', $locale ) ?>"><?php esc_html_e( 'Duplicate', $locale ); ?></a></li>
+            <li><a href="#" class="remove-filter" title="<?php esc_attr_e( 'Remove filter', $locale ) ?>"><?php esc_html_e( 'Remove', $locale ); ?></a></li>
         </ul>
 
     </div>
@@ -59,7 +59,7 @@
 
             <tr class="sf-options__footer">
                 <td colspan="2">
-                    <a href="#" class="sf-button sf-button__main sf-close"><?php _e( 'Close filter', $locale ); ?></a>
+                    <a href="#" class="sf-button sf-button__main sf-close"><?php esc_html_e( 'Close filter', $locale ); ?></a>
                 </td>
             </tr>
 

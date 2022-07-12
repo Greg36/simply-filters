@@ -10,13 +10,13 @@
 
 ?>
 
-<div class="sf-filters sf-tabs-target open" id="sf-filters" data-filter_group_id="<?php esc_attr_e( \Hybrid\app( 'prefix' ) . '-' . get_the_ID() ); ?>">
+<div class="sf-filters sf-tabs-target open" id="sf-filters" data-filter_group_id="<?php echo esc_attr( \Hybrid\app( 'prefix' ) . '-' . get_the_ID() ); ?>">
     <div class="sf-filters__wrap">
 
         <ul class="sf-filters__header">
-            <li><?php _e( 'Enabled', $locale ); ?></li>
-            <li><?php _e( 'Label', $locale ); ?></li>
-            <li><?php _e( 'Type', $locale ); ?></li>
+            <li><?php esc_html_e( 'Enabled', $locale ); ?></li>
+            <li><?php esc_html_e( 'Label', $locale ); ?></li>
+            <li><?php esc_html_e( 'Type', $locale ); ?></li>
         </ul>
 
         <div class="sf-filters__list">
@@ -31,13 +31,13 @@
 			?>
 
             <div class="sf-filters__no-items" style="<?php echo $filters ? 'display:none;' : ''; ?>">
-				<?php _e( 'No filters. Click <strong>Add new filter</strong> button to add first one.', $locale ); ?>
+				<?php echo wp_kses_post( __( 'No filters. Click <strong>Add new filter</strong> button to add first one.', $locale ) ); ?>
             </div>
 
         </div>
 
         <div class="sf-filters__footer">
-            <a href="#" class="sf-button sf-button__main sf-button__new-filter"><img src="<?php echo \SimplyFilters\get_svg( 'plus' ); ?>" alt="Add filter" aria-hidden="true"><?php _e( 'Add new filter', $locale ); ?></a>
+            <a href="#" class="sf-button sf-button__main sf-button__new-filter"><img src="<?php echo \SimplyFilters\get_svg( 'plus' ); ?>" alt="Add filter" aria-hidden="true"><?php esc_html_e( 'Add new filter', $locale ); ?></a>
         </div>
 
         <input type="hidden" id="sf-removed-fields" name="sf-removed-fields">

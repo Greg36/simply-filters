@@ -12,7 +12,7 @@
  * @since 1.0.0
  */
 ?>
-<div class="sf-slider" id="slider-<?php esc_attr_e( $id ); ?>">
+<div class="sf-slider" id="slider-<?php echo esc_attr( $id ); ?>">
     <div class="sf-slider__ui" style="display: none;"></div>
     <div class="sf-slider__inputs">
 		<?php

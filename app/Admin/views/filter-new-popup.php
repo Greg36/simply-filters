@@ -15,8 +15,8 @@
     <div class="sf-new__wrap">
 
         <div class="sf-new__header">
-            <h2 class="sf-new__title"><?php _e( 'Select filter type', $locale ); ?></h2>
-            <a href="#" class="sf-new__close"><span class="screen-reader-text"><?php _e( 'Close popup', $locale ) ?></span></a>
+            <h2 class="sf-new__title"><?php esc_html_e( 'Select filter type', $locale ); ?></h2>
+            <a href="#" class="sf-new__close"><span class="screen-reader-text"><?php esc_html_e( 'Close popup', $locale ) ?></span></a>
         </div>
 
         <div class="sf-new__list">

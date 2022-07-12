@@ -100,7 +100,7 @@ function get_more_options_button( $group_settings, $options_count ) {
 	$button = '';
 	if ( $group_settings['more_show'] && $options_count > intval( $group_settings['more_count'] ) ) {
 		$button = sprintf( '<button class="sf-more-btn" aria-expanded="false">%s&nbsp;(%d)</button>',
-			__( 'Show more', \Hybrid\app( 'locale' ) ),
+			esc_html__( 'Show more', \Hybrid\app( 'locale' ) ),
 			$options_count - intval( $group_settings['more_count'] )
 		);
 	}

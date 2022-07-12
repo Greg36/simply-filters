@@ -23,7 +23,7 @@
 
                 </table>
 
-                <input type="submit" name="sf-save-settings" id="sf-save-settings" class="sf-button sf-button__main sf-button__save-settings" value="<?php esc_attr_e( __( 'Save settings', $locale ) ); ?>">
+                <input type="submit" name="sf-save-settings" id="sf-save-settings" class="sf-button sf-button__main sf-button__save-settings" value="<?php esc_attr_e( 'Save settings', $locale ); ?>">
             </div>
         </div>
 

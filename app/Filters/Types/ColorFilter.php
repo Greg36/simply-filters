@@ -25,8 +25,8 @@ class ColorFilter extends Filter {
 
 	public function __construct() {
 		$this->type        = 'Color';
-		$this->name        = __( 'Color', $this->locale );
-		$this->description = __( 'Choose one or many colors', $this->locale );
+		$this->name        = esc_html__( 'Color', $this->locale );
+		$this->description = esc_html__( 'Choose one or many colors', $this->locale );
 	}
 
 	/**
@@ -81,15 +81,15 @@ class ColorFilter extends Filter {
             <ul>
                 <li>
                     <div class="sf-checkbox__check sf-checkbox__check--checked" style="background-color: #393939;"></div>
-                    <div class="sf-checkbox__label"><?php _e( 'Black', $this->locale ) ?></div>
+                    <div class="sf-checkbox__label"><?php esc_html_e( 'Black', $this->locale ) ?></div>
                 </li>
                 <li>
                     <div class="sf-checkbox__check" style="background-color: #BD2046;"></div>
-                    <div class="sf-checkbox__label"><?php _e( 'Maroon', $this->locale ) ?></div>
+                    <div class="sf-checkbox__label"><?php esc_html_e( 'Maroon', $this->locale ) ?></div>
                 </li>
                 <li>
                     <div class="sf-checkbox__check sf-checkbox__check--checked" style="background-color: #4DAE44;"></div>
-                    <div class="sf-checkbox__label"><?php _e( 'Green', $this->locale ) ?></div>
+                    <div class="sf-checkbox__label"><?php esc_html_e( 'Green', $this->locale ) ?></div>
                 </li>
             </ul>
         </div>

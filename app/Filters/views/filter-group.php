@@ -19,13 +19,13 @@
 do_action( 'sf-before-group-render' );
 ?>
 
-<div class="sf-filter-group" data-action="<?php esc_attr_e( $settings['auto_submit'] ); ?>">
+<div class="sf-filter-group" data-action="<?php echo esc_attr( $settings['auto_submit'] ); ?>">
 
 	<?php
 
 	if ( $settings['elements']['clear'] ) {
 		printf( '<button class="sf-filter-group__clear sf-button">%s</button>',
-			__( 'Clear filters', $locale )
+			esc_html__( 'Clear filters', $locale )
 		);
 	}
 
@@ -52,7 +52,7 @@ do_action( 'sf-before-group-render' );
 
 	if ( $settings['auto_submit'] === 'onsubmit' ) {
 		printf( '<button class="sf-filter-group__submit sf-button">%s</button>',
-			__( 'Apply filters', $locale )
+			esc_html__( 'Apply filters', $locale )
 		);
 	}
 

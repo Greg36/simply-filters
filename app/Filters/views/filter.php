@@ -19,11 +19,11 @@
 do_action( 'sf-before-filter-render', $filter );
 ?>
 
-<div class="sf-filter" data-type="<?php esc_attr_e( $filter->get_type() ); ?>" data-id="<?php esc_attr_e( $filter->get_id() ); ?>">
+<div class="sf-filter" data-type="<?php echo esc_attr( $filter->get_type() ); ?>" data-id="<?php echo esc_attr( $filter->get_id() ); ?>">
 
     <div class="sf-filter__heading">
 
-        <span class="sf-filter__label"><?php esc_html_e( $filter->get_label() ); ?></span>
+        <span class="sf-filter__label"><?php echo esc_html( $filter->get_label() ); ?></span>
 
 		<?php if ( $settings['collapse'] ) {
 			$collapsed = $filter->is_filter_collapsed();

@@ -25,8 +25,8 @@ class CheckboxFilter extends Filter {
 
 	public function __construct() {
 		$this->type        = 'Checkbox';
-		$this->name        = __( 'Checkbox', $this->locale );
-		$this->description = __( 'Choose one or many options', $this->locale );
+		$this->name        = esc_html__( 'Checkbox', $this->locale );
+		$this->description = esc_html__( 'Choose one or many options', $this->locale );
 	}
 
 	/**
@@ -57,19 +57,19 @@ class CheckboxFilter extends Filter {
             <ul>
                 <li>
                     <div class="sf-checkbox__check sf-checkbox__check--checked"></div>
-                    <div class="sf-checkbox__label"><?php _e( 'Synthetic', $this->locale ) ?></div>
+                    <div class="sf-checkbox__label"><?php esc_html_e( 'Synthetic', $this->locale ) ?></div>
                 </li>
                 <li>
                     <div class="sf-checkbox__check"></div>
-                    <div class="sf-checkbox__label"><?php _e( 'Linen', $this->locale ) ?></div>
+                    <div class="sf-checkbox__label"><?php esc_html_e( 'Linen', $this->locale ) ?></div>
                 </li>
                 <li>
                     <div class="sf-checkbox__check sf-checkbox__check--checked"></div>
-                    <div class="sf-checkbox__label"><?php _e( 'Wool', $this->locale ) ?></div>
+                    <div class="sf-checkbox__label"><?php esc_html_e( 'Wool', $this->locale ) ?></div>
                 </li>
                 <li>
                     <div class="sf-checkbox__check sf-checkbox__check--checked"></div>
-                    <div class="sf-checkbox__label"><?php _e( 'Cotton', $this->locale ) ?></div>
+                    <div class="sf-checkbox__label"><?php esc_html_e( 'Cotton', $this->locale ) ?></div>
                 </li>
             </ul>
         </div>

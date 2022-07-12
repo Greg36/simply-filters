@@ -80,7 +80,7 @@ abstract class Control {
 		?>
         <tr class="sf-option">
             <td>
-                <label for="<?php esc_attr_e( $this->key ); ?>"><?php esc_html_e( $this->name ); ?></label>
+                <label for="<?php echo esc_attr( $this->key ); ?>"><?php echo wp_kses_post( $this->name ); ?></label>
                 <p><?php echo wp_kses_post( $this->description ); ?></p>
             </td>
             <td>

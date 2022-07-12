@@ -25,7 +25,7 @@ class Metaboxes {
 
 		// Group fields
 		add_meta_box( 'sf-filter-group-fields',
-			__( 'Edit Filters', \Hybrid\app( 'locale' ) ),
+			esc_html__( 'Edit Filters', \Hybrid\app( 'locale' ) ),
 			[ $this, 'filter_group_metabox' ],
 			'sf_filter_group',
 			'normal',
@@ -34,7 +34,7 @@ class Metaboxes {
 
 		// Setup info
 		add_meta_box( 'sf-filter-place',
-			__( 'Setup filters', \Hybrid\app( 'locale' ) ),
+			esc_html__( 'Setup filters', \Hybrid\app( 'locale' ) ),
 			[ $this, 'info_metabox' ],
 			'sf_filter_group',
 			'side',

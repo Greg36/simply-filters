@@ -25,8 +25,8 @@ class SelectFilter extends Filter {
 
 	public function __construct() {
 		$this->type        = 'Select';
-		$this->name        = __( 'Select', $this->locale );
-		$this->description = __( 'Select only one from list', $this->locale );
+		$this->name        = esc_html__( 'Select', $this->locale );
+		$this->description = esc_html__( 'Select only one from list', $this->locale );
 	}
 
 	/**
@@ -61,10 +61,10 @@ class SelectFilter extends Filter {
 		?>
         <div class="sf-select">
             <ul>
-                <li><?php _e( 'Show all products', $this->locale ); ?></li>
-                <li class="sf-select__selected"><?php _e( 'Available', $this->locale ); ?></li>
-                <li><?php _e( 'Sold out', $this->locale ); ?></li>
-                <li><?php _e( 'On preorder', $this->locale ); ?></li>
+                <li><?php esc_html_e( 'Show all products', $this->locale ); ?></li>
+                <li class="sf-select__selected"><?php esc_html_e( 'Available', $this->locale ); ?></li>
+                <li><?php esc_html_e( 'Sold out', $this->locale ); ?></li>
+                <li><?php esc_html_e( 'On preorder', $this->locale ); ?></li>
             </ul>
         </div>
 		<?php

@@ -120,15 +120,15 @@ class FiltersServiceProvider extends ServiceProvider {
 				'hierarchical'        => false,
 				'supports'            => array( 'title' ),
 				'labels'              => array(
-					'name'               => __( 'Filters', $locale ),
-					'singular_name'      => __( 'Filter', $locale ),
-					'add_new_item'       => __( 'Add New Filter Group', $locale ),
-					'edit_item'          => __( 'Edit Filter Group', $locale ),
-					'new_item'           => __( 'New Filter Group', $locale ),
-					'view_item'          => __( 'View Filter Group', $locale ),
-					'search_items'       => __( 'Search Filter Groups', $locale ),
-					'not_found'          => __( 'No Filter Groups found', $locale ),
-					'not_found_in_trash' => __( 'No Filter Groups found in Trash', $locale ),
+					'name'               => esc_html__( 'Filters', $locale ),
+					'singular_name'      => esc_html__( 'Filter', $locale ),
+					'add_new_item'       => esc_html__( 'Add New Filter Group', $locale ),
+					'edit_item'          => esc_html__( 'Edit Filter Group', $locale ),
+					'new_item'           => esc_html__( 'New Filter Group', $locale ),
+					'view_item'          => esc_html__( 'View Filter Group', $locale ),
+					'search_items'       => esc_html__( 'Search Filter Groups', $locale ),
+					'not_found'          => esc_html__( 'No Filter Groups found', $locale ),
+					'not_found_in_trash' => esc_html__( 'No Filter Groups found in Trash', $locale ),
 				),
 			)
 		);
@@ -146,7 +146,7 @@ class FiltersServiceProvider extends ServiceProvider {
 				'hierarchical' => false,
 				'supports'     => array(),
 				'labels'       => array(
-					'name' => __( 'Filter Item', $this->app->get( 'locale' ) ),
+					'name' => esc_html__( 'Filter Item', $this->app->get( 'locale' ) ),
 				),
 			)
 		);
@@ -212,7 +212,7 @@ class FiltersServiceProvider extends ServiceProvider {
 			$filter = new $class;
 			$filter->initialize( [
 				'id'            => uniqid(),
-				'label'         => __( '(no label)', $this->app->get( 'locale' ) ),
+				'label'         => esc_html__( '(no label)', $this->app->get( 'locale' ) ),
 				'enabled'       => true,
 				'sources'       => 'attributes',
 				'attributes'    => false,

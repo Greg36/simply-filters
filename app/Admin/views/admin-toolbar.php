@@ -56,7 +56,7 @@ switch ( $pagenow ) {
 ?>
 
 <div class="sf-admin__toolbar">
-    <h2><?php _e( 'Simply Filters for WooCommerce', $locale ); ?></h2>
+    <h2><?php esc_html_e( 'Simply Filters for WooCommerce', $locale ); ?></h2>
 	<?php
 	foreach ( $nav as $name => $link ) {
 		printf( '<a class="sf-admin__toolbar-link %s" href="%s">%s</a>',

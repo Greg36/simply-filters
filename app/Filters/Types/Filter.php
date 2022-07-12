@@ -311,9 +311,9 @@ abstract class Filter {
 	 */
 	public function get_default_sources() {
 		return [
-			'attributes'   => __( 'Attributes', $this->locale ),
-			'product_cat'  => __( 'Product category', $this->locale ),
-			'product_tag'  => __( 'Product tags', $this->locale )
+			'attributes'   => esc_html__( 'Attributes', $this->locale ),
+			'product_cat'  => esc_html__( 'Product category', $this->locale ),
+			'product_tag'  => esc_html__( 'Product tags', $this->locale )
 		];
 	}
 
@@ -510,14 +510,14 @@ abstract class Filter {
 		?>
         <div class="sf-preview">
             <div class="sf-preview__heading">
-                <h4><?php esc_html_e( $this->get_name() ); ?></h4>
-                <p><?php esc_html_e( $this->get_description() ); ?></p>
+                <h4><?php echo wp_kses_post( $this->get_name() ); ?></h4>
+                <p><?php echo wp_kses_post( $this->get_description() ); ?></p>
             </div>
             <div class="sf-preview__body">
 				<?php $this->filter_preview(); ?>
             </div>
             <div class="sf-preview__footer">
-                <a href="#" data-type="<?php esc_attr_e( $this->get_type() ); ?>" class="select-filter sf-button"><?php _e( 'Select filter', $this->locale ); ?></a>
+                <a href="#" data-type="<?php echo esc_attr( $this->get_type() ); ?>" class="select-filter sf-button"><?php esc_html_e( 'Select filter', $this->locale ); ?></a>
             </div>
         </div>
 		<?php

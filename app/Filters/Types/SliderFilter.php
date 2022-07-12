@@ -20,8 +20,8 @@ class SliderFilter extends Filter {
 
 	public function __construct() {
 		$this->type        = 'Slider';
-		$this->name        = __( 'Slider', $this->locale );
-		$this->description = __( 'Choose price range', $this->locale );
+		$this->name        = esc_html__( 'Slider', $this->locale );
+		$this->description = esc_html__( 'Choose price range', $this->locale );
 
 		// Set flag for slider script to be enqueued
 		\Hybrid\app()->instance( 'enqueue-slider', true );
@@ -34,7 +34,7 @@ class SliderFilter extends Filter {
 
 		$data = [
 			'id'     => $this->get_id(),
-			'key'    => _x( 'price', 'slug', $this->locale ),
+			'key'    => esc_html_x( 'price', 'slug', $this->locale ),
 			'range'  => $this->get_price_range(),
 			'values' => $this->get_selected_values(),
 		];

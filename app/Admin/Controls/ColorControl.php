@@ -67,7 +67,7 @@ class ColorControl extends Control {
 
 		} else {
 			printf( '<div class="sf-color__no-elements">%s</div>',
-				__( 'There are no options for selected source', \Hybrid\app( 'locale' ) )
+				esc_html__( 'There are no options for selected source', \Hybrid\app( 'locale' ) )
 			);
 		}
 

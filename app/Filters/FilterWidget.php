@@ -12,8 +12,8 @@ class FilterWidget extends \WC_Widget {
 	public function __construct() {
 		$this->widget_id          = 'sf-filter-widget';
 		$this->widget_cssclass    = 'sf-filter-widget';
-		$this->widget_name        = __( 'SF Filter Group', \Hybrid\app( 'locale' ) );
-		$this->widget_description = __( 'Simply add product\'s price, category and attribute filters to WooCommerce.', \Hybrid\app( 'locale' ) );
+		$this->widget_name        = esc_html__( 'SF Filter Group', \Hybrid\app( 'locale' ) );
+		$this->widget_description = esc_html__( 'Simply add product\'s price, category and attribute filters to WooCommerce.', \Hybrid\app( 'locale' ) );
 
 		parent::__construct();
 	}
@@ -53,7 +53,7 @@ class FilterWidget extends \WC_Widget {
 	public function load_settings() {
 
 		$locale  = \Hybrid\app( 'locale' );
-		$filters = [ '' => __( 'Not selected', $locale ) ];
+		$filters = [ '' => esc_html__( 'Not selected', $locale ) ];
 
 		$filter_groups = get_posts( [
 			'posts_per_page' => - 1,

@@ -22,8 +22,8 @@ class RatingFilter extends Filter {
 
 	public function __construct() {
 		$this->type        = 'Rating';
-		$this->name        = __( 'Rating', $this->locale );
-		$this->description = __( 'Choose product rating', $this->locale );
+		$this->name        = esc_html__( 'Rating', $this->locale );
+		$this->description = esc_html__( 'Choose product rating', $this->locale );
 	}
 
 	/**
@@ -35,7 +35,7 @@ class RatingFilter extends Filter {
             $options = $this->get_selected_values();
             $data = [
 	            'id'     => $this->get_id(),
-	            'key'    => _x( 'rating', 'slug', $this->locale ),
+	            'key'    => esc_html_x( 'rating', 'slug', $this->locale ),
 	            'values' => $options,
 	            'count'  => $this->get_product_counts_by_rating()
             ];

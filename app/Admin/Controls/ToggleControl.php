@@ -29,8 +29,8 @@ class ToggleControl extends Control {
 		?>
 
         <div class="sf-toggle__switch">
-            <span class="sf-toggle__first"><?php _e( 'On', \Hybrid\app( 'locale' ) ) ?></span>
-            <span class="sf-toggle__second"><?php _e( 'Off', \Hybrid\app( 'locale' ) ) ?></span>
+            <span class="sf-toggle__first"><?php esc_html_e( 'On', \Hybrid\app( 'locale' ) ) ?></span>
+            <span class="sf-toggle__second"><?php esc_html_e( 'Off', \Hybrid\app( 'locale' ) ) ?></span>
             <span class="sf-toggle__slider"><span></span></span>
         </div>
 
