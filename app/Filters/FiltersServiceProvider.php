@@ -194,12 +194,14 @@ class FiltersServiceProvider extends ServiceProvider {
 	public function ajax_render_new_settings_field() {
 
 		// Verify nonce
-		if ( ! wp_verify_nonce( $_POST['nonceAjax'], 'wp_rest' ) ) {
+		$nonce = isset( $_POST['nonceAjax'] ) ? filter_var( $_POST['nonceAjax'], FILTER_SANITIZE_STRING ) : false;
+		if ( ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
 			die();
 		}
 
+
 		// Check for type
-		$type  = filter_var( $_POST['type'], FILTER_SANITIZE_STRING );
+		$type  = isset( $_POST['type'] ) ? filter_var( $_POST['type'], FILTER_SANITIZE_STRING ) : '';
 		$class = "SimplyFilters\\Filters\\Types\\{$type}Filter";
 
 		if ( class_exists( $class ) ) {
@@ -235,13 +237,15 @@ class FiltersServiceProvider extends ServiceProvider {
 	public function ajax_get_color_settings_options() {
 
 		// Verify nonce
-		if ( ! wp_verify_nonce( $_POST['nonceAjax'], 'wp_rest' ) ) {
+		$nonce = isset( $_POST['nonceAjax'] ) ? filter_var( $_POST['nonceAjax'], FILTER_SANITIZE_STRING ) : false;
+		if ( ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
 			die();
 		}
 
-		$id        = filter_var( $_POST['filter_id'], FILTER_SANITIZE_NUMBER_INT );
-		$taxonomy  = filter_var( $_POST['taxonomy'], FILTER_SANITIZE_STRING );
-		$term_slug = filter_var( $_POST['term_id'], FILTER_SANITIZE_STRING );
+
+		$id        = isset( $_POST['filter_id'] ) ? filter_var( $_POST['filter_id'], FILTER_SANITIZE_NUMBER_INT ) : false;
+		$taxonomy  = isset( $_POST['taxonomy'] ) ? filter_var( $_POST['taxonomy'], FILTER_SANITIZE_STRING ) : false;
+		$term_slug = isset( $_POST['term_id'] ) ? filter_var( $_POST['term_id'], FILTER_SANITIZE_STRING ) : false;
 
 		// Bail if there is no key or term ID
 		if ( ! $taxonomy || ! $term_slug || ! $id ) {

@@ -30,7 +30,7 @@
 			esc_attr( $from ),
 			esc_attr( $min ),
 			esc_attr( $max ),
-			__( 'Min price', $locale )
+			esc_html__( 'Min price', $locale )
 		);
 
 		// To price
@@ -40,7 +40,7 @@
 			esc_attr( $to ),
 			esc_attr( $max ),
 			esc_attr( $min ),
-			__( 'Max price', $locale )
+			esc_html__( 'Max price', $locale )
 		);
 		?>
     </div>

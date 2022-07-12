@@ -19,7 +19,7 @@ function load_inline_svg( $filename ) {
 
 	if ( file_exists( $svg_path . $filename ) ) {
 
-		return file_get_contents( $svg_path . $filename );
+		return file_get_contents( $svg_path . $filename ); // phpcs:ignore WordPressVIPMinimum.Performance.FetchingRemoteData.FileGetContentsUnknown
 	}
 
 	return '';
@@ -93,17 +93,12 @@ function get_product_count( $value, $option ) {
  *
  * @param array $group_settings
  * @param int $options_count
- *
- * @return string
  */
-function get_more_options_button( $group_settings, $options_count ) {
-	$button = '';
+function more_options_button( $group_settings, $options_count ) {
 	if ( $group_settings['more_show'] && $options_count > intval( $group_settings['more_count'] ) ) {
-		$button = sprintf( '<button class="sf-more-btn" aria-expanded="false">%s&nbsp;(%d)</button>',
+		printf( '<button class="sf-more-btn" aria-expanded="false">%s&nbsp;(%d)</button>',
 			esc_html__( 'Show more', \Hybrid\app( 'locale' ) ),
-			$options_count - intval( $group_settings['more_count'] )
+			intval( $options_count - intval( $group_settings['more_count'] ) )
 		);
 	}
-
-	return $button;
 }

@@ -70,25 +70,25 @@ class RatingFilter extends Filter {
                 <li>
                     <div class="sf-checkbox__check sf-checkbox__check--checked"></div>
                     <div class="sf-rating">
-						<?php echo get_stars( 4 ); ?>
+						<?php echo wp_kses_post( get_stars( 4 ) ); ?>
                     </div>
                 </li>
                 <li>
                     <div class="sf-checkbox__check"></div>
                     <div class="sf-rating">
-						<?php echo get_stars( 3 ); ?>
+						<?php echo wp_kses_post( get_stars( 3 ) ); ?>
                     </div>
                 </li>
                 <li>
                     <div class="sf-checkbox__check sf-checkbox__check--checked"></div>
                     <div class="sf-rating">
-						<?php echo get_stars( 2 ); ?>
+						<?php echo wp_kses_post( get_stars( 2 ) ); ?>
                     </div>
                 </li>
                 <li>
                     <div class="sf-checkbox__check sf-checkbox__check--checked"></div>
                     <div class="sf-rating">
-						<?php echo get_stars( 1 ); ?>
+						<?php echo wp_kses_post( get_stars( 1 ) ); ?>
                     </div>
                 </li>
             </ul>

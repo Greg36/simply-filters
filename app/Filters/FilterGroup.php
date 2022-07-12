@@ -111,7 +111,6 @@ class FilterGroup {
 					'post_type'        => \Hybrid\app( 'item_post_type' ),
 					'orderby'          => 'menu_order',
 					'order'            => 'ASC',
-					'suppress_filters' => true,
 					'post_parent'      => $this->group_id,
 					'post_status'      => array( 'publish' ),
 				)

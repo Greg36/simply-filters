@@ -21,7 +21,7 @@ trait Assets {
 		// Get the Laravel Mix manifest.
 		$manifest_path = SF_PATH . 'assets/mix-manifest.json';
 
-		$manifest = file_exists( $manifest_path ) ? json_decode( file_get_contents( $manifest_path ), true ) : null;
+		$manifest = file_exists( $manifest_path ) ? json_decode( file_get_contents( $manifest_path ), true ) : null; // phpcs:ignore WordPressVIPMinimum.Performance.FetchingRemoteData.FileGetContentsUnknown
 
 		// Make sure to trim any slashes from the front of the path.
 		$path = '/' . ltrim( $path, '/' );

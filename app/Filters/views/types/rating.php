@@ -35,8 +35,8 @@
 			}
 			printf( '<label class="sf-rating__label" for="%s"><div class="sf-rating__stars" aria-hidden="true">%s</div><span class="screen-reader-text">%s</span></label>',
 	            esc_attr( $id . '_' . $rating ),
-	            \SimplyFilters\get_stars( $rating ) . $rating_count,
-	            __( 'Rating:', $locale ) . ' ' . $rating
+	            wp_kses_post( \SimplyFilters\get_stars( $rating ) . $rating_count ),
+	            esc_html__( 'Rating:', $locale ) . ' ' . intval( $rating )
             );
 
             echo '</li>';

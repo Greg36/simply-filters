@@ -28,10 +28,10 @@ do_action( 'sf-before-filter-render', $filter );
 		<?php if ( $settings['collapse'] ) {
 			$collapsed = $filter->is_filter_collapsed();
 			printf( '<button class="sf-filter__collapse %s" aria-expanded="%s">%s<span class="screen-reader-text">%s</span></button>',
-				$collapsed ? 'collapsed' : '',
-				$collapsed ? 'true' : 'false',
+				esc_attr( $collapsed ? 'collapsed' : '' ),
+				esc_attr( $collapsed ? 'true' : 'false' ),
 				\SimplyFilters\load_inline_svg( 'collapse' ),
-				__( 'Toggle filter visibility', $locale )
+				esc_html__( 'Toggle filter visibility', $locale )
 			);
 		} ?>
 

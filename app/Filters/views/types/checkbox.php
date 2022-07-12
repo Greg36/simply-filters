@@ -35,7 +35,7 @@
 			$label .= \SimplyFilters\get_product_count( $settings['count'], $option );
 			printf( '<label class="sf-checkbox__label" for="%s">%s</label>',
 				esc_attr( $id . '_' . $option['slug'] ),
-				$label
+				wp_kses_post( $label )
 			);
 
 			echo '</li>';
@@ -45,6 +45,6 @@
 
 	<?php
 	// Button to show more options
-	echo \SimplyFilters\get_more_options_button( $settings['group'], count( $options ) );
+	\SimplyFilters\more_options_button( $settings['group'], count( $options ) );
 	?>
 </div>

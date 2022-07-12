@@ -4,6 +4,7 @@ namespace SimplyFilters\Filters\Types;
 
 use SimplyFilters\Admin\Settings;
 use SimplyFilters\Filters\FilterGroup;
+use function SimplyFilters\get_terms_list;
 
 /**
  * Main filter class, it handles configuration of settings,
@@ -163,7 +164,7 @@ abstract class Filter {
 	 */
 	public function is_filter_collapsed() {
 		if ( isset( $_COOKIE['sf-filters-collapsed'] ) ) {
-			$ids = explode( '|', $_COOKIE['sf-filters-collapsed'] );
+			$ids = explode( '|', filter_var( $_COOKIE['sf-filters-collapsed'], FILTER_SANITIZE_STRING ) ); // phpcs:ignore WordPressVIPMinimum.Variables.RestrictedVariables.cache_constraints___COOKIE
 			if ( in_array( $this->get_id(), $ids ) ) {
 				return true;
 			}
@@ -368,7 +369,7 @@ abstract class Filter {
 					$this->data['attributes'] = 'pa_' . array_shift( $attributes )->attribute_name;
 				}
 
-				return \SimplyFilters\get_terms_list( [
+				return get_terms_list( [
 					'taxonomy' => $this->data['attributes']
 				] );
 
@@ -380,11 +381,11 @@ abstract class Filter {
 					$args['parent'] = $this->data['product_cat'];
 				}
 
-				return \SimplyFilters\get_terms_list( $args );
+				return get_terms_list( $args );
 
 			case 'product_tag' :
 
-				return \SimplyFilters\get_terms_list( [
+				return get_terms_list( [
 					'taxonomy' => 'product_tag'
 				] );
 
@@ -555,25 +556,23 @@ abstract class Filter {
 	public function render_meta_fields() {
 
 		// Filter type field
-		echo $this->meta_field( 'type', $this->get_type() );
+		$this->meta_field( 'type', $this->get_type() );
 
 		// Menu order field
-		echo $this->meta_field( 'menu_order', $this->get_data( 'menu_order' ) );
+		$this->meta_field( 'menu_order', $this->get_data( 'menu_order' ) );
 	}
 
 	/**
-	 * Return hidden input field
+	 * Output hidden input field
 	 *
 	 * @param string $name Name of input field
 	 * @param mixed $value Value of input field
-	 *
-	 * @return string
 	 */
 	private function meta_field( $name, $value = '' ) {
 
 		$prefix = \Hybrid\app( 'prefix' );
 
-		return sprintf( '<input type="hidden" id="%s" name="%s" %s>',
+		printf( '<input type="hidden" id="%s" name="%s" %s>',
 			esc_attr( sprintf( '%s-%s-%s', $prefix, $this->get_id(), $name ) ),
 			esc_attr( sprintf( '%s[%s][%s]', $prefix, $this->get_id(), $name ) ),
 			$value !== '' ? sprintf( ' value="%s" ', esc_attr( $value ) ) : ''
@@ -637,7 +636,7 @@ abstract class Filter {
 
 			// Query products and save query to daily cache
 			if ( ! isset( $cached_queries[ $sql_hash ] ) ) {
-				$results                     = $wpdb->get_results( $sql, ARRAY_A );
+				$results                     = $wpdb->get_results( $sql, ARRAY_A ); // phpcs:ignore
 				$cached_queries[ $sql_hash ] = $this->count_product_ids( $results, $taxonomy );
 
 				set_transient( 'sf_products_in_' . $taxonomy, $cached_queries, DAY_IN_SECONDS );

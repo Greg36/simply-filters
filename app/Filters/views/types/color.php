@@ -45,7 +45,7 @@ use function SimplyFilters\load_inline_svg;
 			$label .= \SimplyFilters\get_product_count( $settings['count'], $color );
 			printf( '<label class="sf-color__label" for="%s">%s</label>',
 				esc_attr( $id . '_' . $color['slug'] ),
-				$swatch . $label
+				wp_kses_post( $swatch . $label )
 			);
 
 			echo '</li>';
@@ -55,6 +55,6 @@ use function SimplyFilters\load_inline_svg;
 
 	<?php
 	// Button to show more options
-	echo \SimplyFilters\get_more_options_button( $settings['group'], count( $options ) );
+	\SimplyFilters\more_options_button( $settings['group'], count( $options ) );
 	?>
 </div>

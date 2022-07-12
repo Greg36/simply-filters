@@ -31,7 +31,7 @@
 			printf( '<option value="%s" %s>%s</option>',
 				esc_attr( $option['slug'] ),
 				in_array( $option['slug'], $values ) ? 'selected' : '',
-				$label
+				wp_kses_post( $label )
 			);
 		}
 		?>

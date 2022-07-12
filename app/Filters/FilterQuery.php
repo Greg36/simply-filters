@@ -89,7 +89,7 @@ class FilterQuery {
 	 * @return array
 	 */
 	private function parse_url() {
-		$params = $_GET;
+		$params = $_GET; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		$data   = [];
 
 		// No params, no filtering

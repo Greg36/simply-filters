@@ -81,7 +81,7 @@ class SliderFilter extends Filter {
             )
         ";
 
-		$price = $wpdb->get_row( $sql, ARRAY_A );
+		$price = $wpdb->get_row( $sql, ARRAY_A );  // phpcs:ignore
 		$min   = $price['min'];
 		$max   = $price['max'];
 
@@ -125,8 +125,8 @@ class SliderFilter extends Filter {
                 </div>
 
                 <div class="sf-slider__values">
-                    <div><?php echo wc_price( 75, [ 'decimals' => false ] ); ?></div>
-                    <div><?php echo wc_price( 1674, [ 'decimals' => false ] ); ?></div>
+                    <div><?php echo wp_kses_post( wc_price( 75, [ 'decimals' => false ] ) ); ?></div>
+                    <div><?php echo wp_kses_post( wc_price( 1674, [ 'decimals' => false ] ) ); ?></div>
                 </div>
             </div>
         </div>
