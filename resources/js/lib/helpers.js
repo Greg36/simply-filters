@@ -4,6 +4,9 @@ import { __ } from '@wordpress/i18n';
 
 /**
  * Generate unique ID
+ *
+ * @param {string}  prefix
+ * @param {boolean} moreEntropy
  */
 function uniqid( prefix, moreEntropy ) {
 	//  discuss at: https://locutus.io/php/uniqid/
@@ -20,55 +23,61 @@ function uniqid( prefix, moreEntropy ) {
 	//   example 3: var $result = $id.length === (23 + 'bar'.length)
 	//   returns 3: true
 	if ( typeof prefix === 'undefined' ) {
-		prefix = ''
+		prefix = '';
 	}
-	let retId
-	const _formatSeed = function ( seed, reqWidth ) {
-		seed = parseInt( seed, 10 ).toString( 16 ) // to hex str
+	let retId;
+	const _formatSeed = function( seed, reqWidth ) {
+		seed = parseInt( seed, 10 ).toString( 16 ); // to hex str
 		if ( reqWidth < seed.length ) {
 			// so long we split
-			return seed.slice( seed.length - reqWidth )
+			return seed.slice( seed.length - reqWidth );
 		}
 		if ( reqWidth > seed.length ) {
 			// so short we pad
-			return Array( 1 + (reqWidth - seed.length) ).join( '0' ) + seed
+			return Array( 1 + ( reqWidth - seed.length ) ).join( '0' ) + seed;
 		}
-		return seed
-	}
-	const $global = (typeof window !== 'undefined' ? window : global)
-	$global.$locutus = $global.$locutus || {}
-	const $locutus = $global.$locutus
-	$locutus.php = $locutus.php || {}
-	if ( !$locutus.php.uniqidSeed ) {
+		return seed;
+	};
+	const $global = ( typeof window !== 'undefined' ? window : global );
+	$global.$locutus = $global.$locutus || {};
+	const $locutus = $global.$locutus;
+	$locutus.php = $locutus.php || {};
+	if ( ! $locutus.php.uniqidSeed ) {
 		// init seed with big random int
-		$locutus.php.uniqidSeed = Math.floor( Math.random() * 0x75bcd15 )
+		$locutus.php.uniqidSeed = Math.floor( Math.random() * 0x75bcd15 );
 	}
-	$locutus.php.uniqidSeed++
+	$locutus.php.uniqidSeed++;
 	// start with prefix, add current milliseconds hex string
-	retId = prefix
-	retId += _formatSeed( parseInt( new Date().getTime() / 1000, 10 ), 8 )
+	retId = prefix;
+	retId += _formatSeed( parseInt( new Date().getTime() / 1000, 10 ), 8 );
 	// add seed hex string
-	retId += _formatSeed( $locutus.php.uniqidSeed, 5 )
+	retId += _formatSeed( $locutus.php.uniqidSeed, 5 );
 	if ( moreEntropy ) {
 		// for more entropy we add a float lower to 10
-		retId += (Math.random() * 10).toFixed( 8 ).toString()
+		retId += ( Math.random() * 10 ).toFixed( 8 ).toString();
 	}
-	return retId
+	return retId;
 }
 
 /**
  * Add loader animation to given node
+ *
+ * @param {Object} node
  */
 function addLoader( node ) {
 	let src = '';
 
-	if ( window.hasOwnProperty( 'sf_admin' ) ) src = sf_admin.loader_src;
-	if ( window.hasOwnProperty( 'sf_filters' ) ) src = sf_filters.loader_src;
+	if ( window.hasOwnProperty( 'sf_admin' ) ) {
+		src = sf_admin.loader_src;
+	}
+	if ( window.hasOwnProperty( 'sf_filters' ) ) {
+		src = sf_filters.loader_src;
+	}
 
-	let loader = '<div id="sf-ajax-loader"><img src="' + src + '" aria-hidden="true" alt=""></div>';
+	const loader = '<div id="sf-ajax-loader"><img src="' + src + '" aria-hidden="true" alt=""></div>';
 	node.insertAdjacentHTML( 'beforeend', loader );
-	setTimeout( function () {
-		let loaderNode = document.getElementById( 'sf-ajax-loader' );
+	setTimeout( function() {
+		const loaderNode = document.getElementById( 'sf-ajax-loader' );
 		loaderNode.classList.add( 'fade-in' );
 	}, 0 );
 }
@@ -82,6 +91,9 @@ function removeLoader() {
 
 /**
  * Add new admin notice at the top of the page
+ *
+ * @param {string} message
+ * @param {string} type
  */
 function addAdminFormNotice( message, type = 'info' ) {
 	const container = document.getElementById( 'post' );
@@ -91,8 +103,8 @@ function addAdminFormNotice( message, type = 'info' ) {
 
 	// Create the notice
 	let notice = document.createElement( 'div' );
-	notice.classList.add( 'sf-notice', `sf-notice__${type}` );
-	notice.innerHTML = `<p class="sf-notice__message">${message}</p><a class="sf-notice__close" href="#"><span class="screen-reader-text">${__( 'Close notice', 'simply-filters' )}</span></a>`;
+	notice.classList.add( 'sf-notice', `sf-notice__${ type }` );
+	notice.innerHTML = `<p class="sf-notice__message">${ message }</p><a class="sf-notice__close" href="#"><span class="screen-reader-text">${ __( 'Close notice', 'simply-filters' ) }</span></a>`;
 
 	// Insert notice at the top of form
 	notice = container.insertAdjacentElement( 'afterbegin', notice );
@@ -118,9 +130,11 @@ function removeFormNotices() {
 
 /**
  * Add error notice to an input field
+ *
+ * @param {string} message
+ * @param {Object} input
  */
 function invalidInputNotice( message, input ) {
-
 	// If there is notice already, remove it
 	if ( input.previousElementSibling !== null && input.previousElementSibling.classList.contains( 'sf-notice' ) ) {
 		input.previousElementSibling.remove();
@@ -129,7 +143,7 @@ function invalidInputNotice( message, input ) {
 	// Create the notice
 	let notice = document.createElement( 'div' );
 	notice.classList.add( 'sf-notice', 'sf-notice__input' );
-	notice.innerHTML = `<p class="sf-notice__message">${message}</p>`;
+	notice.innerHTML = `<p class="sf-notice__message">${ message }</p>`;
 
 	// Insert notice at the top of form
 	notice = input.insertAdjacentElement( 'beforebegin', notice );
@@ -145,6 +159,9 @@ function invalidInputNotice( message, input ) {
 
 /**
  * Debounce callback by a given time
+ *
+ * @param {Object} callback
+ * @param {number} wait
  */
 function debounce( callback, wait ) {
 	let timeoutId = null;
@@ -158,24 +175,32 @@ function debounce( callback, wait ) {
 
 /**
  * Set a cookie
+ *
+ * @param {string} cName
+ * @param {string} cValue
+ * @param {number} expDays
  */
 function setCookie( cName, cValue, expDays ) {
-	let date = new Date();
-	date.setTime( date.getTime() + (expDays * 24 * 60 * 60 * 1000) );
-	const expires = "expires=" + date.toUTCString();
-	document.cookie = cName + "=" + cValue + "; " + expires + "; path=/";
+	const date = new Date();
+	date.setTime( date.getTime() + ( expDays * 24 * 60 * 60 * 1000 ) );
+	const expires = 'expires=' + date.toUTCString();
+	document.cookie = cName + '=' + cValue + '; ' + expires + '; path=/';
 }
 
 /**
  * Get a cookie by name
+ *
+ * @param {string} cName
  */
 function getCookie( cName ) {
-	const name = cName + "=";
+	const name = cName + '=';
 	const cDecoded = decodeURIComponent( document.cookie );
 	const cArr = cDecoded.split( '; ' );
 	let res;
-	cArr.forEach( val => {
-		if ( val.indexOf( name ) === 0 ) res = val.substring( name.length );
-	} )
+	cArr.forEach( ( val ) => {
+		if ( val.indexOf( name ) === 0 ) {
+			res = val.substring( name.length );
+		}
+	} );
 	return res;
 }

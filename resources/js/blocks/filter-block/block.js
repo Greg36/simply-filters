@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /**
  * WordPress dependencies
  */
@@ -11,7 +12,7 @@ import {
 	Placeholder,
 	ToolbarGroup,
 	withSpokenMessages,
-	SelectControl
+	SelectControl,
 } from '@wordpress/components';
 import { withSelect } from '@wordpress/data';
 import { compose } from '@wordpress/compose';
@@ -22,21 +23,20 @@ import { compose } from '@wordpress/compose';
  * @since 1.0.0
  */
 class FilterBlock extends Component {
-
 	renderGroupSelection() {
 		const { attributes, debouncedSpeak, setAttributes } = this.props;
 
-		let groups = [{
+		const groups = [ {
 			label: __( 'Choose group', 'simply-filters' ),
 			value: 0,
-			disabled: true
-		}];
+			disabled: true,
+		} ];
 
 		if ( this.props.groups ) {
 			this.props.groups.forEach( ( post ) => {
 				groups.push( {
 					label: post.title.rendered,
-					value: post.id
+					value: post.id,
 				} );
 			} );
 		}
@@ -68,7 +68,7 @@ class FilterBlock extends Component {
 						setAttributes( { group_id: parseInt( id ) } );
 					}}
 				/>
-				<Button isPrimary onClick={onChange} disabled={!attributes.group_id}>
+				<Button isPrimary onClick={onChange} disabled={! attributes.group_id}>
 					{__( 'Done', 'woocommerce' )}
 				</Button>
 
@@ -80,7 +80,9 @@ class FilterBlock extends Component {
 		const { attributes, name, setAttributes } = this.props;
 		const { isSelectGroup } = attributes;
 
-		if ( attributes.isPreview ) return '';
+		if ( attributes.isPreview ) {
+			return '';
+		}
 
 		return (
 			<>
@@ -94,7 +96,7 @@ class FilterBlock extends Component {
 									'simply-filters'
 								),
 								onClick: () =>
-									setAttributes( { isSelectGroup: !isSelectGroup } ),
+									setAttributes( { isSelectGroup: ! isSelectGroup } ),
 								isActive: isSelectGroup,
 							},
 						]}
@@ -120,7 +122,7 @@ export default compose( [
 	withSpokenMessages,
 	withSelect( ( select ) => {
 		return {
-			groups: select( 'core' ).getEntityRecords( 'postType', 'sf_filter_group', { per_page: -1 } )
-		}
+			groups: select( 'core' ).getEntityRecords( 'postType', 'sf_filter_group', { per_page: -1 } ),
+		};
 	} ),
 ] )( FilterBlock );

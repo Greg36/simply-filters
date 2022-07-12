@@ -1,7 +1,7 @@
 import { __ } from '@wordpress/i18n';
 import ColorControl from './admin-color';
-import { addLoader, addAdminFormNotice, invalidInputNotice, removeLoader, uniqid } from "../lib/helpers";
-import { checkNoFilterLabel, updateOrderNumbers } from "./admin-filters-group";
+import { addLoader, addAdminFormNotice, invalidInputNotice, removeLoader, uniqid } from '../lib/helpers';
+import { checkNoFilterLabel, updateOrderNumbers } from './admin-filters-group';
 
 /**
  * Filters admin settings
@@ -9,7 +9,6 @@ import { checkNoFilterLabel, updateOrderNumbers } from "./admin-filters-group";
  * @since 1.0.0
  */
 export default class AdminFilter {
-
 	constructor( filter ) {
 		this.filter = filter;
 		this.type = filter.dataset.filter_type;
@@ -34,21 +33,22 @@ export default class AdminFilter {
 
 	/**
 	 * Get filter's input field by its label using cache
+	 *
+	 * @param {string} label
 	 */
 	getInput( label ) {
-		if ( !this.nodes.hasOwnProperty( label ) ) {
-			this.nodes[label] = this.filter.querySelector( '#' + this.id + '-' + label );
+		if ( ! this.nodes.hasOwnProperty( label ) ) {
+			this.nodes[ label ] = this.filter.querySelector( '#' + this.id + '-' + label );
 		}
-		return this.nodes[label];
+		return this.nodes[ label ];
 	}
 
 	/**
 	 * Setup all events related to the filter row functionality
 	 */
 	setupEvents() {
-
 		// Toggle filter settings visibility
-		this.filter.querySelectorAll( 'a.edit-filter,a.sf-close ' ).forEach( link => {
+		this.filter.querySelectorAll( 'a.edit-filter,a.sf-close ' ).forEach( ( link ) => {
 			link.addEventListener( 'click', ( e ) => {
 				e.preventDefault();
 				this.toggleOptions();
@@ -69,35 +69,34 @@ export default class AdminFilter {
 		} );
 
 		// Check if any of the fields has been changed
-		this.filter.querySelectorAll( `[name^="${sf_admin.prefix}"]` ).forEach( input => {
+		this.filter.querySelectorAll( `[name^="${ sf_admin.prefix }"]` ).forEach( ( input ) => {
 			input.addEventListener( 'change', () => {
 				this.save();
 			} );
 		} );
 
 		// Handle required inputs invalid
-		this.filter.querySelectorAll( `[required]` ).forEach( input => {
+		this.filter.querySelectorAll( `[required]` ).forEach( ( input ) => {
 			input.addEventListener( 'invalid', ( e ) => {
 				e.preventDefault();
 				invalidInputNotice( __( 'This field is required.', 'simply-filters' ), input );
-				addAdminFormNotice( __( 'Fill in all required fields.', 'simply-filters' ), 'error' )
+				addAdminFormNotice( __( 'Fill in all required fields.', 'simply-filters' ), 'error' );
 
-				if ( !this.filter.classList.contains( 'open' ) ) {
+				if ( ! this.filter.classList.contains( 'open' ) ) {
 					this.toggleOptions();
 				}
 			} );
 		} );
 
-
 		// Update menu_order when filter position have changed
 		this.filter.addEventListener( 'orderChanged', ( e ) => {
-			const menu_order = this.getInput( 'menu_order' );
+			const menuOrder = this.getInput( 'menu_order' );
 
 			// If order value changed, dispatch change event to save file in POST
-			if ( parseInt( menu_order.value ) !== parseInt( e.detail ) ) {
-				menu_order.dispatchEvent( new Event( 'change' ) );
+			if ( parseInt( menuOrder.value ) !== parseInt( e.detail ) ) {
+				menuOrder.dispatchEvent( new Event( 'change' ) );
 			}
-			menu_order.value = e.detail;
+			menuOrder.value = e.detail;
 		} );
 
 		// Update label when label's input is changed
@@ -123,17 +122,19 @@ export default class AdminFilter {
 			'sources',
 			'attributes',
 			'product_cat',
-			'product_tag'
-		]
+			'product_tag',
+		];
 
-		options.forEach( key => {
+		options.forEach( ( key ) => {
 			const input = this.getInput( key );
 
 			// Skip options with no source select
-			if ( input === null ) return '';
+			if ( input === null ) {
+				return '';
+			}
 
 			input.addEventListener( 'change', () => {
-				let source = this.getInput( 'sources' ).value;
+				const source = this.getInput( 'sources' ).value;
 				addLoader( this.filter.querySelector( '.sf-color' ).closest( '.sf-option' ) );
 				this.getColorOptions( source, this.getInput( source ).value );
 			} );
@@ -142,16 +143,19 @@ export default class AdminFilter {
 
 	/**
 	 * Make AJAX request to get new color settings
+	 *
+	 * @param {string} taxonomy
+	 * @param {number} termID
 	 */
-	getColorOptions( taxonomy, term_id ) {
+	getColorOptions( taxonomy, termID ) {
 		fetch( sf_admin.ajax_url, {
 			method: 'POST',
 			body: new URLSearchParams( {
 				action: 'sf/get_color_options',
 				nonceAjax: sf_admin.ajax_nonce,
-				taxonomy: taxonomy,
-				term_id: term_id,
-				filter_id: this.id
+				taxonomy,
+				term_id: termID,
+				filter_id: this.id,
 			} ),
 		} ).then( ( response ) => {
 			return response.text();
@@ -162,11 +166,12 @@ export default class AdminFilter {
 
 	/**
 	 * Update color options with data from AJAX request
+	 *
+	 * @param {string} text
 	 */
 	updateColorOptions( text ) {
-
 		// Replace existing color option with new
-		let frag = document.createRange().createContextualFragment( text );
+		const frag = document.createRange().createContextualFragment( text );
 		this.filter.querySelector( '.sf-color' ).closest( 'td' ).innerHTML = frag.querySelector( '.sf-color' ).outerHTML;
 
 		// Reinitialize color picker
@@ -176,6 +181,8 @@ export default class AdminFilter {
 
 	/**
 	 * Toggle visibility of fitter options
+	 *
+	 * @param {number} speed
 	 */
 	toggleOptions( speed = 300 ) {
 		const options = this.filter.querySelector( '.sf-filter__options' );
@@ -198,6 +205,8 @@ export default class AdminFilter {
 
 	/**
 	 * Display only selected source
+	 *
+	 * @param {string} selected
 	 */
 	changeSourceDisplay( selected ) {
 		const attributes = this.getInput( 'attributes' ).closest( '.sf-option' );
@@ -212,7 +221,7 @@ export default class AdminFilter {
 	 */
 	duplicate() {
 		// Generate new unique ID
-		const unique_id = uniqid()
+		const unique_id = uniqid();
 
 		// Clone the node and update key and ID
 		let new_filter = this.filter.cloneNode( true );
@@ -237,6 +246,8 @@ export default class AdminFilter {
 
 	/**
 	 * Instantiate new filter and set its options
+	 *
+	 * @param {Object} filter
 	 */
 	setupDuplicatedFilter( filter ) {
 		const new_filter = new AdminFilter( filter );
@@ -252,6 +263,10 @@ export default class AdminFilter {
 
 	/**
 	 * Replace all IDs in a row to new ID
+	 *
+	 * @param {Object} filter
+	 * @param {string} old_id
+	 * @param {string} new_id
 	 */
 	replaceFilterID( filter, old_id, new_id ) {
 		const elements = filter.querySelectorAll( 'label, input, select' );
@@ -311,7 +326,7 @@ export default class AdminFilter {
 	 * Add removed filter ID to hidden input to pass it via POST
 	 */
 	saveRemovedID() {
-		let input = document.getElementById( 'sf-removed-fields' );
+		const input = document.getElementById( 'sf-removed-fields' );
 		input.value = input.value + '|' + this.raw_id;
 	}
 
@@ -321,15 +336,15 @@ export default class AdminFilter {
 	placeRemoveTooltip() {
 		const tooltip = document.createElement( 'div' );
 		tooltip.classList.add( 'sf-remove-tooltip' );
-		tooltip.innerHTML = `${__( 'Are you sure?', 'simply-filters' )}<a href="#" data-event="remove">${__( 'Delete', 'simply-filters' )}</a><a href="#" data-event="cancel">${__( 'Cancel', 'simply-filters' )}</a>`;
+		tooltip.innerHTML = `${ __( 'Are you sure?', 'simply-filters' ) }<a href="#" data-event="remove">${ __( 'Delete', 'simply-filters' ) }</a><a href="#" data-event="cancel">${ __( 'Cancel', 'simply-filters' ) }</a>`;
 
 		// Append tooltip to remove button
 		this.filter.querySelector( '.remove-filter' ).insertAdjacentElement( 'afterend', tooltip );
 
 		const buttons = {
 			remove: this.filter.querySelector( 'a[data-event="remove"]' ),
-			cancel: this.filter.querySelector( 'a[data-event="cancel"]' )
-		}
+			cancel: this.filter.querySelector( 'a[data-event="cancel"]' ),
+		};
 		buttons.remove.focus();
 		return buttons;
 	}

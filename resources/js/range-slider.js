@@ -1,5 +1,5 @@
-import FilterUrl from "./lib/filter-url";
-import { debounce } from "./lib/helpers";
+import FilterUrl from './lib/filter-url';
+import { debounce } from './lib/helpers';
 
 /**
  * Update price and the URL with debounce
@@ -8,22 +8,29 @@ const updatePrice = debounce( ( data ) => {
 	const url = new FilterUrl();
 	url.update( 'replace', {
 		key: 'price',
-		value: `${data.min}_${data.max}`,
-		group: data.group
+		value: `${ data.min }_${ data.max }`,
+		group: data.group,
 	} );
 }, 100 );
 
 /**
  * Update jQuery slider with values from input field and call update
+ *
+ * @param {Event}  ev
+ * @param {Object} data
  */
 const updateSlider = ( ev, data ) => {
-	jQuery( data.slider ).slider( 'values', [data.min, data.max] );
+	jQuery( data.slider ).slider( 'values', [ data.min, data.max ] );
 
 	updatePrice( data );
 };
 
 /**
  * Check if value is in range and correct it if needed
+ *
+ * @param {Object} input
+ * @param {Object} min
+ * @param {Object} max
  */
 const validateRange = ( input, min, max ) => {
 	if ( parseInt( input.value ) > parseInt( input.max ) ) {
@@ -39,11 +46,14 @@ const validateRange = ( input, min, max ) => {
 	if ( parseInt( max.value ) < parseInt( min.value ) ) {
 		max.value = min.value;
 	}
-}
+};
 
 /**
  * Format price based on site's currency settings
+ *
+ * @param {string} price
  */
+// eslint-disable-next-line no-unused-vars
 const formatPrice = ( price ) => {
 	const symbol = sf_filters.currency;
 	switch ( sf_filters.price_format ) {
@@ -57,7 +67,7 @@ const formatPrice = ( price ) => {
 			return '' + price + '&nbsp;' + symbol;
 	}
 	return price;
-}
+};
 
 /**
  * Setup price sliders
@@ -65,52 +75,51 @@ const formatPrice = ( price ) => {
  * @since 1.0.0
  */
 export const setupSliders = () => {
-	let sliders = document.querySelectorAll( '.sf-slider' );
+	const sliders = document.querySelectorAll( '.sf-slider' );
 	sliders.forEach( ( slider ) => {
-
-		const ui = slider.querySelector( '.sf-slider__ui' ),
+		const sliderUi = slider.querySelector( '.sf-slider__ui' ),
 			min = slider.querySelector( '.sf-slider__input--min' ),
 			max = slider.querySelector( '.sf-slider__input--max' ),
 			group = slider.closest( '.sf-filter-group' );
 
-		ui.style.display = 'block';
+		sliderUi.style.display = 'block';
 
 		// Init slider
-		jQuery( ui ).slider( {
+		jQuery( sliderUi ).slider( {
 			range: true,
 			min: parseInt( min.dataset.min ),
 			max: parseInt( max.dataset.max ),
-			values: [min.value, max.value],
-			slide: function ( event, ui ) {
-				if ( ui.values[1] - ui.values[0] < 1 ) return false;
+			values: [ min.value, max.value ],
+			slide( event, ui ) {
+				if ( ui.values[ 1 ] - ui.values[ 0 ] < 1 ) {
+					return false;
+				}
 
-				let inputs = event.target.nextElementSibling.children;
-				inputs[0].value = ui.values[0];
-				inputs[1].value = ui.values[1];
+				const inputs = event.target.nextElementSibling.children;
+				inputs[ 0 ].value = ui.values[ 0 ];
+				inputs[ 1 ].value = ui.values[ 1 ];
 			},
-			stop: function () {
+			stop() {
 				updatePrice( {
 					min: min.value,
 					max: max.value,
-					group: group
-				} )
-			}
+					group,
+				} );
+			},
 		} );
 
-
 		// Hook events for both text fields
-		[min, max].forEach( ( input ) => {
+		[ min, max ].forEach( ( input ) => {
 			input.addEventListener( 'input', ( event ) => {
 				debounce( () => {
 					validateRange( event.target, min, max );
 					updateSlider( event, {
-						slider: ui,
+						slider: sliderUi,
 						min: min.value,
-						max: max.value
+						max: max.value,
 					} );
 				}, 500 )();
 			} );
 		} );
-
 	} );
-}
+};

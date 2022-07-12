@@ -1,6 +1,6 @@
-import { addLoader, removeLoader } from "../lib/helpers";
-import { checkNoFilterLabel, updateOrderNumbers } from "./admin-filters-group";
-import AdminFilter from "./admin-filter";
+import { addLoader, removeLoader } from '../lib/helpers';
+import { checkNoFilterLabel, updateOrderNumbers } from './admin-filters-group';
+import AdminFilter from './admin-filter';
 
 /**
  * Handle adding new filter via AJAX
@@ -8,7 +8,6 @@ import AdminFilter from "./admin-filter";
  * @since 1.0.0
  */
 export default class AdminNewFilter {
-
 	constructor() {
 		this.container = document.querySelector( '.sf-new' );
 		this.wrap = document.querySelector( '.sf-new__wrap' );
@@ -18,9 +17,8 @@ export default class AdminNewFilter {
 	 * Setup events for new filter popup
 	 */
 	init() {
-
 		// Open and close popup buttons
-		document.querySelectorAll( '.sf-button__new-filter, .sf-new__close' ).forEach( button => {
+		document.querySelectorAll( '.sf-button__new-filter, .sf-new__close' ).forEach( ( button ) => {
 			button.addEventListener( 'click', ( e ) => {
 				e.preventDefault();
 				this.togglePopup();
@@ -56,6 +54,8 @@ export default class AdminNewFilter {
 
 	/**
 	 * Make AJAX request to get new filter
+	 *
+	 * @param {string} type
 	 */
 	getNewFilter( type ) {
 		fetch( sf_admin.ajax_url, {
@@ -63,7 +63,7 @@ export default class AdminNewFilter {
 			body: new URLSearchParams( {
 				action: 'sf/render_new_field',
 				nonceAjax: sf_admin.ajax_nonce,
-				type: type
+				type,
 			} ),
 		} ).then( ( response ) => {
 			return response.text();
@@ -74,9 +74,10 @@ export default class AdminNewFilter {
 
 	/**
 	 * Insert new filter and initialize it
+	 *
+	 * @param {string} text
 	 */
 	addNewFilter( text ) {
-
 		// Insert new filter
 		const last_filter = document.querySelector( '.sf-filters__list > div:last-of-type' );
 		last_filter.insertAdjacentHTML( 'afterend', text );

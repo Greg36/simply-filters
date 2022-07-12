@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /**
  * WordPress dependencies
  */
@@ -27,13 +28,13 @@ registerBlockType( 'simply-filters/filter-group', {
 	},
 
 	supports: {
-		html: false
+		html: false,
 	},
 
 	attributes: {
 		group_id: {
 			type: 'integer',
-			default: 0
+			default: 0,
 		},
 		isSelectGroup: {
 			type: 'boolean',
@@ -51,5 +52,5 @@ registerBlockType( 'simply-filters/filter-group', {
 
 	save() {
 		return null;
-	}
+	},
 } );

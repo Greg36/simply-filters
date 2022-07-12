@@ -1,7 +1,7 @@
 import { __ } from '@wordpress/i18n';
-import AdminFilter from "./admin-filter";
-import AdminNewFilter from "./admin-new-filter";
-import { invalidInputNotice, addAdminFormNotice } from "../lib/helpers";
+import AdminFilter from './admin-filter';
+import AdminNewFilter from './admin-new-filter';
+import { invalidInputNotice, addAdminFormNotice } from '../lib/helpers';
 
 export { initFiltersGroup, updateOrderNumbers, checkNoFilterLabel };
 
@@ -11,7 +11,6 @@ export { initFiltersGroup, updateOrderNumbers, checkNoFilterLabel };
  * @since 1.0.0
  */
 function initFiltersGroup() {
-
 	// Initialize all filters
 	document.querySelectorAll( '.sf-filter' ).forEach( ( current ) => {
 		new AdminFilter( current );
@@ -38,7 +37,6 @@ function initFiltersGroup() {
  * Setup events related to filter group settings
  */
 function setupGroupSettings() {
-
 	const group_settings = document.querySelector( '.sf-settings' );
 
 	if ( group_settings ) {
@@ -48,7 +46,9 @@ function setupGroupSettings() {
 			more_count = group_settings.querySelector( '#' + group_id + '-more_count' ).closest( '.sf-option' );
 
 		// Hide more count setting initially
-		if ( !more_toggle.checked ) more_count.style.display = 'none';
+		if ( ! more_toggle.checked ) {
+			more_count.style.display = 'none';
+		}
 
 		more_toggle.addEventListener( 'change', ( e ) => {
 			more_count.style.display = e.target.checked ? '' : 'none';
@@ -65,7 +65,6 @@ function setupColorInputs() {
 		hide: true,
 		palettes: true,
 	} );
-
 }
 
 /**
@@ -75,8 +74,8 @@ function makeRowsSortable() {
 	jQuery( '.sf-filters__list' ).sortable( {
 		handle: '.sf-row__order',
 		stop: () => {
-			updateOrderNumbers()
-		}
+			updateOrderNumbers();
+		},
 	} );
 }
 
@@ -106,6 +105,8 @@ function checkNoFilterLabel() {
 
 /**
  * Prepare data before submitting
+ *
+ * @param {Event} e
  */
 function prepareSubmitData( e ) {
 	const duplicates = findDuplicatedValues();
@@ -123,24 +124,23 @@ function prepareSubmitData( e ) {
 /**
  * Check if all values labeled as unique are unique between all filters settings
  *
- * @returns {number}
+ * @return {number} Number of found duplicated values
  */
 function findDuplicatedValues() {
 	const inputs = document.getElementById( 'post' ).querySelectorAll( '[data-unique]' );
 
-	let uniques = {},
-		found_duplicates = 0;
+	const uniques = {};
+	let found_duplicates = 0;
 
 	// For each unique label create a new array and push the input into it
 	inputs.forEach( ( current ) => {
-		(uniques[current.dataset.unique] || (uniques[current.dataset.unique] = [])).push( current );
+		( uniques[ current.dataset.unique ] || ( uniques[ current.dataset.unique ] = [] ) ).push( current );
 	} );
 
 	// Check if values in group are all unique
 	Object.keys( uniques ).forEach( ( key ) => {
-
-		const values = uniques[key].map( el => el.value );
-		const duplicates = uniques[key].filter( el => values.filter( val => val === el.value ).length > 1 );
+		const values = uniques[ key ].map( ( el ) => el.value );
+		const duplicates = uniques[ key ].filter( ( el ) => values.filter( ( val ) => val === el.value ).length > 1 );
 
 		// If there are duplicates display notice
 		duplicates.forEach( ( input ) => {
@@ -148,7 +148,7 @@ function findDuplicatedValues() {
 			invalidInputNotice( __( 'Value must be unique across all filters in the group', 'simply-filters' ), input );
 
 			// Open settings
-			if ( !input.closest( '.sf-filter' ).classList.contains( 'open' ) ) {
+			if ( ! input.closest( '.sf-filter' ).classList.contains( 'open' ) ) {
 				input.closest( '.sf-filter' ).querySelector( 'a.edit-filter' ).click();
 			}
 		} );
@@ -162,18 +162,20 @@ function findDuplicatedValues() {
  */
 function removeUnmodifiedFilters() {
 	document.querySelectorAll( '.sf-filter' ).forEach( ( current ) => {
-
 		// Skip open filters
-		if ( current.classList.contains( 'open' ) ) return;
+		if ( current.classList.contains( 'open' ) ) {
+			return;
+		}
 
 		// Remove all fields that have not been changed
-		if ( !current.hasAttribute( 'data-save' ) || current.dataset.save !== 'true' ) {
-
+		if ( ! current.hasAttribute( 'data-save' ) || current.dataset.save !== 'true' ) {
 			// Save checked toggle
 			const enabled = current.querySelector( '[name$="[enabled]"]' );
-			if ( enabled.checked ) enabled.parentElement.classList.add( 'checked' );
+			if ( enabled.checked ) {
+				enabled.parentElement.classList.add( 'checked' );
+			}
 
-			current.querySelectorAll( `[name^="${sf_admin.prefix}"]` ).forEach( input => {
+			current.querySelectorAll( `[name^="${ sf_admin.prefix }"]` ).forEach( ( input ) => {
 				input.remove();
 			} );
 		}

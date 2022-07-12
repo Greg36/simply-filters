@@ -1,4 +1,4 @@
-import { initFiltersGroup } from "./admin/admin-filters-group";
+import { initFiltersGroup } from './admin/admin-filters-group';
 
 /**
  * Primary admin panel script.
@@ -6,7 +6,6 @@ import { initFiltersGroup } from "./admin/admin-filters-group";
  * @since 1.0.0
  */
 document.addEventListener( 'DOMContentLoaded', () => {
-
 	// Post edit screen
 	if ( sf_admin.current_screen.is_page_post ) {
 		initFiltersGroup();
@@ -15,7 +14,6 @@ document.addEventListener( 'DOMContentLoaded', () => {
 
 	// General settings screen
 	if ( sf_admin.current_screen.is_page_settings ) {
-
 		// Initialize color settings
 		jQuery( '.sf-settings .sf-color__field' ).wpColorPicker( {
 			hide: true,
@@ -23,11 +21,13 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		} );
 
 		// Collapse selector options on toggle
-		const change_selectors = document.querySelector( '#sf-setting-options-change_selectors' );
+		const changeSelectors = document.querySelector( '#sf-setting-options-change_selectors' );
 		const selectors = document.querySelector( '#sf-setting-options-selectors_product' ).closest( '.sf-option' );
 
-		if ( !change_selectors.checked ) selectors.style.display = 'none';
-		change_selectors.addEventListener( 'change', ( e ) => {
+		if ( ! changeSelectors.checked ) {
+			selectors.style.display = 'none';
+		}
+		changeSelectors.addEventListener( 'change', ( e ) => {
 			selectors.style.display = e.target.checked ? '' : 'none';
 		} );
 	}
@@ -35,9 +35,11 @@ document.addEventListener( 'DOMContentLoaded', () => {
 
 /**
  * Handle tab navigation on filter group page
+ *
+ * @param {Object} tabs
  */
 function enableTabsToggle( tabs ) {
-	const all_targets = document.querySelectorAll( '.sf-tabs-target' );
+	const allTargets = document.querySelectorAll( '.sf-tabs-target' );
 
 	tabs.querySelectorAll( 'a' ).forEach( ( link ) => {
 		link.addEventListener( 'click', ( e ) => {
@@ -45,8 +47,10 @@ function enableTabsToggle( tabs ) {
 
 			// Swap the tab
 			const target = document.querySelector( link.getAttribute( 'href' ) );
-			all_targets.forEach( ( ele ) => {
-				if ( ele !== target ) ele.classList.remove( 'open' );
+			allTargets.forEach( ( ele ) => {
+				if ( ele !== target ) {
+					ele.classList.remove( 'open' );
+				}
 			} );
 			target.classList.add( 'open' );
 

@@ -4,9 +4,10 @@
  * @since 1.0.0
  */
 export default class FilterUrl {
-
 	constructor( url = '' ) {
-		if ( !url ) url = location.href;
+		if ( ! url ) {
+			url = location.href;
+		}
 
 		if ( window.hasOwnProperty( 'sf_filter_url' ) ) {
 			this.url = sf_filter_url;
@@ -18,6 +19,9 @@ export default class FilterUrl {
 
 	/**
 	 * Perform action on URL parameters
+	 *
+	 * @param {string} action
+	 * @param {Object} param
 	 */
 	update( action, param ) {
 		const href = this.url.href;
@@ -41,7 +45,7 @@ export default class FilterUrl {
 
 		// Update URL when it has changed
 		if ( href !== this.url.href ) {
-			let url = this.getUpdatedURL();
+			const url = this.getUpdatedURL();
 
 			if ( param.group.dataset.action === 'automatic' ) {
 				window.history.pushState( {}, '', url );
@@ -54,6 +58,8 @@ export default class FilterUrl {
 
 	/**
 	 * Replace param in URL
+	 *
+	 * @param {Object} param
 	 */
 	replace( param ) {
 		this.url.searchParams.set( param.key, param.value );
@@ -61,6 +67,8 @@ export default class FilterUrl {
 
 	/**
 	 * Remove param by key in URL
+	 *
+	 * @param {Object} param
 	 */
 	clear( param ) {
 		this.url.searchParams.delete( param.key );
@@ -68,13 +76,14 @@ export default class FilterUrl {
 
 	/**
 	 * Remove param from URL
+	 *
+	 * @param {Object} param
 	 */
 	remove( param ) {
 		if ( this.url.searchParams.has( param.key ) ) {
 			let values = this.url.searchParams.get( param.key ).split( param.delimiter );
 
 			if ( values.indexOf( param.value ) >= 0 ) {
-
 				// Key with single value
 				if ( values.length === 1 ) {
 					this.url.searchParams.delete( param.key );
@@ -83,7 +92,7 @@ export default class FilterUrl {
 				// Multiple values
 				if ( values.length > 1 ) {
 					values = values.filter( ( ele ) => {
-						return ele !== param.value
+						return ele !== param.value;
 					} );
 					this.url.searchParams.set( param.key, values.join( param.delimiter ) );
 				}
@@ -93,14 +102,18 @@ export default class FilterUrl {
 
 	/**
 	 * Add param to URL
+	 *
+	 * @param {Object} param
 	 */
 	add( param ) {
 		if ( this.url.searchParams.has( param.key ) ) {
-			let values = this.url.searchParams.get( param.key ).split( param.delimiter );
+			const values = this.url.searchParams.get( param.key ).split( param.delimiter );
 
 			if ( values.indexOf( param.value ) < 0 ) {
 				let value = values.join( param.delimiter );
-				if ( value !== '' ) value += param.delimiter;
+				if ( value !== '' ) {
+					value += param.delimiter;
+				}
 				this.url.searchParams.set( param.key, value + param.value );
 			}
 		} else {
@@ -110,10 +123,11 @@ export default class FilterUrl {
 
 	/**
 	 * Change price range in the URL
+	 *
+	 * @param {Object} param
 	 */
 	price( param ) {
-
-		let price = {};
+		const price = {};
 		if ( param.key === 'price-min' ) {
 			price.min = parseInt( param.value );
 			price.max = parseInt( param.input.nextElementSibling.value );
@@ -123,7 +137,7 @@ export default class FilterUrl {
 		}
 
 		param.key = 'price';
-		param.value = `${price.min}_${price.max}`;
+		param.value = `${ price.min }_${ price.max }`;
 		this.replace( param );
 	}
 
@@ -131,6 +145,6 @@ export default class FilterUrl {
 	 * Get full URL with params
 	 */
 	getUpdatedURL() {
-		return this.url.origin + this.url.pathname + decodeURIComponent( this.url.search )
+		return this.url.origin + this.url.pathname + decodeURIComponent( this.url.search );
 	}
 }
