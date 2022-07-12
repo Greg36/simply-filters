@@ -636,7 +636,7 @@ abstract class Filter {
 			$cached_queries = (array) get_transient( 'sf_products_in_' . $taxonomy );
 
 			// Query products and save query to daily cache
-			if ( ! isset( $cached_queries[ $sql_hash ] ) || true) {
+			if ( ! isset( $cached_queries[ $sql_hash ] ) ) {
 				$results                     = $wpdb->get_results( $sql, ARRAY_A );
 				$cached_queries[ $sql_hash ] = $this->count_product_ids( $results, $taxonomy );
 
