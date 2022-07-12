@@ -1,0 +1,13 @@
+{
+  "env" : {
+    "browser": true
+  },
+  "extends": [
+    "plugin:@wordpress/eslint-plugin/esnext"
+  ],
+  "rules": {
+    "linebreak-style": 0,
+    "no-undef": 0,
+    "camelcase": 0
+  }
+}
