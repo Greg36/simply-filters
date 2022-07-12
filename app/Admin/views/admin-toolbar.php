@@ -7,8 +7,8 @@
 
 global $pagenow;
 
-$nav    = [];
-$locale = Hybrid\app( 'locale' );
+$nav         = [];
+$text_domain = Hybrid\app( 'locale' );
 
 // Plugin list page
 $nav['filters'] = [
@@ -17,7 +17,7 @@ $nav['filters'] = [
 		Hybrid\app( 'group_post_type' ),
 		get_admin_url() . 'edit.php'
 	) ),
-	'label' => __( 'Filters', $locale )
+	'label' => __( 'Filters', $text_domain )
 ];
 
 // New filter page
@@ -27,7 +27,7 @@ $nav['new'] = [
 		Hybrid\app( 'group_post_type' ),
 		get_admin_url() . 'post-new.php'
 	) ),
-	'label' => __( 'Add new', $locale )
+	'label' => __( 'Add new', $text_domain )
 ];
 
 // Plugin settings page
@@ -37,7 +37,7 @@ $nav['settings'] = [
 		Hybrid\app( 'plugin_name' ),
 		get_admin_url() . 'options-general.php'
 	) ),
-	'label' => __( 'Settings', $locale )
+	'label' => __( 'Settings', $text_domain )
 ];
 
 // Detect active page
@@ -56,13 +56,13 @@ switch ( $pagenow ) {
 ?>
 
 <div class="sf-admin__toolbar">
-    <h2><?php esc_html_e( 'Simply Filters for WooCommerce', $locale ); ?></h2>
+    <h2><?php esc_html_e( 'Simply Filters for WooCommerce', $text_domain ); ?></h2>
 	<?php
-	foreach ( $nav as $name => $link ) {
+	foreach ( $nav as $name => $nav_link ) {
 		printf( '<a class="sf-admin__toolbar-link %s" href="%s">%s</a>',
-			$name === $nav_active ? 'is-active' : '',
-			esc_url( $link['url'] ),
-			esc_html( $link['label'] )
+			sanitize_html_class( $name === $nav_active ? 'is-active' : '' ),
+			esc_url( $nav_link['url'] ),
+			esc_html( $nav_link['label'] )
 		);
 	}
 	?>

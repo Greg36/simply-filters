@@ -27,7 +27,7 @@ class SelectControl extends Control {
 			foreach ( $this->options as $value => $label ) {
 
 				printf( '<option value="%s" %s>%s</option>',
-					$value,
+					esc_attr( $value ),
 					$value == $this->value ? 'selected' : '',
 					wp_kses_post( $label )
 				);

@@ -22,7 +22,7 @@
 					<?php
 					$shopID = get_option( 'woocommerce_shop_page_id' );
 					printf( wp_kses_post( __( 'Add new <strong>SF Filter Group</strong> block to the WooCommerce <a href="%s" target="_blank">shop page</a>.', $locale ) ),
-						admin_url( "post.php?post={$shopID}&action=edit" )
+						esc_url( admin_url( "post.php?post={$shopID}&action=edit" ) )
 					);
 					?>
                 </p>
@@ -35,7 +35,7 @@
                 <h4><?php esc_html_e( 'Widget', $locale ); ?></h4>
                 <p>
 					<?php printf( wp_kses_post( __( 'Add new <strong>SF Filter Group</strong> widget to shop sidebar in <a href="%s" target="_blank">widgets panel</a>.' ) ),
-						admin_url( 'widgets.php' )
+						esc_url( admin_url( 'widgets.php' ) )
 					); ?>
                 </p>
             </li>

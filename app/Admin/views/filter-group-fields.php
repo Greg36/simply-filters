@@ -37,7 +37,10 @@
         </div>
 
         <div class="sf-filters__footer">
-            <a href="#" class="sf-button sf-button__main sf-button__new-filter"><img src="<?php echo \SimplyFilters\get_svg( 'plus' ); ?>" alt="Add filter" aria-hidden="true"><?php esc_html_e( 'Add new filter', $locale ); ?></a>
+            <a href="#" class="sf-button sf-button__main sf-button__new-filter">
+                <img src="<?php echo esc_url( \SimplyFilters\get_svg( 'plus' ) ); ?>" alt="Add filter" aria-hidden="true">
+                <?php esc_html_e( 'Add new filter', $locale ); ?>
+            </a>
         </div>
 
         <input type="hidden" id="sf-removed-fields" name="sf-removed-fields">

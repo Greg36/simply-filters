@@ -311,6 +311,8 @@ class AdminServiceProvider extends ServiceProvider {
 	 *
 	 * @param string $column The name of the column to display.
 	 * @param int $post_id The post ID
+	 *
+	 * @return string
 	 */
 	public function group_table_column_shortcode( $column, $post_id ) {
 		if ( 'sf_shortcode' === $column ) {
@@ -318,6 +320,8 @@ class AdminServiceProvider extends ServiceProvider {
 				esc_attr( '[' . $this->app->get( 'shortcode_tag' ) . ' group_id="' . $post_id . '"]' )
 			);
 		}
+
+		return '';
 	}
 
 	/**
@@ -389,7 +393,7 @@ class AdminServiceProvider extends ServiceProvider {
 		}
 
 		// Verify nonce
-		$nonce = isset( $_POST['sf-group-field'] ) ? $_POST['sf-group-field'] : false;
+		$nonce = isset( $_POST['sf-group-field'] ) ? filter_var( $_POST['sf-group-field'], FILTER_SANITIZE_STRING ) : false;
 		if ( ! wp_verify_nonce( $nonce, 'sf-group-field' ) ) {
 			return $post_id;
 		}
@@ -399,7 +403,8 @@ class AdminServiceProvider extends ServiceProvider {
 
 		// Save filter settings
 		if ( ! empty( $_POST[ $prefix ] ) ) {
-			foreach ( $_POST[ $prefix ] as $id => $data ) {
+			$filter_data = wc_clean( wp_unslash( $_POST[ $prefix ] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			foreach ( $filter_data as $id => $data ) {
 				if ( empty( $data ) || $id == $post_id ) {
 					continue;
 				}
@@ -408,8 +413,9 @@ class AdminServiceProvider extends ServiceProvider {
 		}
 
 		// Delete filters
-		if ( $_POST['sf-removed-fields'] ) {
-			$remove = explode( '|', $_POST['sf-removed-fields'] );
+		$remove_fields = isset( $_POST['sf-removed-fields'] ) ? filter_var( $_POST['sf-removed-fields'], FILTER_SANITIZE_STRING ) : '';
+		if ( $remove_fields ) {
+			$remove = explode( '|', $remove_fields );
 			$remove = array_map( 'intval', $remove );
 
 			foreach ( $remove as $id ) {
@@ -439,7 +445,6 @@ class AdminServiceProvider extends ServiceProvider {
 				array(
 					'posts_per_page'   => - 1,
 					'post_type'        => \Hybrid\app( 'item_post_type' ),
-					'suppress_filters' => true,
 					'post_parent'      => $group_id,
 					'post_status'      => array( 'publish', 'trash' ),
 				)
@@ -464,16 +469,21 @@ class AdminServiceProvider extends ServiceProvider {
 	 */
 	public function save_group_settings( $data, $postarr ) {
 
+		// Verify nonce
+		$nonce = isset( $_POST['sf-group-field'] ) ? filter_var( $_POST['sf-group-field'], FILTER_SANITIZE_STRING ) : false;
+		if ( ! wp_verify_nonce( $nonce, 'sf-group-field' ) ) {
+			return $data;
+		}
+
 		// Process only filters group
 		if ( $data['post_type'] !== $this->app->get( 'group_post_type' ) ) {
 			return $data;
 		}
 
 		$prefix   = (string) $this->app->get( 'prefix' );
-		$settings = isset( $_POST[ $prefix ][ $postarr['ID'] ] ) ? $_POST[ $prefix ][ $postarr['ID'] ] : [];
+		$settings = isset( $_POST[ $prefix ][ $postarr['ID'] ] ) ? wc_clean( wp_unslash( $_POST[ $prefix ][ $postarr['ID'] ] ) ) : []; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 
 		if ( ! empty( $settings ) ) {
-			$settings = wp_unslash( wc_clean( $settings ) );
 
 			/**
 			 * Group settings before save
@@ -494,30 +504,33 @@ class AdminServiceProvider extends ServiceProvider {
 	 */
 	public function save_general_settings() {
 
-		// Check for general settings nonce
-		if ( isset( $_POST['sf-setting'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['sf-general-settings'] ) ), 'sf-general-settings' ) ) {
-
-			// Check user capabilities
-			if ( ! current_user_can( 'manage_options' ) ) {
-				return;
-			}
-
-			$options = [];
-			if ( ! empty( $_POST['sf-setting']['options'] ) ) {
-				foreach ( $_POST['sf-setting']['options'] as $key => $option ) {
-					$options[ sanitize_text_field( $key ) ] = wc_clean( $option );
-				}
-			}
-
-			/**
-			 * General settings before save
-			 *
-			 * @param array $data General settings
-			 */
-			$options = apply_filters( 'sf-options-data-before-save', $options );
-
-			update_option( 'sf-settings', $options );
+		// Verify nonce
+		$nonce = isset( $_POST['sf-general-settings'] ) ? filter_var( $_POST['sf-general-settings'], FILTER_SANITIZE_STRING ) : false;
+		if ( ! wp_verify_nonce( $nonce, 'sf-general-settings' ) ) {
+			return;
 		}
+
+		// Check user capabilities
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+
+		$options = [];
+		if ( ! empty( $_POST['sf-setting']['options'] ) ) {
+			$options = wc_clean( wp_unslash( $_POST['sf-setting']['options'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			foreach ( $options as $key => $option ) {
+				$options[ $key] = $option;
+			}
+		}
+
+		/**
+		 * General settings before save
+		 *
+		 * @param array $data General settings
+		 */
+		$options = apply_filters( 'sf-options-data-before-save', $options );
+
+		update_option( 'sf-settings', $options );
 	}
 
 	/**
@@ -529,8 +542,8 @@ class AdminServiceProvider extends ServiceProvider {
 		if ( ! wc_review_ratings_enabled() && $filter->get_type() === 'Rating' ) {
 
 			echo '<div class="sf-filter__notice">';
-			printf( __( 'Product rating is currently disabled in WooCommerce, for this filter to work enable star rating in <a href="%s" target="_blank" >settings</a>.', $this->app->get( 'locale' ) ),
-				admin_url( 'admin.php?page=wc-settings&tab=products' )
+			printf( wp_kses_post( __( 'Product rating is currently disabled in WooCommerce, for this filter to work enable star rating in <a href="%s" target="_blank" >settings</a>.', $this->app->get( 'locale' ) ) ),
+				esc_url( admin_url( 'admin.php?page=wc-settings&tab=products' ) )
 			);
 			echo '</div>';
 		}

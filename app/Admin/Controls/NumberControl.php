@@ -35,7 +35,7 @@ class NumberControl extends Control {
 			esc_attr( $this->id ),
 			esc_attr( $this->value ),
 			$this->unique ? sprintf( 'data-unique="%s"', esc_attr( $this->label ) ) : '',
-			$this->required ? 'required="required"' : ''
+			esc_attr( $this->required ? 'required="required"' : '' )
 		);
 	}
 }

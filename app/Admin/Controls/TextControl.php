@@ -46,8 +46,8 @@ class TextControl extends Control {
 					esc_attr( $this->id . '_' . $option['key'] ),
 					esc_attr( $this->key . '[' . $option['key'] . ']' ),
 					array_key_exists( $option['key'], $this->value ) ? esc_attr( $this->value[ $option['key'] ] ) : esc_attr( $option['default'] ),
-					$this->unique ? sprintf( 'data-unique="%s"', esc_attr( $this->label ) ) : '',
-					$this->required ? 'required="required"' : '',
+					esc_attr( $this->unique ? sprintf( 'data-unique="%s"', $this->label ) : '' ),
+					esc_attr( $this->required ? 'required="required"' : '' ),
 					wp_kses_post( $option['label'] )
 				);
 			}
@@ -62,7 +62,7 @@ class TextControl extends Control {
 				esc_attr( $this->key ),
 				esc_attr( $this->value ),
 				$this->unique ? sprintf( 'data-unique="%s"', esc_attr( $this->label ) ) : '',
-				$this->required ? 'required="required"' : ''
+				esc_attr( $this->required ? 'required="required"' : '' )
 			);
 
 		}
