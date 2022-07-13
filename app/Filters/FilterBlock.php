@@ -96,8 +96,13 @@ class FilterBlock {
 		}
 		ob_start();
 
-		$group = new FilterGroup( $attributes['group_id'] );
-		$group->render();
+		$group = get_post( $attributes['group_id'] );
+
+		// Render only if group post is found and is published
+		if( $group instanceof \WP_Post && $group->post_status === 'publish' ) {
+			$filter_group = new FilterGroup( $group );
+			$filter_group->render();
+		}
 
 		return ob_get_clean();
 	}

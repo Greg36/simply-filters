@@ -27,16 +27,21 @@ class FilterGroup {
 	 */
 	private $settings;
 
-	public function __construct( $group_id ) {
-		$this->group_id = $group_id;
-		$data           = (array) maybe_unserialize( get_post_field( 'post_content', $group_id ) );
+	/**
+	 * Crete new filter group
+	 *
+	 * @param $group \WP_Post
+	 */
+	public function __construct( $group ) {
+		$this->group_id = $group->ID;
+		$data           = (array) maybe_unserialize( $group->post_content );
 
 		// Load defaults for group settings only on new page
 		if ( \Hybrid\app( 'is-page-new' ) ) {
 			$data = [ 'load_defaults' => true ];
 		}
 
-		$this->settings = new Settings( $group_id, $data );
+		$this->settings = new Settings( $this->group_id, $data );
 		$this->register_group_settings();
 		$this->query_filters_data();
 	}

@@ -50,7 +50,7 @@ class Metaboxes {
 	 */
 	public function filter_group_metabox() {
 
-		$filter_group = new FilterGroup( $this->group_id );
+		$filter_group = new FilterGroup( get_post( $this->group_id ) );
 
 		// Top tab navigation
 		TemplateLoader::render( 'filter-tabs' );

@@ -37,13 +37,20 @@ class FilterWidget extends \WC_Widget {
 			if ( $title && isset( $instance['needToShowTitle'] ) && $instance['needToShowTitle'] ) {
 				$attributes['before_html'] .= $args['before_title'] . $title . $args['after_title'];
 			}
+			
+			$group = get_post( $instance['group_id'] );
 
-			echo $attributes['before_html'];
+			if( $group instanceof \WP_Post && $group->post_status === 'publish' ) {
 
-			$group = new FilterGroup( $instance['group_id'] );
-			$group->render();
+				echo wp_kses_post( $attributes['before_html'] );
 
-			echo $attributes['after_html'];
+				$filter_group = new FilterGroup( $instance['group_id'] );
+				$filter_group->render();
+
+				echo wp_kses_post( $attributes['after_html'] );
+
+			}
+			
 		}
 	}
 

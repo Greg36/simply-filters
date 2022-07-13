@@ -24,10 +24,15 @@ class FilterShortcode {
 	 * @return string
 	 */
 	public function getShortcode() {
-		$group = new FilterGroup( $this->group_id );
+
+		$group = get_post( $this->group_id );
 
 		ob_start();
-		$group->render();
+
+		if( $group instanceof \WP_Post && $group->post_status === 'publish' ) {
+			$group = new FilterGroup( $group );
+			$group->render();
+		}
 
 		return ob_get_clean();
 	}
